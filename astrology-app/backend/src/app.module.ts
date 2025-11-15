@@ -22,6 +22,21 @@ import { CoffeeReadingModule } from './modules/coffee-reading/coffee-reading.mod
 import { NumerologyModule } from './modules/numerology/numerology.module';
 import { AiAssistantModule } from './modules/ai-assistant/ai-assistant.module';
 import { ActionsModule } from './modules/actions/actions.module';
+import { TrialsModule } from './modules/trials/trials.module';
+import { SubscriptionPlansModule } from './modules/subscription-plans/subscription-plans.module';
+import { BiorhythmModule } from './modules/biorhythm/biorhythm.module';
+import { ChakrasModule } from './modules/chakras/chakras.module';
+import { RelationshipModule } from './modules/relationship/relationship.module';
+import { SoulmateModule } from './modules/soulmate/soulmate.module';
+import { AuraScanModule } from './modules/aura-scan/aura-scan.module';
+import { JournalModule } from './modules/journal/journal.module';
+import { CosmicClimateModule } from './modules/cosmic-climate/cosmic-climate.module';
+import { AstroEventsModule } from './modules/astro-events/astro-events.module';
+import { CalendarsModule } from './modules/calendars/calendars.module';
+import { FamousPeopleModule } from './modules/famous-people/famous-people.module';
+import { LiveServicesModule } from './modules/live-services/live-services.module';
+import { AstroMapModule } from './modules/astro-map/astro-map.module';
+import { AdvancedChartsModule } from './modules/advanced-charts/advanced-charts.module';
 
 @Module({
   imports: [
@@ -69,6 +84,21 @@ import { ActionsModule } from './modules/actions/actions.module';
     NumerologyModule,
     AiAssistantModule,
     ActionsModule,
+    TrialsModule,
+    SubscriptionPlansModule,
+    BiorhythmModule,
+    ChakrasModule,
+    RelationshipModule,
+    SoulmateModule,
+    AuraScanModule,
+    JournalModule,
+    CosmicClimateModule,
+    AstroEventsModule,
+    CalendarsModule,
+    FamousPeopleModule,
+    LiveServicesModule,
+    AstroMapModule,
+    AdvancedChartsModule,
   ],
 })
 export class AppModule {}
