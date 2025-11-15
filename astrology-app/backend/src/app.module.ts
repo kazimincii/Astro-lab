@@ -9,6 +9,7 @@ import { databaseConfig } from './config/database.config';
 import { authConfig } from './config/auth.config';
 import { appConfig } from './config/app.config';
 import { aiConfig } from './config/ai.config';
+import { stripeConfig } from './config/stripe.config';
 
 // Modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -22,13 +23,33 @@ import { CoffeeReadingModule } from './modules/coffee-reading/coffee-reading.mod
 import { NumerologyModule } from './modules/numerology/numerology.module';
 import { AiAssistantModule } from './modules/ai-assistant/ai-assistant.module';
 import { ActionsModule } from './modules/actions/actions.module';
+import { TrialsModule } from './modules/trials/trials.module';
+import { SubscriptionPlansModule } from './modules/subscription-plans/subscription-plans.module';
+import { BiorhythmModule } from './modules/biorhythm/biorhythm.module';
+import { ChakrasModule } from './modules/chakras/chakras.module';
+import { RelationshipModule } from './modules/relationship/relationship.module';
+import { SoulmateModule } from './modules/soulmate/soulmate.module';
+import { AuraScanModule } from './modules/aura-scan/aura-scan.module';
+import { JournalModule } from './modules/journal/journal.module';
+import { CosmicClimateModule } from './modules/cosmic-climate/cosmic-climate.module';
+import { AstroEventsModule } from './modules/astro-events/astro-events.module';
+import { CalendarsModule } from './modules/calendars/calendars.module';
+import { FamousPeopleModule } from './modules/famous-people/famous-people.module';
+import { LiveServicesModule } from './modules/live-services/live-services.module';
+import { AstroMapModule } from './modules/astro-map/astro-map.module';
+import { AdvancedChartsModule } from './modules/advanced-charts/advanced-charts.module';
+import { TodayModule } from './modules/today/today.module';
+import { EducationModule } from './modules/education/education.module';
+import { WidgetsModule } from './modules/widgets/widgets.module';
+import { ServicesModule } from './services/services.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
     // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, aiConfig],
+      load: [databaseConfig, authConfig, appConfig, aiConfig, stripeConfig],
     }),
 
     // Database
@@ -69,6 +90,26 @@ import { ActionsModule } from './modules/actions/actions.module';
     NumerologyModule,
     AiAssistantModule,
     ActionsModule,
+    TrialsModule,
+    SubscriptionPlansModule,
+    BiorhythmModule,
+    ChakrasModule,
+    RelationshipModule,
+    SoulmateModule,
+    AuraScanModule,
+    JournalModule,
+    CosmicClimateModule,
+    AstroEventsModule,
+    CalendarsModule,
+    FamousPeopleModule,
+    LiveServicesModule,
+    AstroMapModule,
+    AdvancedChartsModule,
+    TodayModule,
+    EducationModule,
+    WidgetsModule,
+    ServicesModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}

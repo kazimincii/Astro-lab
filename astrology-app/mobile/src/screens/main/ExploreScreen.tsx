@@ -3,12 +3,18 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import { colors } from '@/theme/colors';
 
-export default function ExploreScreen() {
+export default function ExploreScreen({ navigation }: any) {
   const features = [
-    { id: '1', title: 'Tarot Reading', icon: 'card-outline', color: colors.cosmic.purple },
-    { id: '2', title: 'Coffee Reading', icon: 'cafe-outline', color: colors.cosmic.pink },
-    { id: '3', title: 'Numerology', icon: 'calculator-outline', color: colors.cosmic.blue },
-    { id: '4', title: 'Compatibility', icon: 'heart-outline', color: colors.cosmic.gold },
+    { id: '1', title: 'Astro Academy', icon: 'school-outline', color: colors.cosmic.purple, screen: 'Education' },
+    { id: '2', title: 'iOS Widgets', icon: 'grid-outline', color: '#6366f1', screen: 'Widgets' },
+    { id: '3', title: 'My Journal', icon: 'book-outline', color: '#8b5cf6', screen: 'Journal' },
+    { id: '4', title: 'Biorhythm', icon: 'pulse-outline', color: '#10b981', screen: 'Biorhythm' },
+    { id: '5', title: 'Chakras', icon: 'radio-button-on-outline', color: '#a855f7', screen: 'Chakras' },
+    { id: '6', title: 'Relationship', icon: 'heart-circle-outline', color: '#ec4899', screen: 'RelationshipSoulmate' },
+    { id: '7', title: 'Tarot Reading', icon: 'card-outline', color: colors.cosmic.pink },
+    { id: '8', title: 'Coffee Reading', icon: 'cafe-outline', color: colors.cosmic.blue },
+    { id: '9', title: 'Numerology', icon: 'calculator-outline', color: colors.cosmic.gold },
+    { id: '10', title: 'Advanced Charts', icon: 'analytics-outline', color: '#06b6d4', screen: 'AdvancedCharts' },
   ];
 
   return (
@@ -22,6 +28,11 @@ export default function ExploreScreen() {
           <TouchableOpacity
             key={feature.id}
             style={[styles.featureCard, { borderColor: feature.color }]}
+            onPress={() => {
+              if (feature.screen) {
+                navigation.navigate(feature.screen);
+              }
+            }}
           >
             <Ionicons name={feature.icon as any} size={40} color={feature.color} />
             <Text style={styles.featureTitle}>{feature.title}</Text>
