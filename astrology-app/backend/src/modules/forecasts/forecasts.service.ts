@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DailyForecast } from '@/entities/daily-forecast.entity';
 import { PersonProfile } from '@/entities/person-profile.entity';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { ActionType } from '@/entities/action-log.entity';
 
 type ElementType = 'fire' | 'earth' | 'air' | 'water';
 
@@ -393,11 +395,13 @@ export class ForecastsService {
     private forecastsRepository: Repository<DailyForecast>,
     @InjectRepository(PersonProfile)
     private profilesRepository: Repository<PersonProfile>,
+    private subscriptionsService: SubscriptionsService,
   ) {}
 
-  async getTodayForecast(profileId: string) {
+  async getTodayForecast(profileId: string, userId: string) {
     const profile = await this.profilesRepository.findOne({
-      where: { id: profileId },
+      where: { id: profileId, owner: { id: userId } },
+      relations: ['owner'],
     });
 
     if (!profile) {
@@ -411,6 +415,12 @@ export class ForecastsService {
     });
 
     if (!forecast) {
+      await this.subscriptionsService.consumePremiumAction(
+        userId,
+        ActionType.DAILY_FORECAST,
+        { profileId, date: today.toISOString() },
+        `Daily forecast for ${profile.name}`,
+      );
       forecast = await this.generateDailyForecast(profile, today);
     }
 

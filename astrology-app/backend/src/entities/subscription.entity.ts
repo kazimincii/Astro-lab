@@ -67,6 +67,15 @@ export class Subscription {
   @Column({ nullable: true })
   cancellationReason: string;
 
+  @Column({ type: 'timestamp', nullable: true })
+  trialEndsAt: Date;
+
+  @Column({ default: false })
+  isTrial: boolean;
+
+  @Column({ type: 'timestamp', nullable: true })
+  nextBillingDate: Date;
+
   // Plan limits
   @Column({ default: 2 })
   dailyActionLimit: number;

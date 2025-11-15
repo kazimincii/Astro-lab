@@ -1,4 +1,4 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PersonProfile } from '@/entities/person-profile.entity';
@@ -13,20 +13,18 @@ export class ProfilesService {
   ) {}
 
   async create(userId: string, createData: Partial<PersonProfile>) {
-    // Check plan limit
-    const effectivePlan = await this.subscriptionsService.getEffectivePlan(userId);
-    const currentCount = await this.profilesRepository.count({
+    const subscription = await this.subscriptionsService.ensureDefaultSubscription(userId);
+    const currentProfiles = await this.profilesRepository.count({
       where: { owner: { id: userId } },
     });
 
-    if (currentCount >= effectivePlan.maxProfiles) {
-      throw new ForbiddenException({
-        message: 'Profile limit reached for your plan',
-        currentCount,
-        maxProfiles: effectivePlan.maxProfiles,
-        planType: effectivePlan.planType,
-        suggestUpgrade: effectivePlan.planType === 'basic' ? 'standard' : 'premium',
-      });
+    if (
+      typeof subscription.profileLimit === 'number' &&
+      currentProfiles >= subscription.profileLimit
+    ) {
+      throw new BadRequestException(
+        'Profile limit reached for your current membership plan. Upgrade to add more profiles.',
+      );
     }
 
     const profile = this.profilesRepository.create({
