@@ -5,11 +5,24 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 import helmet from 'helmet';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { LoggerService } from './services/logger.service';
+import { SentryService } from './services/sentry.service';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { rawBody: true });
+  const app = await NestFactory.create(AppModule, { rawBody: true, bufferLogs: true });
 
+  // Get services
   const configService = app.get(ConfigService);
+  const loggerService = app.get(LoggerService);
+  const sentryService = app.get(SentryService);
+
+  // Use custom logger
+  app.useLogger(loggerService);
+
+  // Register global exception filter with dependency injection
+  app.useGlobalFilters(new AllExceptionsFilter(loggerService, sentryService));
+
   const port = configService.get('PORT') || 3000;
   const nodeEnv = configService.get('NODE_ENV') || 'development';
   const isProduction = nodeEnv === 'production';
@@ -98,10 +111,12 @@ async function bootstrap() {
       },
     });
 
-    console.log(`📚 API Documentation available at: http://localhost:${port}/api`);
+    loggerService.log(`📚 API Documentation available at: http://localhost:${port}/api`);
   }
 
   await app.listen(port);
-  console.log(`🚀 Astrology Backend running on: http://localhost:${port}/api/v1`);
+  loggerService.log(`🚀 Astrology Backend running on: http://localhost:${port}/api/v1`);
+  loggerService.log(`Environment: ${nodeEnv}`);
+  loggerService.log(`Logging to: logs/`);
 }
 bootstrap();

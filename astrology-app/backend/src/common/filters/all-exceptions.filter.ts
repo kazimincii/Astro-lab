@@ -11,13 +11,19 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  Logger,
+  Injectable,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { LoggerService } from '../../services/logger.service';
+import { SentryService } from '../../services/sentry.service';
 
 @Catch()
+@Injectable()
 export class AllExceptionsFilter implements ExceptionFilter {
-  private readonly logger = new Logger(AllExceptionsFilter.name);
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly sentry: SentryService,
+  ) {}
 
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -64,13 +70,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private logError(request: Request, exception: unknown, status: number) {
     const { method, url, body, query, params } = request;
 
-    const errorLog = {
-      timestamp: new Date().toISOString(),
+    const errorContext = {
       method,
       url,
       statusCode: status,
-      error: exception instanceof Error ? exception.name : 'Unknown',
-      message: exception instanceof Error ? exception.message : 'Unknown error',
       body: this.sanitizeBody(body),
       query,
       params,
@@ -78,16 +81,25 @@ export class AllExceptionsFilter implements ExceptionFilter {
       ip: request.ip,
     };
 
-    // Critical errors (500+) should be logged with full stack trace
+    const errorMessage =
+      exception instanceof Error ? exception.message : 'Unknown error';
+
+    // Critical errors (500+) should be logged with full stack trace and sent to Sentry
     if (status >= 500) {
       this.logger.error(
-        JSON.stringify(errorLog),
-        exception instanceof Error ? exception.stack : 'No stack trace available',
+        errorMessage,
+        exception instanceof Error ? exception.stack : undefined,
+        'AllExceptionsFilter',
       );
+
+      // Report to Sentry for critical errors
+      if (exception instanceof Error) {
+        this.sentry.captureException(exception, errorContext);
+      }
     } else if (status >= 400) {
-      this.logger.warn(JSON.stringify(errorLog));
+      this.logger.warn(errorMessage, 'AllExceptionsFilter');
     } else {
-      this.logger.log(JSON.stringify(errorLog));
+      this.logger.log(errorMessage, 'AllExceptionsFilter');
     }
   }
 

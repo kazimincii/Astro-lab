@@ -11,9 +11,11 @@ import {
   ArgumentsHost,
   HttpException,
   HttpStatus,
-  Logger,
+  Injectable,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { LoggerService } from '../../services/logger.service';
+import { SentryService } from '../../services/sentry.service';
 
 interface ErrorResponse {
   statusCode: number;
@@ -26,8 +28,12 @@ interface ErrorResponse {
 }
 
 @Catch(HttpException)
+@Injectable()
 export class HttpExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(HttpExceptionFilter.name);
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly sentry: SentryService,
+  ) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -65,13 +71,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
   private logError(request: Request, exception: HttpException, status: number) {
     const { method, url, body, query, params, headers } = request;
 
-    const errorLog = {
-      timestamp: new Date().toISOString(),
+    const errorContext = {
       method,
       url,
       statusCode: status,
-      error: exception.name,
-      message: exception.message,
       body: this.sanitizeBody(body),
       query,
       params,
@@ -79,13 +82,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
       ip: request.ip,
     };
 
+    const errorMessage = exception.message;
+
     // Log based on severity
     if (status >= 500) {
-      this.logger.error(JSON.stringify(errorLog), exception.stack);
+      this.logger.error(errorMessage, exception.stack, 'HttpExceptionFilter');
+
+      // Report to Sentry for critical errors
+      this.sentry.captureException(exception, errorContext);
     } else if (status >= 400) {
-      this.logger.warn(JSON.stringify(errorLog));
+      this.logger.warn(errorMessage, 'HttpExceptionFilter');
     } else {
-      this.logger.log(JSON.stringify(errorLog));
+      this.logger.log(errorMessage, 'HttpExceptionFilter');
     }
   }
 
