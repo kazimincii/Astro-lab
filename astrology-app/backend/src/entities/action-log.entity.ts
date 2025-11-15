@@ -16,6 +16,7 @@ export enum ActionType {
   NUMEROLOGY = 'numerology',
   COMPATIBILITY = 'compatibility',
   AURA_SCAN = 'aura_scan',
+  DAILY_FORECAST = 'daily_forecast',
 }
 
 @Entity('action_logs')

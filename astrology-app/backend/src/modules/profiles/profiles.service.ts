@@ -18,7 +18,10 @@ export class ProfilesService {
       where: { owner: { id: userId } },
     });
 
-    if (!subscription.unlimitedActions && currentProfiles >= subscription.profileLimit) {
+    if (
+      typeof subscription.profileLimit === 'number' &&
+      currentProfiles >= subscription.profileLimit
+    ) {
       throw new BadRequestException(
         'Profile limit reached for your current membership plan. Upgrade to add more profiles.',
       );

@@ -1,4 +1,4 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
 import { ForecastsService } from './forecasts.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -8,7 +8,7 @@ export class ForecastsController {
   constructor(private forecastsService: ForecastsService) {}
 
   @Get('today/:profileId')
-  async getTodayForecast(@Param('profileId') profileId: string) {
-    return this.forecastsService.getTodayForecast(profileId);
+  async getTodayForecast(@Param('profileId') profileId: string, @Request() req) {
+    return this.forecastsService.getTodayForecast(profileId, req.user.id);
   }
 }

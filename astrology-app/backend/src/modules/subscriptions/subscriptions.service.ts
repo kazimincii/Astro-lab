@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscription, SubscriptionPlan } from '@/entities/subscription.entity';
 import { User } from '@/entities/user.entity';
 import { PersonProfile } from '@/entities/person-profile.entity';
 import { ActionsService } from '../actions/actions.service';
+import { ActionType } from '@/entities/action-log.entity';
 
 @Injectable()
 export class SubscriptionsService {
@@ -83,30 +84,24 @@ export class SubscriptionsService {
     };
   }
 
+  async consumePremiumAction(userId: string, actionType: ActionType, metadata?: any, description?: string) {
+    const subscription = await this.ensureDefaultSubscription(userId);
+    if (!subscription.unlimitedActions) {
+      const used = await this.actionsService.getTodayActionsCount(userId);
+      if (used >= subscription.dailyActionLimit) {
+        throw new BadRequestException(
+          'Premium action limit reached for today. Upgrade your plan to continue.',
+        );
+      }
+    }
+
+    await this.actionsService.logPremiumAction(userId, actionType, metadata, description);
+    return subscription;
+  }
+
   private async setCurrentSubscription(userId: string, subscriptionId: string) {
     await this.usersRepository.update(userId, {
       currentSubscription: { id: subscriptionId } as any,
-    });
-  }
-}
-      user: { id: userId } as any,
-      plan: SubscriptionPlan.BASIC,
-      price: 0,
-      billingCycle: 'monthly',
-      startDate: new Date(),
-      endDate: new Date('2099-12-31'),
-      dailyActionLimit: 2,
-      profileLimit: 2,
-      unlimitedActions: false,
-    });
-
-    return this.subscriptionsRepository.save(subscription);
-  }
-
-  async getCurrentSubscription(userId: string) {
-    return this.subscriptionsRepository.findOne({
-      where: { user: { id: userId }, status: 'active' },
-      order: { createdAt: 'DESC' },
     });
   }
 }
