@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { ScheduleModule } from '@nestjs/schedule';
 
+// Services
+import { CacheModule } from './services/cache.module';
+
 // Config
 import { databaseConfig } from './config/database.config';
 import { authConfig } from './config/auth.config';
@@ -114,6 +117,7 @@ import { HealthModule } from './modules/health/health.module';
     ServicesModule,
     PaymentsModule,
     HealthModule,
+    CacheModule,
   ],
 })
 export class AppModule {}
