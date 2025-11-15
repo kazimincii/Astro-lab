@@ -1,5 +1,6 @@
 import { IsString, IsDateString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class GenerateNumerologyReportDto {
   @ApiProperty({
@@ -15,5 +16,6 @@ export class GenerateNumerologyReportDto {
     format: 'date',
   })
   @IsDateString()
-  birthDate: string;
+  @Type(() => Date)
+  birthDate: Date;
 }
