@@ -7,6 +7,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 // Services
 import { CacheModule } from './services/cache.module';
 import { LoggerModule } from './services/logger.module';
+import { MetricsModule } from './services/metrics.module';
 
 // Config
 import { databaseConfig } from './config/database.config';
@@ -120,6 +121,7 @@ import { HealthModule } from './modules/health/health.module';
     HealthModule,
     CacheModule,
     LoggerModule,
+    MetricsModule,
   ],
 })
 export class AppModule {}

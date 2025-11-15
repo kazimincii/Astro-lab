@@ -1,14 +1,20 @@
-import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy, OnModuleInit, Optional, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { createClient, RedisClientType } from 'redis';
+import { MetricsService } from './metrics.service';
 
 @Injectable()
 export class CacheService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(CacheService.name);
   private client: RedisClientType;
   private isConnected = false;
+  private hits = 0;
+  private misses = 0;
 
-  constructor(private configService: ConfigService) {}
+  constructor(
+    private configService: ConfigService,
+    @Optional() @Inject(MetricsService) private metricsService?: MetricsService,
+  ) {}
 
   async onModuleInit() {
     const redisHost = this.configService.get<string>('REDIS_HOST', 'localhost');
@@ -75,8 +81,14 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
     try {
       const value = await this.client.get(key);
       if (!value) {
+        this.misses++;
+        this.metricsService?.recordCacheOperation('miss', key);
+        this.updateHitRatio();
         return null;
       }
+      this.hits++;
+      this.metricsService?.recordCacheOperation('hit', key);
+      this.updateHitRatio();
       return JSON.parse(value) as T;
     } catch (error) {
       this.logger.error(`Cache get error for key ${key}: ${error.message}`);
@@ -100,6 +112,7 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
       } else {
         await this.client.set(key, serialized);
       }
+      this.metricsService?.recordCacheOperation('set', key);
       return true;
     } catch (error) {
       this.logger.error(`Cache set error for key ${key}: ${error.message}`);
@@ -267,10 +280,22 @@ export class CacheService implements OnModuleInit, OnModuleDestroy {
         connected: true,
         info,
         dbSize,
+        hitRatio: this.hits + this.misses > 0 ? this.hits / (this.hits + this.misses) : 0,
       };
     } catch (error) {
       this.logger.error(`Cache stats error: ${error.message}`);
       return { connected: false, error: error.message };
+    }
+  }
+
+  /**
+   * Update cache hit ratio metric
+   */
+  private updateHitRatio() {
+    const total = this.hits + this.misses;
+    if (total > 0) {
+      const ratio = this.hits / total;
+      this.metricsService?.updateCacheHitRatio(ratio);
     }
   }
 }
