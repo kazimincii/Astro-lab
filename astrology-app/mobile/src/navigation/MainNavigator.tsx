@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import TodayScreen from '@/screens/main/TodayScreen';
 import ProfilesScreen from '@/screens/main/ProfilesScreen';
-import ExploreScreen from '@/screens/main/ExploreScreen';
+import ExploreNavigator from '@/navigation/ExploreNavigator';
 import AIAssistantScreen from '@/screens/main/AIAssistantScreen';
 import SettingsScreen from '@/screens/main/SettingsScreen';
 
@@ -44,7 +44,7 @@ export default function MainNavigator() {
     >
       <Tab.Screen name="Today" component={TodayScreen} />
       <Tab.Screen name="Profiles" component={ProfilesScreen} />
-      <Tab.Screen name="Explore" component={ExploreScreen} />
+      <Tab.Screen name="Explore" component={ExploreNavigator} />
       <Tab.Screen name="AI" component={AIAssistantScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>

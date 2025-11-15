@@ -1,486 +1,424 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
   ScrollView,
-  ActivityIndicator,
+  StyleSheet,
   RefreshControl,
+  ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
-import { colors } from '@/theme/colors';
-import { profilesApi } from '@/api/profiles';
-import { forecastsApi, DailyForecastResponse } from '@/api/forecasts';
+import { todayApi, TodaySummary } from '@/api/today';
 
-type Profile = {
-  id: string;
-  name: string;
-  sunSign?: string | null;
-  isMainProfile?: boolean;
-};
+export default function TodayScreen() {
+  const [summary, setSummary] = useState<TodaySummary | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
-export default function TodayScreen({ navigation }: any) {
-  const {
-    data: profilesData,
-    isLoading: areProfilesLoading,
-    isError: isProfilesError,
-    error: profilesError,
-    refetch: refetchProfiles,
-    isRefetching: isProfilesRefetching,
-  } = useQuery<Profile[]>({
-    queryKey: ['profiles'],
-    queryFn: profilesApi.getAll,
-  });
-
-  const mainProfile = useMemo(() => {
-    const list = profilesData ?? [];
-    if (!list.length) {
-      return undefined;
+  const loadTodaySummary = async () => {
+    try {
+      const data = await todayApi.getTodaySummary();
+      setSummary(data);
+    } catch (error) {
+      console.error('Failed to load today summary:', error);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
     }
-    return list.find(profile => profile.isMainProfile) ?? list[0];
-  }, [profilesData]);
-
-  const {
-    data: forecast,
-    isLoading: isForecastLoading,
-    isError: isForecastError,
-    error: forecastError,
-    refetch: refetchForecast,
-    isRefetching: isForecastRefetching,
-  } = useQuery<DailyForecastResponse>({
-    queryKey: ['forecast', mainProfile?.id],
-    queryFn: () => forecastsApi.getToday(mainProfile!.id),
-    enabled: Boolean(mainProfile?.id),
-    staleTime: 1000 * 60 * 10,
-  });
-
-  const handleRefresh = useCallback(() => {
-    refetchProfiles();
-    if (mainProfile?.id) {
-      refetchForecast();
-    }
-  }, [refetchProfiles, refetchForecast, mainProfile?.id]);
-
-  const renderLoading = (message: string) => (
-    <View style={styles.centerContent}>
-      <ActivityIndicator color={colors.cosmic.purple} />
-      <Text style={styles.loadingText}>{message}</Text>
-    </View>
-  );
-
-  const renderError = (message: string, action?: () => void) => (
-    <View style={styles.centerContent}>
-      <Text style={styles.errorText}>{message}</Text>
-      {action && (
-        <TouchableOpacity style={styles.primaryButton} onPress={action}>
-          <Text style={[styles.primaryButtonText, styles.primaryButtonTextSolo]}>
-            Retry
-          </Text>
-        </TouchableOpacity>
-      )}
-    </View>
-  );
-
-  const renderEmptyProfiles = () => (
-    <View style={styles.centerContent}>
-      <Ionicons name="people-outline" size={64} color={colors.cosmic.textSecondary} />
-      <Text style={styles.emptyTitle}>Profiles needed</Text>
-      <Text style={styles.emptySubtitle}>
-        Add at least one profile to receive personalized daily insights.
-      </Text>
-      <TouchableOpacity
-        style={styles.primaryButton}
-        onPress={() => navigation.navigate('Profiles')}
-      >
-        <Ionicons name="add" size={18} color={colors.cosmic.text} />
-        <Text style={styles.primaryButtonText}>Create profile</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const luckyNumbers = (forecast?.luckyNumbers ?? []).slice(0, 4);
-  const transits = forecast?.planetaryTransits
-    ? Object.values(forecast.planetaryTransits)
-    : [];
-
-  const pageContent = () => {
-    if (areProfilesLoading && !profilesData) {
-      return renderLoading('Preparing your space...');
-    }
-
-    if (isProfilesError) {
-      const message =
-        profilesError instanceof Error
-          ? profilesError.message
-          : 'Unable to load profiles.';
-      return renderError(message, refetchProfiles);
-    }
-
-    if (!mainProfile) {
-      return renderEmptyProfiles();
-    }
-
-    if (isForecastError) {
-      const message =
-        forecastError instanceof Error
-          ? forecastError.message
-          : 'Unable to generate forecast.';
-      return renderError(message, refetchForecast);
-    }
-
-    if (isForecastLoading || !forecast) {
-      return renderLoading("Casting today's chart...");
-    }
-
-    return (
-      <>
-        <View style={styles.card}>
-          <View style={styles.cardHeader}>
-            <View>
-              <Text style={styles.sectionLabel}>Today&apos;s Forecast</Text>
-              <Text style={styles.cardTitle}>{mainProfile.name}</Text>
-              <Text style={styles.cardSubtitle}>
-                {forecast.sunSign} · {new Date(forecast.date).toLocaleDateString()}
-              </Text>
-            </View>
-            <TouchableOpacity
-              style={styles.smallButton}
-              onPress={() => navigation.navigate('Profiles')}
-            >
-              <Ionicons name="swap-horizontal" size={18} color={colors.cosmic.text} />
-              <Text style={styles.smallButtonText}>Switch</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.generalText}>{forecast.generalForecast}</Text>
-        </View>
-
-        <View style={[styles.card, styles.scoreCard]}>
-          <Text style={styles.sectionLabel}>Energy Scores</Text>
-          <View style={styles.scoreRow}>
-            {renderScore('Love', forecast.loveScore)}
-            {renderScore('Career', forecast.careerScore)}
-            {renderScore('Health', forecast.healthScore, true)}
-          </View>
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionLabel}>Focus Areas</Text>
-          {renderSection('Love', forecast.loveForecast)}
-          {renderSection('Career', forecast.careerForecast)}
-          {renderSection('Health', forecast.healthForecast)}
-        </View>
-
-        <View style={styles.card}>
-          <Text style={styles.sectionLabel}>Lucky Signals</Text>
-          <View style={styles.luckyRow}>
-            <View style={styles.luckyBlock}>
-              <Text style={styles.luckyLabel}>Numbers</Text>
-              <Text style={styles.luckyValue}>
-                {luckyNumbers.length ? luckyNumbers.join(' · ') : '—'}
-              </Text>
-            </View>
-            <View style={styles.luckyBlock}>
-              <Text style={styles.luckyLabel}>Color</Text>
-              <View style={styles.colorTag}>
-                <View
-                  style={[
-                    styles.colorDot,
-                    { backgroundColor: forecast.luckyColor || colors.cosmic.purple },
-                  ]}
-                />
-                <Text style={styles.luckyValue}>{forecast.luckyColor ?? 'N/A'}</Text>
-              </View>
-            </View>
-            <View style={[styles.luckyBlock, styles.luckyBlockLast]}>
-              <Text style={styles.luckyLabel}>Gem</Text>
-              <Text style={styles.luckyValue}>{forecast.luckyGem ?? 'N/A'}</Text>
-            </View>
-          </View>
-        </View>
-
-        {!!transits.length && (
-          <View style={styles.card}>
-            <Text style={styles.sectionLabel}>Planetary Transits</Text>
-            {transits.map(transit => (
-              <View key={`${transit.planet}-${transit.theme}`} style={styles.transitItem}>
-                <View style={styles.transitIcon}>
-                  <Ionicons
-                    name="planet-outline"
-                    size={18}
-                    color={colors.cosmic.text}
-                  />
-                </View>
-                <View style={styles.transitContent}>
-                  <Text style={styles.transitTitle}>
-                    {transit.planet}: {transit.theme}
-                  </Text>
-                  <Text style={styles.transitText}>{transit.guidance}</Text>
-                </View>
-              </View>
-            ))}
-          </View>
-        )}
-      </>
-    );
   };
+
+  useEffect(() => {
+    loadTodaySummary();
+  }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    loadTodaySummary();
+  };
+
+  if (loading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color="#6366f1" />
+      </View>
+    );
+  }
+
+  if (!summary) {
+    return (
+      <View style={styles.centered}>
+        <Text style={styles.errorText}>Failed to load today's summary</Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
       style={styles.container}
       refreshControl={
-        <RefreshControl
-          tintColor={colors.cosmic.text}
-      refreshing={isProfilesRefetching || isForecastRefetching}
-          onRefresh={handleRefresh}
-        />
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366f1" />
       }
     >
-      <View style={styles.pageHeader}>
-        <View>
-          <Text style={styles.title}>Today</Text>
-          <Text style={styles.dateLabel}>{new Date().toDateString()}</Text>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.greeting}>Good day, {summary.profile.name}!</Text>
+        <Text style={styles.date}>{new Date(summary.date).toLocaleDateString('en-US', {
+          weekday: 'long',
+          month: 'long',
+          day: 'numeric',
+        })}</Text>
+      </View>
+
+      {/* Star Message */}
+      <View style={styles.card}>
+        <View style={styles.cardHeader}>
+          <Ionicons name="star" size={24} color="#fbbf24" />
+          <Text style={styles.cardTitle}>Star Message of the Day</Text>
+        </View>
+        <Text style={styles.starMessage}>{summary.starMessage.message}</Text>
+        <View style={styles.keywords}>
+          {summary.starMessage.keywords.map((keyword, index) => (
+            <View key={index} style={styles.keyword}>
+              <Text style={styles.keywordText}>{keyword}</Text>
+            </View>
+          ))}
         </View>
       </View>
 
-      {pageContent()}
+      {/* Moon & Transit */}
+      <View style={styles.row}>
+        <View style={[styles.card, styles.halfCard]}>
+          <View style={styles.cardHeader}>
+            <Ionicons name="moon" size={20} color="#a78bfa" />
+            <Text style={styles.cardTitleSmall}>Moon</Text>
+          </View>
+          <Text style={styles.moonPhase}>{summary.moon.phase}</Text>
+          <Text style={styles.moonSign}>in {summary.moon.sign}</Text>
+          <Text style={styles.moonIllumination}>
+            {Math.round(summary.moon.illumination)}% illuminated
+          </Text>
+        </View>
+
+        {summary.keyTransit && (
+          <View style={[styles.card, styles.halfCard]}>
+            <View style={styles.cardHeader}>
+              <Ionicons name="planet" size={20} color="#f59e0b" />
+              <Text style={styles.cardTitleSmall}>Key Transit</Text>
+            </View>
+            <Text style={styles.transitTitle}>{summary.keyTransit.title}</Text>
+            <Text style={styles.transitDesc} numberOfLines={2}>
+              {summary.keyTransit.description}
+            </Text>
+          </View>
+        )}
+      </View>
+
+      {/* Forecast Scores */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Daily Scores</Text>
+        <View style={styles.scoresGrid}>
+          <ScoreItem
+            icon="heart"
+            label="Love"
+            score={summary.forecast.scores.love}
+            color="#ec4899"
+          />
+          <ScoreItem
+            icon="briefcase"
+            label="Career"
+            score={summary.forecast.scores.career}
+            color="#3b82f6"
+          />
+          <ScoreItem
+            icon="fitness"
+            label="Health"
+            score={summary.forecast.scores.health}
+            color="#10b981"
+          />
+          <ScoreItem
+            icon="star"
+            label="Overall"
+            score={summary.forecast.scores.overall}
+            color="#fbbf24"
+          />
+        </View>
+      </View>
+
+      {/* Forecast */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Daily Forecast</Text>
+        <Text style={styles.forecastText}>{summary.forecast.general}</Text>
+      </View>
+
+      {/* Lucky Elements */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Lucky Elements</Text>
+        <View style={styles.luckyRow}>
+          <View style={styles.luckyItem}>
+            <Ionicons name="color-palette" size={20} color={summary.forecast.luckyColor} />
+            <Text style={styles.luckyLabel}>Color</Text>
+          </View>
+          <View style={styles.luckyItem}>
+            <Ionicons name="diamond" size={20} color="#a78bfa" />
+            <Text style={styles.luckyLabel}>{summary.forecast.luckyGem}</Text>
+          </View>
+          <View style={styles.luckyItem}>
+            <Ionicons name="keypad" size={20} color="#6366f1" />
+            <Text style={styles.luckyLabel}>{summary.forecast.luckyNumbers.join(', ')}</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Daily Calendars */}
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>Daily Ratings</Text>
+        <CalendarRating
+          icon="sparkles"
+          label="Beauty"
+          rating={summary.calendars.beauty.rating}
+          tip={summary.calendars.beauty.tip}
+        />
+        <CalendarRating
+          icon="fitness"
+          label="Health"
+          rating={summary.calendars.health.rating}
+          tip={summary.calendars.health.tip}
+        />
+        <CalendarRating
+          icon="rocket"
+          label="Activity"
+          rating={summary.calendars.activity.rating}
+          tip={summary.calendars.activity.tip}
+        />
+        <CalendarRating
+          icon="leaf"
+          label="Spiritual"
+          rating={summary.calendars.spiritual.rating}
+          tip={summary.calendars.spiritual.tip}
+        />
+      </View>
+
+      {/* Upcoming Events */}
+      {summary.upcomingEvents.length > 0 && (
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Upcoming Cosmic Events</Text>
+          {summary.upcomingEvents.map((event, index) => (
+            <View key={index} style={styles.eventItem}>
+              <Ionicons name="planet-outline" size={16} color="#a78bfa" />
+              <Text style={styles.eventTitle}>{event.title}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+
+      <View style={{ height: 40 }} />
     </ScrollView>
   );
 }
 
-const renderScore = (label: string, value?: number | null, isLast?: boolean) => (
-  <View style={[styles.scoreChip, isLast && styles.scoreChipLast]}>
+const ScoreItem = ({ icon, label, score, color }: any) => (
+  <View style={styles.scoreItem}>
+    <Ionicons name={icon} size={24} color={color} />
     <Text style={styles.scoreLabel}>{label}</Text>
-    <Text style={styles.scoreValue}>
-      {value !== null && value !== undefined ? value.toFixed(1) : '—'}
-    </Text>
+    <Text style={styles.scoreValue}>{score}/5</Text>
   </View>
 );
 
-const renderSection = (title: string, content?: string) => (
-  <View style={styles.sectionRow}>
-    <Text style={styles.sectionTitle}>{title}</Text>
-    <Text style={styles.sectionText}>{content ?? 'Awaiting download...'}</Text>
+const CalendarRating = ({ icon, label, rating, tip }: any) => (
+  <View style={styles.calendarItem}>
+    <View style={styles.calendarHeader}>
+      <Ionicons name={icon} size={18} color="#6366f1" />
+      <Text style={styles.calendarLabel}>{label}</Text>
+      <Text style={styles.calendarRating}>{rating}/10</Text>
+    </View>
+    <Text style={styles.calendarTip}>{tip}</Text>
   </View>
 );
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.cosmic.bg,
+    backgroundColor: '#0f0f1e',
   },
-  pageHeader: {
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#0f0f1e',
+  },
+  header: {
     padding: 20,
-    paddingBottom: 0,
+    paddingTop: 60,
   },
-  title: {
-    fontSize: 32,
+  greeting: {
+    fontSize: 28,
     fontWeight: 'bold',
-    color: colors.cosmic.text,
+    color: '#fff',
+    marginBottom: 4,
   },
-  dateLabel: {
-    color: colors.cosmic.textSecondary,
-    marginTop: 4,
+  date: {
+    fontSize: 16,
+    color: '#9ca3af',
   },
   card: {
-    backgroundColor: colors.cosmic.card,
+    backgroundColor: '#1a1b2e',
     marginHorizontal: 16,
-    marginTop: 16,
+    marginBottom: 16,
     padding: 20,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#24243a',
+    borderRadius: 16,
   },
-  sectionLabel: {
-    color: colors.cosmic.textSecondary,
-    fontSize: 12,
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    marginBottom: 8,
+  row: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    gap: 12,
+  },
+  halfCard: {
+    flex: 1,
+    margin: 0,
   },
   cardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
+    gap: 8,
   },
   cardTitle: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: '600',
-    color: colors.cosmic.text,
+    color: '#fff',
+    marginBottom: 12,
   },
-  cardSubtitle: {
-    color: colors.cosmic.textSecondary,
-    marginTop: 4,
+  cardTitleSmall: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#fff',
   },
-  generalText: {
-    color: colors.cosmic.text,
-    lineHeight: 22,
+  starMessage: {
+    fontSize: 16,
+    color: '#e5e7eb',
+    lineHeight: 24,
+    marginBottom: 12,
   },
-  scoreCard: {
-    paddingBottom: 12,
-  },
-  scoreRow: {
+  keywords: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
+    flexWrap: 'wrap',
+    gap: 8,
   },
-  scoreChip: {
-    flex: 1,
-    marginRight: 12,
-    paddingVertical: 12,
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: '#2f2f45',
-    backgroundColor: 'rgba(99, 102, 241, 0.08)',
-    alignItems: 'center',
+  keyword: {
+    backgroundColor: '#2d2e3f',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
   },
-  scoreLabel: {
-    color: colors.cosmic.textSecondary,
+  keywordText: {
+    color: '#a78bfa',
     fontSize: 12,
   },
-  scoreValue: {
-    color: colors.cosmic.text,
-    fontSize: 20,
-    fontWeight: '700',
-    marginTop: 4,
-  },
-  scoreChipLast: {
-    marginRight: 0,
-  },
-  sectionRow: {
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    color: colors.cosmic.text,
+  moonPhase: {
+    fontSize: 18,
     fontWeight: '600',
+    color: '#fff',
     marginBottom: 4,
   },
-  sectionText: {
-    color: colors.cosmic.textSecondary,
-    lineHeight: 20,
+  moonSign: {
+    fontSize: 14,
+    color: '#9ca3af',
+    marginBottom: 8,
+  },
+  moonIllumination: {
+    fontSize: 12,
+    color: '#6b7280',
+  },
+  transitTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#fff',
+    marginBottom: 4,
+  },
+  transitDesc: {
+    fontSize: 12,
+    color: '#9ca3af',
+  },
+  scoresGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  scoreItem: {
+    flex: 1,
+    minWidth: '45%',
+    alignItems: 'center',
+    padding: 12,
+    backgroundColor: '#2d2e3f',
+    borderRadius: 12,
+  },
+  scoreLabel: {
+    fontSize: 12,
+    color: '#9ca3af',
+    marginTop: 4,
+  },
+  scoreValue: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#fff',
+    marginTop: 4,
+  },
+  forecastText: {
+    fontSize: 15,
+    color: '#e5e7eb',
+    lineHeight: 22,
   },
   luckyRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 12,
+    justifyContent: 'space-around',
   },
-  luckyBlock: {
-    flex: 1,
-    marginRight: 12,
-  },
-  luckyBlockLast: {
-    marginRight: 0,
+  luckyItem: {
+    alignItems: 'center',
+    gap: 8,
   },
   luckyLabel: {
-    color: colors.cosmic.textSecondary,
     fontSize: 12,
+    color: '#9ca3af',
   },
-  luckyValue: {
-    color: colors.cosmic.text,
-    fontSize: 16,
-    fontWeight: '600',
-    marginTop: 4,
+  calendarItem: {
+    marginBottom: 16,
   },
-  colorTag: {
+  calendarHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    gap: 8,
+    marginBottom: 4,
   },
-  colorDot: {
-    width: 18,
-    height: 18,
-    borderRadius: 9,
-    marginRight: 8,
-    borderWidth: 1,
-    borderColor: '#ffffff22',
-  },
-  transitItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    marginBottom: 12,
-  },
-  transitIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: 'rgba(99, 102, 241, 0.16)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  transitContent: {
+  calendarLabel: {
     flex: 1,
-  },
-  transitTitle: {
-    color: colors.cosmic.text,
+    fontSize: 14,
     fontWeight: '600',
+    color: '#fff',
   },
-  transitText: {
-    color: colors.cosmic.textSecondary,
-    marginTop: 4,
-    lineHeight: 18,
+  calendarRating: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6366f1',
   },
-  centerContent: {
-    marginHorizontal: 16,
-    marginTop: 32,
-    padding: 24,
-    borderRadius: 16,
-    backgroundColor: colors.cosmic.card,
-    borderWidth: 1,
-    borderColor: '#24243a',
+  calendarTip: {
+    fontSize: 13,
+    color: '#9ca3af',
+    marginLeft: 26,
+  },
+  eventItem: {
+    flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
+    marginBottom: 8,
   },
-  loadingText: {
-    marginTop: 12,
-    color: colors.cosmic.textSecondary,
+  eventTitle: {
+    fontSize: 14,
+    color: '#e5e7eb',
   },
   errorText: {
-    color: colors.cosmic.text,
+    color: '#ef4444',
     fontSize: 16,
-    textAlign: 'center',
-  },
-  emptyTitle: {
-    fontSize: 20,
-    fontWeight: '600',
-    color: colors.cosmic.text,
-    marginTop: 16,
-  },
-  emptySubtitle: {
-    color: colors.cosmic.textSecondary,
-    textAlign: 'center',
-    marginTop: 8,
-  },
-  primaryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: colors.cosmic.purple,
-    borderRadius: 12,
-    paddingHorizontal: 18,
-    paddingVertical: 10,
-    marginTop: 16,
-  },
-  primaryButtonText: {
-    color: colors.cosmic.text,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-  primaryButtonTextSolo: {
-    marginLeft: 0,
-  },
-  smallButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(99, 102, 241, 0.15)',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 999,
-  },
-  smallButtonText: {
-    color: colors.cosmic.text,
-    marginLeft: 6,
-    fontSize: 12,
-    fontWeight: '600',
   },
 });
