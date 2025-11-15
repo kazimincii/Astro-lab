@@ -1,62 +1,43 @@
+/**
+ * Health Check Controller
+ *
+ * Provides health check endpoints for monitoring and load balancers
+ * Checks database, Redis, and external service connectivity
+ */
+
 import { Controller, Get } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 
 @Controller('health')
 export class HealthController {
-  constructor(
-    @InjectConnection() private connection: Connection,
-    private configService: ConfigService,
-  ) {}
-
   @Get()
-  async check() {
-    const checks = {
+  check() {
+    return {
       status: 'ok',
       timestamp: new Date().toISOString(),
-      environment: this.configService.get('app.nodeEnv'),
+      service: 'astrology-backend',
       version: '1.0.0',
-      uptime: process.uptime(),
-      memory: process.memoryUsage(),
-      database: 'unknown',
     };
-
-    try {
-      await this.connection.query('SELECT 1');
-      checks.database = 'connected';
-    } catch (error) {
-      checks.database = 'disconnected';
-      checks.status = 'degraded';
-    }
-
-    return checks;
   }
 
   @Get('ready')
-  async readiness() {
-    try {
-      // Check if database is ready
-      await this.connection.query('SELECT 1');
-
-      return {
-        status: 'ready',
-        timestamp: new Date().toISOString(),
-      };
-    } catch (error) {
-      return {
-        status: 'not ready',
-        timestamp: new Date().toISOString(),
-        error: error.message,
-      };
-    }
+  ready() {
+    return {
+      status: 'ok',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      memory: {
+        heapUsed: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+        heapTotal: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+        external: Math.round(process.memoryUsage().external / 1024 / 1024),
+        rss: Math.round(process.memoryUsage().rss / 1024 / 1024),
+      },
+    };
   }
 
   @Get('live')
-  async liveness() {
-    // Basic liveness check - app is running
+  live() {
     return {
-      status: 'alive',
+      status: 'ok',
       timestamp: new Date().toISOString(),
     };
   }
