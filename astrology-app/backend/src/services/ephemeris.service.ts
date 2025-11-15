@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { promisify } from 'util';
 
 type SwissephModule = typeof import('swisseph');
 
@@ -13,9 +12,10 @@ const loadSwisseph = (): SwissephModule | null => {
 };
 
 const swisseph = loadSwisseph();
-const swe_calc_ut = swisseph ? promisify(swisseph.swe_calc_ut) : null;
-const swe_houses_ex = swisseph ? promisify(swisseph.swe_houses_ex) : null;
-const swe_get_planet_name = swisseph ? promisify(swisseph.swe_get_planet_name) : null;
+const swe_calc_ut = swisseph ? swisseph.swe_calc_ut : null;
+const swe_houses_ex = swisseph ? swisseph.swe_houses_ex : null;
+const swe_get_planet_name = swisseph ? swisseph.swe_get_planet_name : null;
+const swe_julday = swisseph ? swisseph.swe_julday : null;
 const SWISSEPH_CONSTANTS = {
   SE_GREG_CAL: swisseph?.SE_GREG_CAL ?? 1,
   SEFLG_SWIEPH: swisseph?.SEFLG_SWIEPH ?? 2,
@@ -171,10 +171,10 @@ export class EphemerisService {
     const julianDay = this.dateToJulianDay(birthDate, birthTime);
 
     // Calculate planet positions
-    const planets = await this.calculatePlanets(julianDay);
+    const planets = this.calculatePlanets(julianDay);
 
     // Calculate houses
-    const { houses, ascendant, midheaven } = await this.calculateHouses(
+    const { houses, ascendant, midheaven } = this.calculateHouses(
       julianDay,
       latitude,
       longitude,
@@ -212,7 +212,7 @@ export class EphemerisService {
     if (!this.hasNativeEphemeris) {
       return this.generateFallbackPlanets(this.createSeed(date, '12:00', 0, 0));
     }
-    return await this.calculatePlanets(julianDay);
+    return this.calculatePlanets(julianDay);
   }
 
   /**
@@ -234,13 +234,13 @@ export class EphemerisService {
         this.createSeed(progressedDate, birthTime, 0, 0),
       );
     }
-    return await this.calculatePlanets(julianDay);
+    return this.calculatePlanets(julianDay);
   }
 
   /**
    * Calculate planets for a given Julian Day
    */
-  private async calculatePlanets(julianDay: number): Promise<PlanetPosition[]> {
+  private calculatePlanets(julianDay: number): PlanetPosition[] {
     if (!swe_calc_ut || !swe_get_planet_name) {
       throw new Error('Swiss Ephemeris native module is not installed.');
     }
@@ -264,12 +264,22 @@ export class EphemerisService {
 
     for (const planetId of planetsToCalculate) {
       try {
-        const result = await swe_calc_ut(
+        const result = swe_calc_ut(
           julianDay,
           planetId,
           SWISSEPH_CONSTANTS.SEFLG_SWIEPH,
         );
-        const planetName = await swe_get_planet_name(planetId);
+
+        // Check if result is valid and has longitude property
+        if (!result || !('longitude' in result)) {
+          console.error(`Error calculating planet ${planetId}: Invalid result`);
+          continue;
+        }
+
+        const planetNameResult = swe_get_planet_name(planetId);
+        const planetName = typeof planetNameResult === 'string'
+          ? planetNameResult
+          : planetNameResult?.name || `Planet ${planetId}`;
 
         const longitude = result.longitude;
         const signIndex = Math.floor(longitude / 30);
@@ -297,26 +307,35 @@ export class EphemerisService {
   /**
    * Calculate houses for given time and location
    */
-  private async calculateHouses(
+  private calculateHouses(
     julianDay: number,
     latitude: number,
     longitude: number,
     houseSystem: HouseSystem,
-  ): Promise<{
+  ): {
     houses: HousePosition[];
     ascendant: number;
     midheaven: number;
-  }> {
+  } {
     if (!swe_houses_ex) {
       throw new Error('Swiss Ephemeris native module is not installed.');
     }
 
     try {
-      const result = await swe_houses_ex(julianDay, latitude, longitude, houseSystem);
+      // swe_houses_ex signature: (jd_ut, latitude, longitude, hsys, cusp?, ascmc?)
+      // Returns: { house: number[], ascendant: number, mc: number, ... } or { error: string }
+      // HouseSystem is a string enum ('P', 'K', etc.) which is what swe_houses_ex expects
+      const result = swe_houses_ex(julianDay, latitude, longitude, houseSystem as any, undefined);
+
+      // Check for valid result
+      if (!result || 'error' in result) {
+        throw new Error('error' in result ? result.error : 'Failed to calculate houses');
+      }
 
       const houses: HousePosition[] = [];
+      // Use 'house' property instead of 'houses'
       for (let i = 0; i < 12; i++) {
-        const cusp = result.houses[i];
+        const cusp = result.house[i];
         const signIndex = Math.floor(cusp / 30);
         const signDegree = cusp % 30;
 
@@ -448,13 +467,13 @@ export class EphemerisService {
     const [hours, minutes] = time.split(':').map(Number);
     const decimalTime = hours + minutes / 60;
 
-    if (swisseph) {
-      return swisseph.swe_julday(
+    if (swisseph && swe_julday) {
+      return swe_julday(
         date.getFullYear(),
         date.getMonth() + 1,
         date.getDate(),
         decimalTime,
-        SWISSEPH_CONSTANTS.SE_GREG_CAL,
+        1 as 0 | 1, // SE_GREG_CAL = 1 (Gregorian calendar)
       );
     }
 
@@ -464,19 +483,24 @@ export class EphemerisService {
   /**
    * Get moon phase
    */
-  async getMoonPhase(date: Date = new Date()): Promise<{
+  getMoonPhase(date: Date = new Date()): {
     phase: string;
     illumination: number;
     angle: number;
-  }> {
+  } {
     if (!this.hasNativeEphemeris) {
       return this.getFallbackMoonPhase(date);
     }
 
     const julianDay = this.dateToJulianDay(date, '12:00');
 
-    const sun = await swe_calc_ut(julianDay, Planet.SUN, SWISSEPH_CONSTANTS.SEFLG_SWIEPH);
-    const moon = await swe_calc_ut(julianDay, Planet.MOON, SWISSEPH_CONSTANTS.SEFLG_SWIEPH);
+    const sun = swe_calc_ut(julianDay, Planet.SUN, SWISSEPH_CONSTANTS.SEFLG_SWIEPH);
+    const moon = swe_calc_ut(julianDay, Planet.MOON, SWISSEPH_CONSTANTS.SEFLG_SWIEPH);
+
+    // Check for valid results with longitude property
+    if (!sun || !('longitude' in sun) || !moon || !('longitude' in moon)) {
+      return this.getFallbackMoonPhase(date);
+    }
 
     const angle = (moon.longitude - sun.longitude + 360) % 360;
     const illumination = (1 - Math.cos((angle * Math.PI) / 180)) / 2;
