@@ -4,6 +4,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
@@ -11,15 +12,29 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get('PORT') || 3000;
   const nodeEnv = configService.get('NODE_ENV') || 'development';
+  const isProduction = nodeEnv === 'production';
+
+  // Security: Helmet - Secure HTTP headers
+  app.use(helmet({
+    contentSecurityPolicy: isProduction ? undefined : false, // Disable in dev for Swagger
+    crossOriginEmbedderPolicy: !isProduction,
+  }));
+
+  // Security: Request size limits
+  app.use(express.json({ limit: '1mb' }));
+  app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
   // Enable CORS
   app.enableCors({
-    origin: [
-      configService.get('FRONTEND_URL'),
-      'http://localhost:8081', // Expo default
-      'exp://192.168.*.*:*', // Expo LAN
-    ],
+    origin: isProduction
+      ? [configService.get('FRONTEND_URL')]
+      : [
+          configService.get('FRONTEND_URL'),
+          'http://localhost:8081', // Expo default
+          'exp://192.168.*.*:*', // Expo LAN
+        ],
     credentials: true,
+    maxAge: 86400, // Cache preflight requests for 24 hours
   });
 
   // Global validation pipe
