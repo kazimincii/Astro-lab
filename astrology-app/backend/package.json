@@ -46,7 +46,7 @@
     "@anthropic-ai/sdk": "^0.12.0",
     "stripe": "^14.11.0",
     "aws-sdk": "^2.1530.0",
-    "swisseph": "^2.10.3",
+    "swisseph": "^0.5.17",
     "axios": "^1.6.5",
     "uuid": "^9.0.1",
     "date-fns": "^3.0.6",

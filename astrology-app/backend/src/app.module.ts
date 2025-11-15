@@ -9,6 +9,7 @@ import { databaseConfig } from './config/database.config';
 import { authConfig } from './config/auth.config';
 import { appConfig } from './config/app.config';
 import { aiConfig } from './config/ai.config';
+import { stripeConfig } from './config/stripe.config';
 
 // Modules
 import { AuthModule } from './modules/auth/auth.module';
@@ -41,13 +42,14 @@ import { TodayModule } from './modules/today/today.module';
 import { EducationModule } from './modules/education/education.module';
 import { WidgetsModule } from './modules/widgets/widgets.module';
 import { ServicesModule } from './services/services.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
     // Configuration
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [databaseConfig, authConfig, appConfig, aiConfig],
+      load: [databaseConfig, authConfig, appConfig, aiConfig, stripeConfig],
     }),
 
     // Database
@@ -107,6 +109,7 @@ import { ServicesModule } from './services/services.module';
     EducationModule,
     WidgetsModule,
     ServicesModule,
+    PaymentsModule,
   ],
 })
 export class AppModule {}
