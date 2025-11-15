@@ -6,11 +6,12 @@ import { Subscription } from '@/entities/subscription.entity';
 import { User } from '@/entities/user.entity';
 import { PersonProfile } from '@/entities/person-profile.entity';
 import { ActionsModule } from '../actions/actions.module';
+import { StripeService } from './stripe.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Subscription, User, PersonProfile]), ActionsModule],
   controllers: [SubscriptionsController],
-  providers: [SubscriptionsService],
+  providers: [SubscriptionsService, StripeService],
   exports: [SubscriptionsService],
 })
 export class SubscriptionsModule {}
