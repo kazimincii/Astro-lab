@@ -14,7 +14,7 @@ export default function ExploreScreen({ navigation }: any) {
     { id: '7', title: 'Tarot Reading', icon: 'card-outline', color: colors.cosmic.pink },
     { id: '8', title: 'Coffee Reading', icon: 'cafe-outline', color: colors.cosmic.blue },
     { id: '9', title: 'Numerology', icon: 'calculator-outline', color: colors.cosmic.gold },
-    { id: '10', title: 'Advanced Charts', icon: 'analytics-outline', color: '#06b6d4' },
+    { id: '10', title: 'Advanced Charts', icon: 'analytics-outline', color: '#06b6d4', screen: 'AdvancedCharts' },
   ];
 
   return (

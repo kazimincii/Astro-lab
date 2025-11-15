@@ -8,6 +8,8 @@ import JournalScreen from '@/screens/main/JournalScreen';
 import BiorhythmScreen from '@/screens/main/BiorhythmScreen';
 import ChakrasScreen from '@/screens/main/ChakrasScreen';
 import RelationshipSoulmateScreen from '@/screens/main/RelationshipSoulmateScreen';
+import AdvancedChartsScreen from '@/screens/main/AdvancedChartsScreen';
+import ChartTypeDetailScreen from '@/screens/main/ChartTypeDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +29,8 @@ export default function ExploreNavigator() {
       <Stack.Screen name="Biorhythm" component={BiorhythmScreen} />
       <Stack.Screen name="Chakras" component={ChakrasScreen} />
       <Stack.Screen name="RelationshipSoulmate" component={RelationshipSoulmateScreen} />
+      <Stack.Screen name="AdvancedCharts" component={AdvancedChartsScreen} />
+      <Stack.Screen name="ChartTypeDetail" component={ChartTypeDetailScreen} />
     </Stack.Navigator>
   );
 }
