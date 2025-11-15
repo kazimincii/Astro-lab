@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Subscription, SubscriptionPlan, SubscriptionStatus } from '@/entities/subscription.entity';
+import { Subscription, SubscriptionPlan, SubscriptionStatus, BillingPeriod } from '@/entities/subscription.entity';
 import { Trial, TrialStatus } from '@/entities/trial.entity';
 import { SubscriptionPlanConfig, PlanType } from '@/entities/subscription-plan.entity';
 
@@ -44,10 +44,11 @@ export class SubscriptionsService {
 
   async createBasicSubscription(userId: string) {
     const subscription = this.subscriptionsRepository.create({
-      user: { id: userId } as any,
+      userId,
       plan: SubscriptionPlan.BASIC,
+      planType: SubscriptionPlan.BASIC,
       price: 0,
-      billingCycle: 'monthly',
+      billingPeriod: BillingPeriod.MONTHLY,
       startDate: new Date(),
       endDate: new Date('2099-12-31'),
       dailyActionLimit: 2,
@@ -81,10 +82,10 @@ export class SubscriptionsService {
 
     if (activeTrial && new Date() <= activeTrial.endDate) {
       const planConfig = await this.planConfigRepository.findOne({
-        where: { planType: activeTrial.planType as PlanType },
+        where: { planType: activeTrial.planType },
       });
 
-      return this.buildEffectivePlan(activeTrial.planType as PlanType, 'trial', planConfig);
+      return this.buildEffectivePlan(activeTrial.planType, 'trial', planConfig);
     }
 
     // Check for active subscription
@@ -92,10 +93,10 @@ export class SubscriptionsService {
 
     if (activeSubscription) {
       const planConfig = await this.planConfigRepository.findOne({
-        where: { planType: activeSubscription.plan as PlanType },
+        where: { planType: activeSubscription.plan },
       });
 
-      return this.buildEffectivePlan(activeSubscription.plan as PlanType, 'subscription', planConfig);
+      return this.buildEffectivePlan(activeSubscription.plan, 'subscription', planConfig);
     }
 
     // Default to Basic
@@ -173,10 +174,11 @@ export class SubscriptionsService {
     }
 
     const subscription = this.subscriptionsRepository.create({
-      user: { id: userId } as any,
-      plan: planType as SubscriptionPlan,
+      userId,
+      plan: planType,
+      planType,
       price: Number(price),
-      billingCycle,
+      billingPeriod: billingCycle === 'monthly' ? BillingPeriod.MONTHLY : BillingPeriod.YEARLY,
       startDate,
       endDate,
       dailyActionLimit: planConfig.dailyActionLimit,

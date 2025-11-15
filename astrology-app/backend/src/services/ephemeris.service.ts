@@ -205,6 +205,17 @@ export class EphemerisService {
         const result = swe_calc_ut(julianDay, planetId, swisseph.SEFLG_SWIEPH);
         const planetNameResult = swe_get_planet_name(planetId);
 
+        // Check if result is an error
+        if ('error' in result) {
+          throw new Error(result.error);
+        }
+
+        // Type guard to ensure we have the correct result type
+        if (!('longitude' in result)) {
+          console.error(`Unexpected result format for planet ${planetId}`);
+          continue;
+        }
+
         const longitude = result.longitude;
         const latitude = result.latitude;
         const distance = result.distance;
@@ -408,6 +419,14 @@ export class EphemerisService {
 
     const sun = swe_calc_ut(julianDay, Planet.SUN, swisseph.SEFLG_SWIEPH);
     const moon = swe_calc_ut(julianDay, Planet.MOON, swisseph.SEFLG_SWIEPH);
+
+    // Type guards
+    if ('error' in sun || !('longitude' in sun)) {
+      throw new Error('Failed to calculate sun position');
+    }
+    if ('error' in moon || !('longitude' in moon)) {
+      throw new Error('Failed to calculate moon position');
+    }
 
     const sunLongitude = sun.longitude;
     const moonLongitude = moon.longitude;

@@ -63,7 +63,7 @@ export class RelationshipService {
   }
 
   private generateSummary(person1: PersonProfile, person2: PersonProfile, scores: any): string {
-    const avgScore = Object.values(scores).reduce((a: number, b: number) => a + b, 0) / Object.keys(scores).length;
+    const avgScore = (Object.values(scores) as number[]).reduce((a: number, b: number) => a + b, 0) / Object.keys(scores).length;
 
     if (avgScore >= 80) {
       return `${person1.name} and ${person2.name} share an excellent connection with strong potential for a harmonious relationship.`;

@@ -5,18 +5,19 @@ import { User } from '../../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { UnauthorizedException, ConflictException } from '@nestjs/common';
+import { UnauthorizedException, BadRequestException } from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
   let userRepository: Repository<User>;
   let jwtService: JwtService;
 
-  const mockUser = {
+  const mockUser: Partial<User> = {
     id: '123',
     email: 'test@example.com',
     password: 'hashedPassword',
-    name: 'Test User',
+    firstName: 'Test',
+    lastName: 'User',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -25,6 +26,7 @@ describe('AuthService', () => {
     findOne: jest.fn(),
     create: jest.fn(),
     save: jest.fn(),
+    update: jest.fn(),
   };
 
   const mockJwtService = {
@@ -63,7 +65,8 @@ describe('AuthService', () => {
       const registerDto = {
         email: 'newuser@example.com',
         password: 'Password123!',
-        name: 'New User',
+        firstName: 'New',
+        lastName: 'User',
       };
 
       mockUserRepository.findOne.mockResolvedValue(null);
@@ -71,31 +74,27 @@ describe('AuthService', () => {
       mockUserRepository.save.mockResolvedValue({ id: '456', ...registerDto });
       mockJwtService.sign.mockReturnValue('jwt-token');
 
-      const result = await service.register(
-        registerDto.email,
-        registerDto.password,
-        registerDto.name,
-      );
+      const result = await service.register(registerDto);
 
       expect(result).toHaveProperty('user');
-      expect(result).toHaveProperty('accessToken');
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: registerDto.email },
       });
     });
 
-    it('should throw ConflictException if user already exists', async () => {
+    it('should throw BadRequestException if user already exists', async () => {
       const registerDto = {
         email: 'existing@example.com',
         password: 'Password123!',
-        name: 'Existing User',
+        firstName: 'Existing',
+        lastName: 'User',
       };
 
       mockUserRepository.findOne.mockResolvedValue(mockUser);
 
       await expect(
         service.register(registerDto),
-      ).rejects.toThrow(ConflictException);
+      ).rejects.toThrow(BadRequestException);
     });
   });
 

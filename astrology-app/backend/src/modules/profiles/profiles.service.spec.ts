@@ -17,7 +17,7 @@ describe('ProfilesService', () => {
     name: 'John Doe',
     birthDate: new Date('1990-01-01'),
     birthTime: '12:00',
-    birthPlace: 'New York',
+    birthCity: 'New York',
     latitude: 40.7128,
     longitude: -74.006,
     timezone: 'America/New_York',
@@ -30,6 +30,7 @@ describe('ProfilesService', () => {
     findOne: jest.fn(),
     create: jest.fn(),
     save: jest.fn(),
+    update: jest.fn(),
     delete: jest.fn(),
     count: jest.fn(),
   };
@@ -70,7 +71,7 @@ describe('ProfilesService', () => {
         name: 'Jane Doe',
         birthDate: new Date('1995-05-15'),
         birthTime: '14:30',
-        birthPlace: 'Los Angeles',
+        birthCity: 'Los Angeles',
         latitude: 34.0522,
         longitude: -118.2437,
         timezone: 'America/Los_Angeles',
@@ -103,72 +104,82 @@ describe('ProfilesService', () => {
           name: 'Test',
           birthDate: new Date(),
           birthTime: '12:00',
-          birthPlace: 'Test',
-          latitude: 0,
-          longitude: 0,
+          birthCity: 'Test',
           timezone: 'UTC',
         }),
       ).rejects.toThrow(ForbiddenException);
     });
   });
 
-  describe('getUserProfiles', () => {
+  describe('findAll', () => {
     it('should return all profiles for a user', async () => {
       const profiles = [mockProfile];
       mockRepository.find.mockResolvedValue(profiles);
 
-      const result = await service.getUserProfiles('user-1');
+      const result = await service.findAll('user-1');
 
       expect(result).toEqual(profiles);
       expect(mockRepository.find).toHaveBeenCalledWith({
         where: { owner: { id: 'user-1' } },
-        order: { createdAt: 'DESC' },
+        order: { isMainProfile: 'DESC', createdAt: 'DESC' },
       });
     });
   });
 
-  describe('getProfile', () => {
+  describe('findOne', () => {
     it('should return a profile by id', async () => {
       mockRepository.findOne.mockResolvedValue(mockProfile);
 
-      const result = await service.getProfile('1');
+      const result = await service.findOne('1', 'user-1');
 
       expect(result).toEqual(mockProfile);
     });
 
-    it('should throw NotFoundException when profile does not exist', async () => {
+    it('should return null when profile does not exist', async () => {
       mockRepository.findOne.mockResolvedValue(null);
 
-      await expect(service.getProfile('999')).rejects.toThrow(NotFoundException);
+      const result = await service.findOne('999', 'user-1');
+
+      expect(result).toBeNull();
     });
   });
 
   describe('update', () => {
     it('should update profile successfully', async () => {
       const updateDto = { name: 'Updated Name' };
-      mockRepository.findOne.mockResolvedValue(mockProfile);
-      mockRepository.save.mockResolvedValue({ ...mockProfile, ...updateDto });
+      const updatedProfile = { ...mockProfile, ...updateDto };
+      mockRepository.update.mockResolvedValue({ affected: 1 });
+      mockRepository.findOne.mockResolvedValue(updatedProfile);
 
-      const result = await service.update('1', updateDto);
+      const result = await service.update('1', 'user-1', updateDto);
 
+      expect(mockRepository.update).toHaveBeenCalledWith(
+        { id: '1', owner: { id: 'user-1' } },
+        updateDto,
+      );
       expect(result.name).toBe(updateDto.name);
     });
   });
 
   describe('delete', () => {
     it('should delete profile successfully', async () => {
-      mockRepository.findOne.mockResolvedValue(mockProfile);
       mockRepository.delete.mockResolvedValue({ affected: 1 });
 
-      await service.delete('1');
+      const result = await service.remove('1', 'user-1');
 
-      expect(mockRepository.delete).toHaveBeenCalledWith('1');
+      expect(mockRepository.delete).toHaveBeenCalledWith({
+        id: '1',
+        owner: { id: 'user-1' },
+      });
+      expect(result).toEqual({ message: 'Profile deleted successfully' });
     });
 
-    it('should throw NotFoundException when trying to delete non-existent profile', async () => {
-      mockRepository.findOne.mockResolvedValue(null);
+    it('should delete even when profile does not exist', async () => {
+      mockRepository.delete.mockResolvedValue({ affected: 0 });
 
-      await expect(service.delete('999')).rejects.toThrow(NotFoundException);
+      const result = await service.remove('999', 'user-1');
+
+      expect(result).toEqual({ message: 'Profile deleted successfully' });
     });
   });
 });

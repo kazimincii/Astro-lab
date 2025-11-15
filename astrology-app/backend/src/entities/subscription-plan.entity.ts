@@ -5,12 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { SubscriptionPlan } from './subscription.entity';
 
-export enum PlanType {
-  BASIC = 'basic',
-  STANDARD = 'standard',
-  PREMIUM = 'premium',
-}
+// Use SubscriptionPlan as the source of truth, export as PlanType for backwards compatibility
+export const PlanType = SubscriptionPlan;
+export type PlanType = SubscriptionPlan;
 
 @Entity('subscription_plans')
 export class SubscriptionPlanConfig {
