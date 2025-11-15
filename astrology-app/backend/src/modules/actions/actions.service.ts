@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { ActionLog, ActionType } from '@/entities/action-log.entity';
 
 @Injectable()
@@ -22,14 +22,24 @@ export class ActionsService {
   }
 
   async getTodayActionsCount(userId: string): Promise<number> {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(23, 59, 59, 999);
 
+    return this.countPremiumActionsBetween(userId, start, end);
+  }
+
+  async countPremiumActionsBetween(
+    userId: string,
+    start: Date,
+    end: Date,
+  ): Promise<number> {
     return this.actionsRepository.count({
       where: {
         user: { id: userId },
-        actionDate: today,
         isPremiumAction: true,
+        actionDate: Between(start, end),
       },
     });
   }

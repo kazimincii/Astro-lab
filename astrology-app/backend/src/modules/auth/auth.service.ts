@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { User } from '@/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
+    private subscriptionsService: SubscriptionsService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -55,6 +57,7 @@ export class AuthService {
     });
 
     await this.usersRepository.save(user);
+    await this.subscriptionsService.ensureDefaultSubscription(user.id);
 
     // TODO: Send verification email
 
@@ -67,6 +70,7 @@ export class AuthService {
 
   async login(user: any) {
     const payload = { email: user.email, sub: user.id };
+    await this.subscriptionsService.ensureDefaultSubscription(user.id);
     const refreshToken = this.jwtService.sign(payload, { expiresIn: '30d' });
 
     // Update user's refresh token and last login

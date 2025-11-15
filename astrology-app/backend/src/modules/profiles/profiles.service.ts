@@ -1,16 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PersonProfile } from '@/entities/person-profile.entity';
+import { SubscriptionsService } from '../subscriptions/subscriptions.service';
 
 @Injectable()
 export class ProfilesService {
   constructor(
     @InjectRepository(PersonProfile)
     private profilesRepository: Repository<PersonProfile>,
+    private subscriptionsService: SubscriptionsService,
   ) {}
 
   async create(userId: string, createData: Partial<PersonProfile>) {
+    const subscription = await this.subscriptionsService.ensureDefaultSubscription(userId);
+    const currentProfiles = await this.profilesRepository.count({
+      where: { owner: { id: userId } },
+    });
+
+    if (!subscription.unlimitedActions && currentProfiles >= subscription.profileLimit) {
+      throw new BadRequestException(
+        'Profile limit reached for your current membership plan. Upgrade to add more profiles.',
+      );
+    }
+
     const profile = this.profilesRepository.create({
       ...createData,
       owner: { id: userId } as any,

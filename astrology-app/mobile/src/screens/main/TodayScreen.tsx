@@ -13,6 +13,7 @@ import { useQuery } from '@tanstack/react-query';
 import { colors } from '@/theme/colors';
 import { profilesApi } from '@/api/profiles';
 import { forecastsApi, DailyForecastResponse } from '@/api/forecasts';
+import { subscriptionsApi, SubscriptionUsage } from '@/api/subscriptions';
 
 type Profile = {
   id: string;
@@ -56,12 +57,26 @@ export default function TodayScreen({ navigation }: any) {
     staleTime: 1000 * 60 * 10,
   });
 
+  const {
+    data: subscriptionUsage,
+    isLoading: isUsageLoading,
+    isError: isUsageError,
+    error: usageError,
+    refetch: refetchUsage,
+    isRefetching: isUsageRefetching,
+  } = useQuery<SubscriptionUsage>({
+    queryKey: ['subscriptionUsage'],
+    queryFn: subscriptionsApi.getUsage,
+    staleTime: 60 * 1000,
+  });
+
   const handleRefresh = useCallback(() => {
     refetchProfiles();
     if (mainProfile?.id) {
       refetchForecast();
     }
-  }, [refetchProfiles, refetchForecast, mainProfile?.id]);
+    refetchUsage();
+  }, [refetchProfiles, refetchForecast, refetchUsage, mainProfile?.id]);
 
   const renderLoading = (message: string) => (
     <View style={styles.centerContent}>
@@ -104,6 +119,82 @@ export default function TodayScreen({ navigation }: any) {
   const transits = forecast?.planetaryTransits
     ? Object.values(forecast.planetaryTransits)
     : [];
+
+  const renderMembershipCard = () => {
+    if (isUsageLoading && !subscriptionUsage) {
+      return (
+        <View style={styles.planCard}>
+          <ActivityIndicator color={colors.cosmic.purple} />
+        </View>
+      );
+    }
+
+    if (isUsageError) {
+      const message =
+        usageError instanceof Error
+          ? usageError.message
+          : 'Unable to load membership details.';
+      return (
+        <View style={styles.planCard}>
+          <Text style={styles.sectionLabel}>Membership</Text>
+          <Text style={styles.errorTextSmall}>{message}</Text>
+          <TouchableOpacity style={styles.primaryButton} onPress={refetchUsage}>
+            <Text style={[styles.primaryButtonText, styles.primaryButtonTextSolo]}>
+              Retry
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    }
+
+    if (!subscriptionUsage) {
+      return null;
+    }
+
+    const planLabel =
+      subscriptionUsage.plan?.charAt(0).toUpperCase() +
+      subscriptionUsage.plan?.slice(1);
+    const actionUsageText = subscriptionUsage.unlimitedActions
+      ? 'Unlimited'
+      : `${subscriptionUsage.actionsUsedToday}/${subscriptionUsage.dailyActionLimit}`;
+
+    return (
+      <View style={styles.planCard}>
+        <View style={styles.planHeader}>
+          <View>
+            <Text style={styles.sectionLabel}>Membership</Text>
+            <Text style={styles.planTitle}>{planLabel} Plan</Text>
+          </View>
+          <TouchableOpacity
+            style={styles.smallButton}
+            onPress={() => navigation.navigate('Settings')}
+          >
+            <Ionicons name="card-outline" size={16} color={colors.cosmic.text} />
+            <Text style={styles.smallButtonText}>Manage</Text>
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.planMetricsRow}>
+          <View style={styles.planMetric}>
+            <Text style={styles.metricLabel}>Premium Actions</Text>
+            <Text style={styles.metricValue}>{actionUsageText}</Text>
+            {!subscriptionUsage.unlimitedActions && (
+              <Text style={styles.metricSubtext}>
+                {subscriptionUsage.actionsRemaining ?? 0} left today
+              </Text>
+            )}
+          </View>
+          <View style={[styles.planMetric, styles.planMetricLast]}>
+            <Text style={styles.metricLabel}>Profiles</Text>
+            <Text style={styles.metricValue}>
+              {subscriptionUsage.profilesUsed}/{subscriptionUsage.profileLimit}
+            </Text>
+            <Text style={styles.metricSubtext}>Included in your plan</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
 
   const pageContent = () => {
     if (areProfilesLoading && !profilesData) {
@@ -232,7 +323,7 @@ export default function TodayScreen({ navigation }: any) {
       refreshControl={
         <RefreshControl
           tintColor={colors.cosmic.text}
-      refreshing={isProfilesRefetching || isForecastRefetching}
+      refreshing={isProfilesRefetching || isForecastRefetching || isUsageRefetching}
           onRefresh={handleRefresh}
         />
       }
@@ -244,6 +335,7 @@ export default function TodayScreen({ navigation }: any) {
         </View>
       </View>
 
+      {renderMembershipCard()}
       {pageContent()}
     </ScrollView>
   );
@@ -291,6 +383,52 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     borderWidth: 1,
     borderColor: '#24243a',
+  },
+  planCard: {
+    backgroundColor: colors.cosmic.card,
+    marginHorizontal: 16,
+    marginTop: 16,
+    padding: 20,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: '#24243a',
+  },
+  planHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  planTitle: {
+    color: colors.cosmic.text,
+    fontSize: 22,
+    fontWeight: '600',
+    marginTop: 6,
+  },
+  planMetricsRow: {
+    flexDirection: 'row',
+    marginTop: 16,
+  },
+  planMetric: {
+    flex: 1,
+    marginRight: 12,
+  },
+  planMetricLast: {
+    marginRight: 0,
+  },
+  metricLabel: {
+    color: colors.cosmic.textSecondary,
+    fontSize: 12,
+  },
+  metricValue: {
+    color: colors.cosmic.text,
+    fontSize: 20,
+    fontWeight: '700',
+    marginTop: 6,
+  },
+  metricSubtext: {
+    color: colors.cosmic.textSecondary,
+    fontSize: 12,
+    marginTop: 4,
   },
   sectionLabel: {
     color: colors.cosmic.textSecondary,
@@ -440,6 +578,12 @@ const styles = StyleSheet.create({
     color: colors.cosmic.text,
     fontSize: 16,
     textAlign: 'center',
+  },
+  errorTextSmall: {
+    color: colors.cosmic.text,
+    fontSize: 14,
+    textAlign: 'left',
+    marginBottom: 8,
   },
   emptyTitle: {
     fontSize: 20,

@@ -11,4 +11,9 @@ export class SubscriptionsController {
   async getCurrentSubscription(@Request() req) {
     return this.subscriptionsService.getCurrentSubscription(req.user.id);
   }
+
+  @Get('usage')
+  async getUsage(@Request() req) {
+    return this.subscriptionsService.getUsageSummary(req.user.id);
+  }
 }
