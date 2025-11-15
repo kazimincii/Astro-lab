@@ -9,8 +9,8 @@ WORKDIR /app
 COPY package*.json ./
 COPY tsconfig*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && \
+# Install ALL dependencies (including dev) for build
+RUN npm ci && \
     npm cache clean --force
 
 # Copy source code
@@ -19,8 +19,22 @@ COPY src ./src
 # Build application
 RUN npm run build
 
+# Stage 1.5: Production dependencies
+FROM node:18-alpine AS deps
+
+WORKDIR /app
+
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production && \
+    npm cache clean --force
+
 # Stage 2: Production
 FROM node:18-alpine
+
+# Install dumb-init for proper signal handling
+RUN apk add --no-cache dumb-init
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
@@ -28,8 +42,10 @@ RUN addgroup -g 1001 -S nodejs && \
 
 WORKDIR /app
 
-# Copy built application and dependencies
-COPY --from=builder --chown=nestjs:nodejs /app/node_modules ./node_modules
+# Copy production dependencies
+COPY --from=deps --chown=nestjs:nodejs /app/node_modules ./node_modules
+
+# Copy built application
 COPY --from=builder --chown=nestjs:nodejs /app/dist ./dist
 COPY --chown=nestjs:nodejs package*.json ./
 
@@ -47,5 +63,5 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=40s --retries=3 \
   CMD node -e "require('http').get('http://localhost:3000/health/live', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"
 
-# Start application
-CMD ["node", "dist/main.js"]
+# Start application with dumb-init for proper signal handling
+CMD ["dumb-init", "node", "dist/main.js"]
