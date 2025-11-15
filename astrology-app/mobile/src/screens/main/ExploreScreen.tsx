@@ -6,11 +6,12 @@ import { colors } from '@/theme/colors';
 export default function ExploreScreen({ navigation }: any) {
   const features = [
     { id: '1', title: 'Astro Academy', icon: 'school-outline', color: colors.cosmic.purple, screen: 'Education' },
-    { id: '2', title: 'Tarot Reading', icon: 'card-outline', color: colors.cosmic.pink },
-    { id: '3', title: 'Coffee Reading', icon: 'cafe-outline', color: colors.cosmic.blue },
-    { id: '4', title: 'Numerology', icon: 'calculator-outline', color: colors.cosmic.gold },
-    { id: '5', title: 'Compatibility', icon: 'heart-outline', color: '#ec4899' },
-    { id: '6', title: 'Advanced Charts', icon: 'analytics-outline', color: '#06b6d4' },
+    { id: '2', title: 'iOS Widgets', icon: 'grid-outline', color: '#6366f1', screen: 'Widgets' },
+    { id: '3', title: 'Tarot Reading', icon: 'card-outline', color: colors.cosmic.pink },
+    { id: '4', title: 'Coffee Reading', icon: 'cafe-outline', color: colors.cosmic.blue },
+    { id: '5', title: 'Numerology', icon: 'calculator-outline', color: colors.cosmic.gold },
+    { id: '6', title: 'Compatibility', icon: 'heart-outline', color: '#ec4899' },
+    { id: '7', title: 'Advanced Charts', icon: 'analytics-outline', color: '#06b6d4' },
   ];
 
   return (
