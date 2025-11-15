@@ -40,6 +40,7 @@ import { AdvancedChartsModule } from './modules/advanced-charts/advanced-charts.
 import { TodayModule } from './modules/today/today.module';
 import { EducationModule } from './modules/education/education.module';
 import { WidgetsModule } from './modules/widgets/widgets.module';
+import { ServicesModule } from './services/services.module';
 
 @Module({
   imports: [
@@ -105,6 +106,7 @@ import { WidgetsModule } from './modules/widgets/widgets.module';
     TodayModule,
     EducationModule,
     WidgetsModule,
+    ServicesModule,
   ],
 })
 export class AppModule {}
