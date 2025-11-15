@@ -1,5 +1,6 @@
 import { IsString, IsDateString, IsNumber, IsOptional, IsEnum, Matches } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateProfileDto {
   @ApiProperty({
@@ -15,7 +16,8 @@ export class CreateProfileDto {
     format: 'date',
   })
   @IsDateString()
-  birthDate: string;
+  @Type(() => Date)
+  birthDate: Date;
 
   @ApiProperty({
     description: 'Birth time in HH:MM format (24-hour)',
