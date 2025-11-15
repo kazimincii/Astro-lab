@@ -4,6 +4,7 @@ import ExploreScreen from '@/screens/main/ExploreScreen';
 import EducationScreen from '@/screens/main/EducationScreen';
 import EducationArticleScreen from '@/screens/main/EducationArticleScreen';
 import WidgetsScreen from '@/screens/main/WidgetsScreen';
+import JournalScreen from '@/screens/main/JournalScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,7 @@ export default function ExploreNavigator() {
       <Stack.Screen name="Education" component={EducationScreen} />
       <Stack.Screen name="EducationArticle" component={EducationArticleScreen} />
       <Stack.Screen name="Widgets" component={WidgetsScreen} />
+      <Stack.Screen name="Journal" component={JournalScreen} />
     </Stack.Navigator>
   );
 }
