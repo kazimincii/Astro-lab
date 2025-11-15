@@ -26,7 +26,8 @@ export class AdvancedChartsController {
   @Post('generate')
   @ApiOperation({
     summary: 'Generate advanced astrological chart',
-    description: 'Generate advanced charts including transit, progressed, synastry, composite, davison, solar/lunar return, and solar arcs charts. This is a premium action that consumes one action credit.',
+    description:
+      'Generate advanced charts including transit, progressed, synastry, composite, davison, solar/lunar return, and solar arcs charts. This is a premium action that consumes one action credit.',
   })
   @ApiResponse({
     status: 201,
@@ -53,13 +54,23 @@ export class AdvancedChartsController {
   @Get()
   @ApiOperation({
     summary: 'Get user advanced charts',
-    description: 'Retrieve all advanced charts created by the user, optionally filtered by chart type.',
+    description:
+      'Retrieve all advanced charts created by the user, optionally filtered by chart type.',
   })
   @ApiQuery({
     name: 'chartType',
     required: false,
     description: 'Filter by chart type',
-    enum: ['transit', 'progressed', 'synastry', 'composite', 'davison', 'solar_return', 'lunar_return', 'solar_arcs'],
+    enum: [
+      'transit',
+      'progressed',
+      'synastry',
+      'composite',
+      'davison',
+      'solar_return',
+      'lunar_return',
+      'solar_arcs',
+    ],
     example: 'transit',
   })
   @ApiResponse({

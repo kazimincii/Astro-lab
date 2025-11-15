@@ -1,10 +1,5 @@
 import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { AiAssistantService } from './ai-assistant.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateConversationDto, SendMessageDto } from './dto/conversation.dto';
@@ -19,7 +14,8 @@ export class AiAssistantController {
   @Post('conversation')
   @ApiOperation({
     summary: 'Create AI conversation',
-    description: 'Start a new conversation with the AI astrology assistant. The assistant has access to your birth chart and can answer personalized questions.',
+    description:
+      'Start a new conversation with the AI astrology assistant. The assistant has access to your birth chart and can answer personalized questions.',
   })
   @ApiResponse({
     status: 201,
@@ -44,7 +40,8 @@ export class AiAssistantController {
   @Post('message')
   @ApiOperation({
     summary: 'Send message to AI assistant',
-    description: 'Send a message to the AI astrology assistant and receive a personalized response based on your astrological data.',
+    description:
+      'Send a message to the AI astrology assistant and receive a personalized response based on your astrological data.',
   })
   @ApiResponse({
     status: 201,
@@ -55,7 +52,10 @@ export class AiAssistantController {
         id: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
         conversationId: { type: 'string', example: '123e4567-e89b-12d3-a456-426614174000' },
         userMessage: { type: 'string', example: 'What does my Sun in Aries mean for my career?' },
-        aiResponse: { type: 'string', example: 'With your Sun in Aries, you have natural leadership qualities...' },
+        aiResponse: {
+          type: 'string',
+          example: 'With your Sun in Aries, you have natural leadership qualities...',
+        },
         createdAt: { type: 'string', format: 'date-time' },
       },
     },

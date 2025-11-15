@@ -193,15 +193,14 @@ export class SubscriptionsService {
       throw new BadRequestException('User not found.');
     }
 
-    const { stripeCustomerId, stripeSubscriptionId } =
-      await this.stripeService.syncSubscription({
-        user,
-        priceId: definition.stripePriceIds.monthly,
-        currentCustomerId: user.currentSubscription?.stripeCustomerId,
-        currentSubscriptionId: user.currentSubscription?.stripeSubscriptionId,
-        trialEnd: trialEnds,
-        metadata: { plan, type: 'trial' },
-      });
+    const { stripeCustomerId, stripeSubscriptionId } = await this.stripeService.syncSubscription({
+      user,
+      priceId: definition.stripePriceIds.monthly,
+      currentCustomerId: user.currentSubscription?.stripeCustomerId,
+      currentSubscriptionId: user.currentSubscription?.stripeSubscriptionId,
+      trialEnd: trialEnds,
+      metadata: { plan, type: 'trial' },
+    });
 
     return this.createSubscriptionRecord(userId, plan, 'monthly', {
       status: SubscriptionStatus.TRIAL,
@@ -216,11 +215,7 @@ export class SubscriptionsService {
     });
   }
 
-  async changePlan(
-    userId: string,
-    plan: SubscriptionPlan,
-    billingCycle: BillingCycle,
-  ) {
+  async changePlan(userId: string, plan: SubscriptionPlan, billingCycle: BillingCycle) {
     if (plan === SubscriptionPlan.BASIC) {
       await this.downgradeToBasic(userId);
       return this.ensureDefaultSubscription(userId);
@@ -240,14 +235,13 @@ export class SubscriptionsService {
       throw new BadRequestException('User not found.');
     }
 
-    const { stripeCustomerId, stripeSubscriptionId } =
-      await this.stripeService.syncSubscription({
-        user,
-        priceId: definition.stripePriceIds[billingCycle],
-        currentCustomerId: user.currentSubscription?.stripeCustomerId,
-        currentSubscriptionId: user.currentSubscription?.stripeSubscriptionId,
-        metadata: { plan, billingCycle },
-      });
+    const { stripeCustomerId, stripeSubscriptionId } = await this.stripeService.syncSubscription({
+      user,
+      priceId: definition.stripePriceIds[billingCycle],
+      currentCustomerId: user.currentSubscription?.stripeCustomerId,
+      currentSubscriptionId: user.currentSubscription?.stripeSubscriptionId,
+      metadata: { plan, billingCycle },
+    });
 
     return this.createSubscriptionRecord(userId, plan, billingCycle, {
       status: SubscriptionStatus.ACTIVE,
@@ -345,7 +339,7 @@ export class SubscriptionsService {
       cancellationReason: overrides.cancellationReason ?? null,
     });
 
-    const saved = await this.subscriptionsRepository.save(subscription) as Subscription;
+    const saved = (await this.subscriptionsRepository.save(subscription)) as Subscription;
     await this.setCurrentSubscription(userId, saved.id);
     return saved;
   }

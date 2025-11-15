@@ -1,10 +1,5 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
 import { CalendarsService } from './calendars.service';
 import { CalendarCategory } from '../../entities/calendar-entry.entity';
 
@@ -16,7 +11,8 @@ export class CalendarsController {
   @Get('range')
   @ApiOperation({
     summary: 'Get calendar entries by date range',
-    description: 'Retrieve astrological calendar entries (beauty, health, activity, spiritual guidance) for a specific date range, optionally filtered by category.',
+    description:
+      'Retrieve astrological calendar entries (beauty, health, activity, spiritual guidance) for a specific date range, optionally filtered by category.',
   })
   @ApiQuery({
     name: 'startDate',
@@ -47,7 +43,10 @@ export class CalendarsController {
         properties: {
           id: { type: 'string' },
           date: { type: 'string', format: 'date' },
-          category: { type: 'string', enum: ['beauty', 'health', 'activity', 'spiritual', 'transit', 'moon'] },
+          category: {
+            type: 'string',
+            enum: ['beauty', 'health', 'activity', 'spiritual', 'transit', 'moon'],
+          },
           rating: { type: 'number', example: 8, description: 'Rating (1-10)' },
           tip: { type: 'string', example: 'Great day for haircuts and beauty treatments' },
           details: {
@@ -81,7 +80,8 @@ export class CalendarsController {
   @Get('date')
   @ApiOperation({
     summary: 'Get calendar entries by date',
-    description: 'Retrieve all astrological calendar entries for a specific date across all categories.',
+    description:
+      'Retrieve all astrological calendar entries for a specific date across all categories.',
   })
   @ApiQuery({
     name: 'date',
@@ -115,7 +115,8 @@ export class CalendarsController {
   @Get('monthly')
   @ApiOperation({
     summary: 'Get monthly calendar',
-    description: 'Retrieve astrological calendar for an entire month, optionally filtered by category.',
+    description:
+      'Retrieve astrological calendar for an entire month, optionally filtered by category.',
   })
   @ApiQuery({
     name: 'year',

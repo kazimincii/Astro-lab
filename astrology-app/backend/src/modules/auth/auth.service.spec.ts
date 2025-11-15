@@ -146,9 +146,7 @@ describe('AuthService', () => {
 
   describe('login', () => {
     it('should return access and refresh tokens for valid user', async () => {
-      mockJwtService.sign
-        .mockReturnValueOnce('refresh-token')
-        .mockReturnValueOnce('access-token');
+      mockJwtService.sign.mockReturnValueOnce('refresh-token').mockReturnValueOnce('access-token');
       mockUserRepository.update.mockResolvedValue(undefined);
 
       const result = await service.login(mockUser as User);

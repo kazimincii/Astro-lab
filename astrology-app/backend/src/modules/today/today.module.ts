@@ -11,7 +11,13 @@ import { ForecastsModule } from '../forecasts/forecasts.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PersonProfile, DailyForecast, StarMessage, AstroEvent, CalendarEntry]),
+    TypeOrmModule.forFeature([
+      PersonProfile,
+      DailyForecast,
+      StarMessage,
+      AstroEvent,
+      CalendarEntry,
+    ]),
     ForecastsModule,
   ],
   controllers: [TodayController],

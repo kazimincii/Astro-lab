@@ -1,11 +1,16 @@
-import { Controller, Post, Get, Put, Param, Body, UseGuards, Req, HttpCode, HttpStatus } from '@nestjs/common';
 import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+  Controller,
+  Post,
+  Get,
+  Put,
+  Param,
+  Body,
+  UseGuards,
+  Req,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { LiveServicesService } from './live-services.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RequestSessionDto } from './dto/request-session.dto';
@@ -20,7 +25,8 @@ export class LiveServicesController {
   @Post('request')
   @ApiOperation({
     summary: 'Request live astrology session',
-    description: 'Request a live one-on-one session with an astrology expert (tarot, spiritual guidance, numerology, etc.).',
+    description:
+      'Request a live one-on-one session with an astrology expert (tarot, spiritual guidance, numerology, etc.).',
   })
   @ApiResponse({
     status: 201,
@@ -41,7 +47,8 @@ export class LiveServicesController {
   @Put(':sessionId/schedule')
   @ApiOperation({
     summary: 'Schedule session',
-    description: 'Schedule a confirmed session with date, time, duration, and pricing (expert only).',
+    description:
+      'Schedule a confirmed session with date, time, duration, and pricing (expert only).',
   })
   @ApiParam({
     name: 'sessionId',

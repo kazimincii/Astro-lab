@@ -8,7 +8,10 @@ import { BirthChart } from '../../entities/birth-chart.entity';
 import { ActionsModule } from '../actions/actions.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([RelationshipProfile, PersonProfile, BirthChart]), ActionsModule],
+  imports: [
+    TypeOrmModule.forFeature([RelationshipProfile, PersonProfile, BirthChart]),
+    ActionsModule,
+  ],
   controllers: [RelationshipController],
   providers: [RelationshipService],
   exports: [RelationshipService],

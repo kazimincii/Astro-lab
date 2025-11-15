@@ -1,10 +1,5 @@
 import { Controller, Post, Body, UseGuards, Request } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CoffeeReadingService } from './coffee-reading.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateCoffeeReadingDto } from './dto/create-reading.dto';
@@ -19,7 +14,8 @@ export class CoffeeReadingController {
   @Post()
   @ApiOperation({
     summary: 'Create coffee cup reading',
-    description: 'Perform a Turkish coffee cup reading (tasseography) by analyzing an uploaded image. AI identifies symbols and provides interpretation.',
+    description:
+      'Perform a Turkish coffee cup reading (tasseography) by analyzing an uploaded image. AI identifies symbols and provides interpretation.',
   })
   @ApiResponse({
     status: 201,
@@ -44,7 +40,10 @@ export class CoffeeReadingController {
         interpretation: {
           type: 'object',
           properties: {
-            overall: { type: 'string', example: 'Your reading shows a period of positive transformation...' },
+            overall: {
+              type: 'string',
+              example: 'Your reading shows a period of positive transformation...',
+            },
             love: { type: 'string', example: 'New romantic opportunities may appear' },
             career: { type: 'string', example: 'Professional growth and recognition ahead' },
             health: { type: 'string', example: 'Focus on emotional well-being' },

@@ -15,10 +15,12 @@ async function bootstrap() {
   const isProduction = nodeEnv === 'production';
 
   // Security: Helmet - Secure HTTP headers
-  app.use(helmet({
-    contentSecurityPolicy: isProduction ? undefined : false, // Disable in dev for Swagger
-    crossOriginEmbedderPolicy: !isProduction,
-  }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: isProduction ? undefined : false, // Disable in dev for Swagger
+      crossOriginEmbedderPolicy: !isProduction,
+    }),
+  );
 
   // Security: Request size limits
   app.use(express.json({ limit: '1mb' }));
@@ -55,7 +57,7 @@ async function bootstrap() {
       .setTitle('Astrology Super App API')
       .setDescription(
         'Complete API documentation for the Astrology Super App - including birth charts, ' +
-        'horoscopes, tarot readings, numerology, AI assistant, and subscription management.'
+          'horoscopes, tarot readings, numerology, AI assistant, and subscription management.',
       )
       .setVersion('1.0.0')
       .addTag('auth', 'Authentication endpoints')
@@ -79,7 +81,7 @@ async function bootstrap() {
           description: 'Enter JWT token',
           in: 'header',
         },
-        'JWT-auth'
+        'JWT-auth',
       )
       .addServer('http://localhost:3000', 'Local development')
       .addServer('https://api.astrology-app.com', 'Production')

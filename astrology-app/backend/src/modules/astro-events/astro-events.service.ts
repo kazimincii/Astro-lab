@@ -67,8 +67,8 @@ export class AstroEventsService {
   async getMoonPhases(): Promise<AstroEvent[]> {
     const newMoons = await this.getEventsByType(AstroEventType.NEW_MOON);
     const fullMoons = await this.getEventsByType(AstroEventType.FULL_MOON);
-    return [...newMoons, ...fullMoons].sort((a, b) =>
-      a.startDate.getTime() - b.startDate.getTime()
+    return [...newMoons, ...fullMoons].sort(
+      (a, b) => a.startDate.getTime() - b.startDate.getTime(),
     );
   }
 

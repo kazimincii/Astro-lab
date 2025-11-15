@@ -19,7 +19,7 @@ export class AnalyzeCityDto {
 
   @ApiProperty({
     description: 'City longitude',
-    example: -74.0060,
+    example: -74.006,
     type: Number,
   })
   @IsNumber()

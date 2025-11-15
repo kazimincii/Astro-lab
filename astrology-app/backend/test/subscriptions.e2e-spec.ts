@@ -3,7 +3,12 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { Subscription, SubscriptionPlan, SubscriptionStatus, BillingPeriod } from '../src/entities/subscription.entity';
+import {
+  Subscription,
+  SubscriptionPlan,
+  SubscriptionStatus,
+  BillingPeriod,
+} from '../src/entities/subscription.entity';
 import { User } from '../src/entities/user.entity';
 import { PersonProfile } from '../src/entities/person-profile.entity';
 import { ActionLog } from '../src/entities/action-log.entity';
@@ -71,12 +76,10 @@ describe('Subscriptions (e2e)', () => {
     };
     userRepository.findOne.mockResolvedValue(mockUser);
 
-    const loginResponse = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'Password123!',
-      });
+    const loginResponse = await request(app.getHttpServer()).post('/auth/login').send({
+      email: 'test@example.com',
+      password: 'Password123!',
+    });
 
     authToken = loginResponse.body.access_token;
   });
@@ -95,7 +98,7 @@ describe('Subscriptions (e2e)', () => {
         .get('/subscriptions/plans')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(Array.isArray(res.body)).toBe(true);
           expect(res.body.length).toBeGreaterThan(0);
           expect(res.body[0]).toHaveProperty('plan');
@@ -126,16 +129,14 @@ describe('Subscriptions (e2e)', () => {
         .get('/subscriptions/current')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('plan');
           expect(res.body.plan).toBe(SubscriptionPlan.STANDARD);
         });
     });
 
     it('should return 401 without authentication', () => {
-      return request(app.getHttpServer())
-        .get('/subscriptions/current')
-        .expect(401);
+      return request(app.getHttpServer()).get('/subscriptions/current').expect(401);
     });
   });
 
@@ -159,7 +160,7 @@ describe('Subscriptions (e2e)', () => {
         .get('/subscriptions/usage')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('plan');
           expect(res.body).toHaveProperty('dailyActionLimit');
           expect(res.body).toHaveProperty('actionsUsedToday');
@@ -199,7 +200,7 @@ describe('Subscriptions (e2e)', () => {
           billingCycle: 'monthly',
         })
         .expect(201)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('plan');
           expect(res.body.plan).toBe(SubscriptionPlan.PREMIUM);
         });
@@ -258,7 +259,7 @@ describe('Subscriptions (e2e)', () => {
           plan: SubscriptionPlan.STANDARD,
         })
         .expect(201)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('status');
           expect(res.body.status).toBe(SubscriptionStatus.TRIAL);
           expect(res.body).toHaveProperty('trialEndsAt');
@@ -309,7 +310,7 @@ describe('Subscriptions (e2e)', () => {
           reason: 'User requested cancellation',
         })
         .expect(201)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('plan');
           expect(res.body.plan).toBe(SubscriptionPlan.BASIC);
         });

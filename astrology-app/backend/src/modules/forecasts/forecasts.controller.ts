@@ -1,11 +1,5 @@
 import { Controller, Get, Param, Request, UseGuards } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ForecastsService } from './forecasts.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -19,7 +13,8 @@ export class ForecastsController {
   @Get('today/:profileId')
   @ApiOperation({
     summary: 'Get daily forecast',
-    description: 'Retrieve today\'s astrological forecast for a profile including planetary transits, daily themes, and personalized guidance.',
+    description:
+      "Retrieve today's astrological forecast for a profile including planetary transits, daily themes, and personalized guidance.",
   })
   @ApiParam({
     name: 'profileId',
@@ -47,13 +42,19 @@ export class ForecastsController {
           properties: {
             sign: { type: 'string', example: 'Pisces' },
             phase: { type: 'string', example: 'Waxing Gibbous' },
-            interpretation: { type: 'string', example: 'Heightened intuition and emotional awareness...' },
+            interpretation: {
+              type: 'string',
+              example: 'Heightened intuition and emotional awareness...',
+            },
           },
         },
         dailyTheme: { type: 'string', example: 'Focus on inner growth and emotional healing' },
         luckyColors: { type: 'array', items: { type: 'string' }, example: ['Purple', 'Silver'] },
         luckyNumbers: { type: 'array', items: { type: 'number' }, example: [3, 7, 12] },
-        advice: { type: 'string', example: 'Trust your intuition today. Take time for self-reflection.' },
+        advice: {
+          type: 'string',
+          example: 'Trust your intuition today. Take time for self-reflection.',
+        },
         energy: { type: 'number', example: 75, description: 'Energy level 0-100' },
         mood: { type: 'string', example: 'Contemplative' },
       },

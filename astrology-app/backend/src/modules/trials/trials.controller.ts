@@ -1,10 +1,5 @@
 import { Controller, Post, Get, Delete, Body, Req, UseGuards } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { TrialsService } from './trials.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { StartTrialDto } from './dto/start-trial.dto';
@@ -19,7 +14,8 @@ export class TrialsController {
   @Post('start')
   @ApiOperation({
     summary: 'Start trial period',
-    description: 'Start a free trial period for Standard or Premium plan. Users get access to premium features for 7 days.',
+    description:
+      'Start a free trial period for Standard or Premium plan. Users get access to premium features for 7 days.',
   })
   @ApiResponse({
     status: 201,
@@ -75,7 +71,8 @@ export class TrialsController {
   @Delete('cancel')
   @ApiOperation({
     summary: 'Cancel active trial',
-    description: 'Cancel the current active trial period. User will lose access to premium features immediately.',
+    description:
+      'Cancel the current active trial period. User will lose access to premium features immediately.',
   })
   @ApiResponse({
     status: 200,

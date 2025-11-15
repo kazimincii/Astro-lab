@@ -83,9 +83,9 @@ describe('TrialsService', () => {
 
       mockTrialRepository.findOne.mockResolvedValue(existingTrial);
 
-      await expect(
-        service.startTrial(userId, SubscriptionPlan.STANDARD),
-      ).rejects.toThrow('User already has an active trial');
+      await expect(service.startTrial(userId, SubscriptionPlan.STANDARD)).rejects.toThrow(
+        'User already has an active trial',
+      );
 
       expect(mockTrialRepository.create).not.toHaveBeenCalled();
       expect(mockTrialRepository.save).not.toHaveBeenCalled();
@@ -225,9 +225,9 @@ describe('TrialsService', () => {
     it('should throw error if trial not found', async () => {
       mockTrialRepository.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.convertTrial('nonexistent-trial', 'sub-1'),
-      ).rejects.toThrow('Trial not found');
+      await expect(service.convertTrial('nonexistent-trial', 'sub-1')).rejects.toThrow(
+        'Trial not found',
+      );
     });
   });
 

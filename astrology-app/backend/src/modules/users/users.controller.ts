@@ -1,10 +1,5 @@
 import { Controller, Get, Patch, Body, UseGuards, Request } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,7 +14,8 @@ export class UsersController {
   @Get('me')
   @ApiOperation({
     summary: 'Get current user profile',
-    description: 'Retrieve the authenticated user\'s profile information including subscription details and preferences.',
+    description:
+      "Retrieve the authenticated user's profile information including subscription details and preferences.",
   })
   @ApiResponse({
     status: 200,
@@ -56,7 +52,7 @@ export class UsersController {
   @Patch('me')
   @ApiOperation({
     summary: 'Update user profile',
-    description: 'Update the authenticated user\'s profile information. All fields are optional.',
+    description: "Update the authenticated user's profile information. All fields are optional.",
   })
   @ApiResponse({
     status: 200,

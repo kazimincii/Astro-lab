@@ -31,9 +31,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (exception instanceof HttpException) {
       status = exception.getStatus();
       const exceptionResponse = exception.getResponse();
-      message = typeof exceptionResponse === 'string'
-        ? exceptionResponse
-        : (exceptionResponse as any).message || exception.message;
+      message =
+        typeof exceptionResponse === 'string'
+          ? exceptionResponse
+          : (exceptionResponse as any).message || exception.message;
       error = exception.name;
     } else if (exception instanceof Error) {
       message = exception.message;
@@ -81,7 +82,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     if (status >= 500) {
       this.logger.error(
         JSON.stringify(errorLog),
-        exception instanceof Error ? exception.stack : 'No stack trace available'
+        exception instanceof Error ? exception.stack : 'No stack trace available',
       );
     } else if (status >= 400) {
       this.logger.warn(JSON.stringify(errorLog));
@@ -93,7 +94,14 @@ export class AllExceptionsFilter implements ExceptionFilter {
   private sanitizeBody(body: any): any {
     if (!body) return body;
 
-    const sensitiveFields = ['password', 'token', 'secret', 'apiKey', 'refreshToken', 'accessToken'];
+    const sensitiveFields = [
+      'password',
+      'token',
+      'secret',
+      'apiKey',
+      'refreshToken',
+      'accessToken',
+    ];
     const sanitized = { ...body };
 
     sensitiveFields.forEach(field => {

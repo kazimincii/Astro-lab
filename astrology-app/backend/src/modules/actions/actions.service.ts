@@ -57,11 +57,7 @@ export class ActionsService {
     return this.countPremiumActionsBetween(userId, start, end);
   }
 
-  async countPremiumActionsBetween(
-    userId: string,
-    start: Date,
-    end: Date,
-  ): Promise<number> {
+  async countPremiumActionsBetween(userId: string, start: Date, end: Date): Promise<number> {
     return this.actionsRepository.count({
       where: {
         user: { id: userId },

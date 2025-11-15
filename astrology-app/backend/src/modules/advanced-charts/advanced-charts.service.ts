@@ -158,7 +158,11 @@ export class AdvancedChartsService {
     };
   }
 
-  private generateInterpretation(chartType: AdvancedChartType, chartData: any, mode: ChartMode): string {
+  private generateInterpretation(
+    chartType: AdvancedChartType,
+    chartData: any,
+    mode: ChartMode,
+  ): string {
     if (mode === ChartMode.BASIC) {
       return `Basic interpretation of ${chartType} chart. The current planetary configurations suggest important themes and opportunities.`;
     } else {

@@ -27,11 +27,7 @@ const SIGN_METADATA: Record<string, SignMetadata> = {
     luckyGem: 'Carnelian',
     rulingPlanet: 'mars',
     traits: ['bold honesty', 'decisive choices', 'fierce loyalty'],
-    focus: [
-      'starting something new',
-      'letting passion lead',
-      'trusting your instincts',
-    ],
+    focus: ['starting something new', 'letting passion lead', 'trusting your instincts'],
     affirmations: [
       'I move first and trust the path forming beneath me',
       'My courage inspires others to rise with me',
@@ -45,11 +41,7 @@ const SIGN_METADATA: Record<string, SignMetadata> = {
     luckyGem: 'Emerald',
     rulingPlanet: 'venus',
     traits: ['steady devotion', 'calm confidence', 'sensual presence'],
-    focus: [
-      'building rituals that last',
-      'listening to your body',
-      'choosing quality over speed',
-    ],
+    focus: ['building rituals that last', 'listening to your body', 'choosing quality over speed'],
     affirmations: [
       'I create lasting beauty through small, consistent acts',
       'My patience magnetizes aligned opportunities',
@@ -63,11 +55,7 @@ const SIGN_METADATA: Record<string, SignMetadata> = {
     luckyGem: 'Agate',
     rulingPlanet: 'mercury',
     traits: ['curious dialogue', 'clever adaptability', 'sparkling wit'],
-    focus: [
-      'staying open to new information',
-      'asking better questions',
-      'sharing your story',
-    ],
+    focus: ['staying open to new information', 'asking better questions', 'sharing your story'],
     affirmations: [
       'My words carry clarity and care',
       'I allow duality to make me whole',
@@ -99,11 +87,7 @@ const SIGN_METADATA: Record<string, SignMetadata> = {
     luckyGem: 'Citrine',
     rulingPlanet: 'sun',
     traits: ['generous leadership', 'regal warmth', 'creative fire'],
-    focus: [
-      'letting joy be witnessed',
-      'leading with generosity',
-      'celebrating progress loudly',
-    ],
+    focus: ['letting joy be witnessed', 'leading with generosity', 'celebrating progress loudly'],
     affirmations: [
       'My light is medicine for the room',
       'I create fearless from the heart outward',
@@ -332,10 +316,7 @@ const ELEMENT_SNIPPETS: Record<
   },
 };
 
-const PLANETARY_LIBRARY: Record<
-  string,
-  { theme: string; guidance: string }[]
-> = {
+const PLANETARY_LIBRARY: Record<string, { theme: string; guidance: string }[]> = {
   sun: [
     { theme: 'Confidence Boost', guidance: 'Own the spotlight with intention.' },
     { theme: 'Identity Clarity', guidance: 'Lead from values, not trends.' },
@@ -352,7 +333,10 @@ const PLANETARY_LIBRARY: Record<
     { theme: 'Learning Curve', guidance: 'Sign up for the class that keeps calling you.' },
   ],
   venus: [
-    { theme: 'Heart-Centered Beauty', guidance: 'Surround yourself with colors and textures you adore.' },
+    {
+      theme: 'Heart-Centered Beauty',
+      guidance: 'Surround yourself with colors and textures you adore.',
+    },
     { theme: 'Relationship Grace', guidance: 'Lead with curiosity during delicate talks.' },
     { theme: 'Pleasure Priority', guidance: 'Slow down and savor small luxuries.' },
   ],
@@ -427,10 +411,7 @@ export class ForecastsService {
     return this.formatForecastResponse(forecast, profileId);
   }
 
-  private async generateDailyForecast(
-    profile: PersonProfile,
-    targetDate: Date,
-  ) {
+  private async generateDailyForecast(profile: PersonProfile, targetDate: Date) {
     const normalizedDate = this.normalizeDate(targetDate);
     const sunSign = this.resolveSunSign(profile);
     const signKey = sunSign.toLowerCase();
@@ -463,10 +444,7 @@ export class ForecastsService {
     const careerScore = this.generateScore(seed + 9);
     const healthScore = this.generateScore(seed + 10);
     const luckyNumbers = this.generateLuckyNumbers(seed + 20);
-    const planetaryTransits = this.buildPlanetaryTransits(
-      signMeta.rulingPlanet,
-      seed + 30,
-    );
+    const planetaryTransits = this.buildPlanetaryTransits(signMeta.rulingPlanet, seed + 30);
 
     const forecastEntity = this.forecastsRepository.create({
       profile: { id: profile.id } as any,
@@ -482,9 +460,7 @@ export class ForecastsService {
       loveScore,
       careerScore,
       healthScore,
-      overallScore: Number(
-        ((loveScore + careerScore + healthScore) / 3).toFixed(1),
-      ),
+      overallScore: Number(((loveScore + careerScore + healthScore) / 3).toFixed(1)),
       planetaryTransits,
       isRead: false,
     });
@@ -499,9 +475,7 @@ export class ForecastsService {
 
     const computed = this.determineSunSign(profile.birthDate);
     if (computed !== profile.sunSign) {
-      this.profilesRepository.update(profile.id, { sunSign: computed }).catch(
-        () => undefined,
-      );
+      this.profilesRepository.update(profile.id, { sunSign: computed }).catch(() => undefined);
     }
     return computed;
   }
@@ -527,12 +501,9 @@ export class ForecastsService {
     if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return 'Virgo';
     if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return 'Libra';
     if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return 'Scorpio';
-    if ((month === 11 && day >= 22) || (month === 12 && day <= 21))
-      return 'Sagittarius';
-    if ((month === 12 && day >= 22) || (month === 1 && day <= 19))
-      return 'Capricorn';
-    if ((month === 1 && day >= 20) || (month === 2 && day <= 18))
-      return 'Aquarius';
+    if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return 'Sagittarius';
+    if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return 'Capricorn';
+    if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return 'Aquarius';
     return 'Pisces';
   }
 
@@ -578,9 +549,7 @@ export class ForecastsService {
   }
 
   private normalizeDate(date: Date) {
-    return new Date(
-      Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
-    );
+    return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()));
   }
 
   private createSeed(profileId: string, date: Date) {
@@ -624,9 +593,7 @@ export class ForecastsService {
       loveForecast: forecast.loveForecast,
       careerForecast: forecast.careerForecast,
       healthForecast: forecast.healthForecast,
-      luckyNumbers: Array.isArray(forecast.luckyNumbers)
-        ? forecast.luckyNumbers
-        : [],
+      luckyNumbers: Array.isArray(forecast.luckyNumbers) ? forecast.luckyNumbers : [],
       luckyColor: forecast.luckyColor,
       luckyGem: forecast.luckyGem,
       loveScore: toNumber(forecast.loveScore),

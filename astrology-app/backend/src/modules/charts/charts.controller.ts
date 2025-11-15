@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Param, UseGuards } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ChartsService } from './charts.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -19,7 +13,8 @@ export class ChartsController {
   @Post('generate/:profileId')
   @ApiOperation({
     summary: 'Generate birth chart',
-    description: 'Generate a complete natal/birth chart for a profile using Swiss Ephemeris. Calculates planetary positions, houses, and aspects.',
+    description:
+      'Generate a complete natal/birth chart for a profile using Swiss Ephemeris. Calculates planetary positions, houses, and aspects.',
   })
   @ApiParam({
     name: 'profileId',
@@ -118,7 +113,8 @@ export class ChartsController {
   @Get(':chartId/detailed')
   @ApiOperation({
     summary: 'Get detailed chart interpretation',
-    description: 'Retrieve AI-generated detailed interpretation of the birth chart including personality insights, strengths, challenges, and life themes.',
+    description:
+      'Retrieve AI-generated detailed interpretation of the birth chart including personality insights, strengths, challenges, and life themes.',
   })
   @ApiParam({
     name: 'chartId',
@@ -140,9 +136,21 @@ export class ChartsController {
             moonSign: { type: 'string', example: 'Detailed Moon sign interpretation...' },
             risingSign: { type: 'string', example: 'Detailed Ascendant interpretation...' },
             majorAspects: { type: 'string', example: 'Analysis of key planetary aspects...' },
-            strengths: { type: 'array', items: { type: 'string' }, example: ['Creative expression', 'Leadership'] },
-            challenges: { type: 'array', items: { type: 'string' }, example: ['Impulsiveness', 'Patience'] },
-            lifeThemes: { type: 'array', items: { type: 'string' }, example: ['Self-discovery', 'Communication'] },
+            strengths: {
+              type: 'array',
+              items: { type: 'string' },
+              example: ['Creative expression', 'Leadership'],
+            },
+            challenges: {
+              type: 'array',
+              items: { type: 'string' },
+              example: ['Impulsiveness', 'Patience'],
+            },
+            lifeThemes: {
+              type: 'array',
+              items: { type: 'string' },
+              example: ['Self-discovery', 'Communication'],
+            },
           },
         },
         generatedAt: { type: 'string', format: 'date-time' },

@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Param, Body, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { SoulmateService } from './soulmate.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -24,7 +18,8 @@ export class SoulmateController {
   @Post(':personId/generate')
   @ApiOperation({
     summary: 'Generate soulmate profile',
-    description: 'Generate a detailed soulmate profile with ideal partner characteristics, compatibility factors, and relationship guidance based on astrological analysis. This is a premium action that consumes one action credit.',
+    description:
+      'Generate a detailed soulmate profile with ideal partner characteristics, compatibility factors, and relationship guidance based on astrological analysis. This is a premium action that consumes one action credit.',
   })
   @ApiParam({
     name: 'personId',
@@ -93,7 +88,8 @@ export class SoulmateController {
   @Get('matches')
   @ApiOperation({
     summary: 'Find potential soulmate matches',
-    description: 'Find other users who have high compatibility scores based on astrological analysis.',
+    description:
+      'Find other users who have high compatibility scores based on astrological analysis.',
   })
   @ApiResponse({
     status: 200,
@@ -105,7 +101,11 @@ export class SoulmateController {
         properties: {
           userId: { type: 'string' },
           firstName: { type: 'string' },
-          compatibilityScore: { type: 'number', example: 85.5, description: 'Compatibility score (0-100)' },
+          compatibilityScore: {
+            type: 'number',
+            example: 85.5,
+            description: 'Compatibility score (0-100)',
+          },
           sunSign: { type: 'string', example: 'Leo' },
           moonSign: { type: 'string', example: 'Pisces' },
           matchReason: { type: 'string', example: 'Venus-Mars harmony' },

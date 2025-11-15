@@ -117,9 +117,7 @@ describe('StripeService', () => {
       const serviceWithoutStripe = new StripeService(configService);
 
       // Should not throw error
-      await expect(
-        serviceWithoutStripe.cancelSubscription('sub_123'),
-      ).resolves.toBeUndefined();
+      await expect(serviceWithoutStripe.cancelSubscription('sub_123')).resolves.toBeUndefined();
     });
 
     it('should handle cancellation when subscription ID is null', async () => {
@@ -127,9 +125,7 @@ describe('StripeService', () => {
       const newService = new StripeService(configService);
 
       // Should not throw error
-      await expect(
-        newService.cancelSubscription(null),
-      ).resolves.toBeUndefined();
+      await expect(newService.cancelSubscription(null)).resolves.toBeUndefined();
     });
 
     it('should handle cancellation when subscription ID is undefined', async () => {
@@ -137,9 +133,7 @@ describe('StripeService', () => {
       const newService = new StripeService(configService);
 
       // Should not throw error
-      await expect(
-        newService.cancelSubscription(undefined),
-      ).resolves.toBeUndefined();
+      await expect(newService.cancelSubscription(undefined)).resolves.toBeUndefined();
     });
   });
 });

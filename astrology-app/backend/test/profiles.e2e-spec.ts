@@ -58,12 +58,10 @@ describe('Profiles (e2e)', () => {
     };
     userRepository.findOne.mockResolvedValue(mockUser);
 
-    const loginResponse = await request(app.getHttpServer())
-      .post('/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'Password123!',
-      });
+    const loginResponse = await request(app.getHttpServer()).post('/auth/login').send({
+      email: 'test@example.com',
+      password: 'Password123!',
+    });
 
     authToken = loginResponse.body.access_token;
   });
@@ -104,7 +102,7 @@ describe('Profiles (e2e)', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send(newProfileData)
         .expect(201)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('id');
           expect(res.body.name).toBe(newProfileData.name);
           expect(res.body).toHaveProperty('isMainProfile');
@@ -173,7 +171,7 @@ describe('Profiles (e2e)', () => {
         .get('/profiles')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(Array.isArray(res.body)).toBe(true);
           expect(res.body).toHaveLength(2);
           expect(res.body[0]).toHaveProperty('name');
@@ -188,16 +186,14 @@ describe('Profiles (e2e)', () => {
         .get('/profiles')
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(Array.isArray(res.body)).toBe(true);
           expect(res.body).toHaveLength(0);
         });
     });
 
     it('should fail without authentication', () => {
-      return request(app.getHttpServer())
-        .get('/profiles')
-        .expect(401);
+      return request(app.getHttpServer()).get('/profiles').expect(401);
     });
   });
 
@@ -224,7 +220,7 @@ describe('Profiles (e2e)', () => {
         .get(`/profiles/${profileId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body.id).toBe(profileId);
           expect(res.body.name).toBe('John Doe');
           expect(res.body).toHaveProperty('sunSign');
@@ -269,7 +265,7 @@ describe('Profiles (e2e)', () => {
         .set('Authorization', `Bearer ${authToken}`)
         .send(updateData)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body.name).toBe(updateData.name);
           expect(res.body.birthPlace).toBe(updateData.birthPlace);
         });

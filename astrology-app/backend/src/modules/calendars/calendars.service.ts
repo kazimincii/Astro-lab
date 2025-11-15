@@ -48,34 +48,60 @@ export class CalendarsService {
 
   private generateTip(category: CalendarCategory, rating: number): string {
     const tips = {
-      [CalendarCategory.BEAUTY]: rating > 7
-        ? 'Excellent day for beauty treatments and self-care.'
-        : 'Focus on natural beauty and gentle routines.',
-      [CalendarCategory.HEALTH]: rating > 7
-        ? 'Great energy for physical activity and health goals.'
-        : 'Take it easy and focus on rest and recovery.',
-      [CalendarCategory.ACTIVITY]: rating > 7
-        ? 'Perfect day for important activities and new beginnings.'
-        : 'Better to postpone major activities if possible.',
-      [CalendarCategory.SPIRITUAL]: rating > 7
-        ? 'Heightened spiritual awareness and intuition.'
-        : 'Good time for grounding and centering practices.',
-      [CalendarCategory.TRANSIT]: rating > 7
-        ? 'Favorable planetary alignments support your goals.'
-        : 'Navigate challenges with patience and awareness.',
-      [CalendarCategory.MOON]: rating > 7
-        ? 'Moon energy supports manifestation and growth.'
-        : 'Time for release and letting go.',
+      [CalendarCategory.BEAUTY]:
+        rating > 7
+          ? 'Excellent day for beauty treatments and self-care.'
+          : 'Focus on natural beauty and gentle routines.',
+      [CalendarCategory.HEALTH]:
+        rating > 7
+          ? 'Great energy for physical activity and health goals.'
+          : 'Take it easy and focus on rest and recovery.',
+      [CalendarCategory.ACTIVITY]:
+        rating > 7
+          ? 'Perfect day for important activities and new beginnings.'
+          : 'Better to postpone major activities if possible.',
+      [CalendarCategory.SPIRITUAL]:
+        rating > 7
+          ? 'Heightened spiritual awareness and intuition.'
+          : 'Good time for grounding and centering practices.',
+      [CalendarCategory.TRANSIT]:
+        rating > 7
+          ? 'Favorable planetary alignments support your goals.'
+          : 'Navigate challenges with patience and awareness.',
+      [CalendarCategory.MOON]:
+        rating > 7
+          ? 'Moon energy supports manifestation and growth.'
+          : 'Time for release and letting go.',
     };
 
     return tips[category] || 'A day of balance and moderation.';
   }
 
   private generateDetails(category: CalendarCategory, date: Date) {
-    const moonPhases = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
-                        'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const moonPhases = [
+      'New Moon',
+      'Waxing Crescent',
+      'First Quarter',
+      'Waxing Gibbous',
+      'Full Moon',
+      'Waning Gibbous',
+      'Last Quarter',
+      'Waning Crescent',
+    ];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
 
     return {
       moonPhase: moonPhases[Math.floor(Math.random() * moonPhases.length)],
@@ -116,7 +142,11 @@ export class CalendarsService {
     return tags[category] || [];
   }
 
-  async getEntriesByDateRange(startDate: Date, endDate: Date, category?: CalendarCategory): Promise<CalendarEntry[]> {
+  async getEntriesByDateRange(
+    startDate: Date,
+    endDate: Date,
+    category?: CalendarCategory,
+  ): Promise<CalendarEntry[]> {
     const query: any = {
       date: Between(startDate, endDate),
     };
@@ -138,7 +168,11 @@ export class CalendarsService {
     });
   }
 
-  async getMonthlyCalendar(year: number, month: number, category?: CalendarCategory): Promise<CalendarEntry[]> {
+  async getMonthlyCalendar(
+    year: number,
+    month: number,
+    category?: CalendarCategory,
+  ): Promise<CalendarEntry[]> {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
 

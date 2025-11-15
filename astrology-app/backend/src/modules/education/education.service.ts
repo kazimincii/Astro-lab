@@ -1,7 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { EducationContent, ContentCategory, DifficultyLevel } from '../../entities/education-content.entity';
+import {
+  EducationContent,
+  ContentCategory,
+  DifficultyLevel,
+} from '../../entities/education-content.entity';
 
 @Injectable()
 export class EducationService implements OnModuleInit {
@@ -19,7 +23,8 @@ export class EducationService implements OnModuleInit {
       {
         title: 'Understanding the 12 Zodiac Signs',
         summary: 'Learn about the fundamental characteristics of each zodiac sign',
-        content: 'The zodiac is divided into 12 signs, each representing unique personality traits and tendencies...',
+        content:
+          'The zodiac is divided into 12 signs, each representing unique personality traits and tendencies...',
         category: ContentCategory.SIGNS,
         difficulty: DifficultyLevel.BEGINNER,
         tags: ['basics', 'zodiac', 'signs'],
@@ -29,7 +34,8 @@ export class EducationService implements OnModuleInit {
       {
         title: 'What Are Planetary Retrogrades?',
         summary: 'Discover the meaning and impact of retrograde planets',
-        content: 'When a planet appears to move backward in the sky, we call this retrograde motion...',
+        content:
+          'When a planet appears to move backward in the sky, we call this retrograde motion...',
         category: ContentCategory.RETROGRADES,
         difficulty: DifficultyLevel.BEGINNER,
         tags: ['retrogrades', 'planets', 'basics'],
@@ -39,7 +45,8 @@ export class EducationService implements OnModuleInit {
       {
         title: 'The 12 Houses in Astrology',
         summary: 'Explore the meaning of astrological houses',
-        content: 'The birth chart is divided into 12 houses, each governing different life areas...',
+        content:
+          'The birth chart is divided into 12 houses, each governing different life areas...',
         category: ContentCategory.HOUSES,
         difficulty: DifficultyLevel.INTERMEDIATE,
         tags: ['houses', 'birth chart'],

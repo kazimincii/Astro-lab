@@ -45,7 +45,11 @@ export class WidgetsService {
     return await this.widgetRepository.save(widget);
   }
 
-  async toggleWidget(userId: string, widgetType: WidgetType, isEnabled: boolean): Promise<WidgetConfig> {
+  async toggleWidget(
+    userId: string,
+    widgetType: WidgetType,
+    isEnabled: boolean,
+  ): Promise<WidgetConfig> {
     const widget = await this.getWidget(userId, widgetType);
 
     if (!widget) {
@@ -81,14 +85,34 @@ export class WidgetsService {
   }
 
   private generateMoonPhaseData() {
-    const phases = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
-                    'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const phases = [
+      'New Moon',
+      'Waxing Crescent',
+      'First Quarter',
+      'Waxing Gibbous',
+      'Full Moon',
+      'Waning Gibbous',
+      'Last Quarter',
+      'Waning Crescent',
+    ];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
 
     const dayOfMonth = new Date().getDate();
     const phaseIndex = Math.floor((dayOfMonth / 30) * 8) % 8;
-    const signIndex = Math.floor((new Date().getMonth() * 2.5 + dayOfMonth / 12)) % 12;
+    const signIndex = Math.floor(new Date().getMonth() * 2.5 + dayOfMonth / 12) % 12;
 
     return {
       phase: phases[phaseIndex],
@@ -100,13 +124,13 @@ export class WidgetsService {
   private generateStarMessageData(personId: string) {
     return {
       message: "Trust the universe's timing today.",
-      theme: "Divine Timing",
+      theme: 'Divine Timing',
     };
   }
 
   private generateTodaySummaryData(personId: string) {
     return {
-      summary: "A day of balance and new opportunities.",
+      summary: 'A day of balance and new opportunities.',
       score: 8,
     };
   }

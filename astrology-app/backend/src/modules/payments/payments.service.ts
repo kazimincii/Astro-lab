@@ -3,7 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Subscription, PlanType, BillingPeriod, SubscriptionStatus } from '../../entities/subscription.entity';
+import {
+  Subscription,
+  PlanType,
+  BillingPeriod,
+  SubscriptionStatus,
+} from '../../entities/subscription.entity';
 import { User } from '../../entities/user.entity';
 
 @Injectable()

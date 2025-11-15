@@ -44,10 +44,30 @@ export class CosmicClimateService {
 
   private generateSkyHighlights(date: Date) {
     // In production, this would calculate actual astronomical data
-    const moonPhases = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
-                        'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const moonPhases = [
+      'New Moon',
+      'Waxing Crescent',
+      'First Quarter',
+      'Waxing Gibbous',
+      'Full Moon',
+      'Waning Gibbous',
+      'Last Quarter',
+      'Waning Crescent',
+    ];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
 
     return {
       moonPhase: moonPhases[Math.floor(Math.random() * moonPhases.length)],

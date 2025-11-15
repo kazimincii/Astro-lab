@@ -45,7 +45,11 @@ export class PersonProfile {
   @Column({ nullable: true })
   timezone: string;
 
-  @Column({ type: 'enum', enum: ['male', 'female', 'other', 'prefer_not_to_say'], default: 'prefer_not_to_say' })
+  @Column({
+    type: 'enum',
+    enum: ['male', 'female', 'other', 'prefer_not_to_say'],
+    default: 'prefer_not_to_say',
+  })
   gender: string;
 
   @Column({ nullable: true })

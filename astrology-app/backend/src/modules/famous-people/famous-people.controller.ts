@@ -1,11 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { FamousPeopleService } from './famous-people.service';
 
 @ApiTags('famous-people')
@@ -16,7 +10,8 @@ export class FamousPeopleController {
   @Get()
   @ApiOperation({
     summary: 'Get all famous people',
-    description: 'Retrieve a paginated list of famous people with their birth charts and astrological data.',
+    description:
+      'Retrieve a paginated list of famous people with their birth charts and astrological data.',
   })
   @ApiQuery({
     name: 'skip',
@@ -36,10 +31,7 @@ export class FamousPeopleController {
     status: 200,
     description: 'Famous people retrieved successfully',
   })
-  async getAllFamousPeople(
-    @Query('skip') skip?: string,
-    @Query('take') take?: string,
-  ) {
+  async getAllFamousPeople(@Query('skip') skip?: string, @Query('take') take?: string) {
     const skipNum = skip ? parseInt(skip) : 0;
     const takeNum = take ? parseInt(take) : 50;
 
@@ -49,7 +41,8 @@ export class FamousPeopleController {
   @Get('matches/:personId')
   @ApiOperation({
     summary: 'Find celebrity astrological matches',
-    description: 'Find famous people who have similar astrological patterns to the given person profile.',
+    description:
+      'Find famous people who have similar astrological patterns to the given person profile.',
   })
   @ApiParam({
     name: 'personId',
@@ -67,10 +60,7 @@ export class FamousPeopleController {
     status: 200,
     description: 'Celebrity matches found successfully',
   })
-  async findMatches(
-    @Param('personId') personId: string,
-    @Query('limit') limit?: string,
-  ) {
+  async findMatches(@Param('personId') personId: string, @Query('limit') limit?: string) {
     const limitNum = limit ? parseInt(limit) : 10;
     return await this.famousPeopleService.findMatches(personId, limitNum);
   }
@@ -96,10 +86,7 @@ export class FamousPeopleController {
     status: 200,
     description: 'Famous people in category retrieved successfully',
   })
-  async searchByCategory(
-    @Param('category') category: string,
-    @Query('limit') limit?: string,
-  ) {
+  async searchByCategory(@Param('category') category: string, @Query('limit') limit?: string) {
     const limitNum = limit ? parseInt(limit) : 20;
     return await this.famousPeopleService.searchByCategory(category, limitNum);
   }
@@ -125,10 +112,7 @@ export class FamousPeopleController {
     status: 200,
     description: 'Famous people with sign retrieved successfully',
   })
-  async searchBySign(
-    @Param('sign') sign: string,
-    @Query('limit') limit?: string,
-  ) {
+  async searchBySign(@Param('sign') sign: string, @Query('limit') limit?: string) {
     const limitNum = limit ? parseInt(limit) : 20;
     return await this.famousPeopleService.searchBySign(sign, limitNum);
   }
@@ -136,7 +120,8 @@ export class FamousPeopleController {
   @Get(':id')
   @ApiOperation({
     summary: 'Get famous person by ID',
-    description: 'Retrieve detailed information about a specific famous person including their complete birth chart.',
+    description:
+      'Retrieve detailed information about a specific famous person including their complete birth chart.',
   })
   @ApiParam({
     name: 'id',

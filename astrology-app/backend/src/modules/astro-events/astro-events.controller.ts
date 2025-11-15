@@ -1,11 +1,5 @@
 import { Controller, Get, Query, Param } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { AstroEventsService } from './astro-events.service';
 import { AstroEventType } from '../../entities/astro-event.entity';
 
@@ -17,7 +11,8 @@ export class AstroEventsController {
   @Get('upcoming')
   @ApiOperation({
     summary: 'Get upcoming astrological events',
-    description: 'Retrieve upcoming astrological events like retrogrades, eclipses, major transits, and moon phases.',
+    description:
+      'Retrieve upcoming astrological events like retrogrades, eclipses, major transits, and moon phases.',
   })
   @ApiQuery({
     name: 'limit',
@@ -35,7 +30,18 @@ export class AstroEventsController {
         type: 'object',
         properties: {
           id: { type: 'string' },
-          type: { type: 'string', enum: ['retrograde', 'eclipse', 'major_transit', 'new_moon', 'full_moon', 'ingress', 'station'] },
+          type: {
+            type: 'string',
+            enum: [
+              'retrograde',
+              'eclipse',
+              'major_transit',
+              'new_moon',
+              'full_moon',
+              'ingress',
+              'station',
+            ],
+          },
           title: { type: 'string', example: 'Mercury Retrograde in Gemini' },
           description: { type: 'string' },
           startDate: { type: 'string', format: 'date-time' },
@@ -57,7 +63,8 @@ export class AstroEventsController {
   @Get('active')
   @ApiOperation({
     summary: 'Get currently active events',
-    description: 'Retrieve astrological events that are currently happening (e.g., active retrogrades).',
+    description:
+      'Retrieve astrological events that are currently happening (e.g., active retrogrades).',
   })
   @ApiResponse({
     status: 200,
@@ -124,10 +131,7 @@ export class AstroEventsController {
     @Query('startDate') startDate: string,
     @Query('endDate') endDate: string,
   ) {
-    return await this.eventsService.getEventsByDateRange(
-      new Date(startDate),
-      new Date(endDate),
-    );
+    return await this.eventsService.getEventsByDateRange(new Date(startDate), new Date(endDate));
   }
 
   @Get('retrogrades')

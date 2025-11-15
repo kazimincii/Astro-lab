@@ -1,11 +1,5 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiParam } from '@nestjs/swagger';
 import { EducationService } from './education.service';
 import { ContentCategory } from '../../entities/education-content.entity';
 
@@ -23,7 +17,16 @@ export class EducationController {
     name: 'category',
     required: false,
     description: 'Filter by category',
-    enum: ['planets', 'houses', 'aspects', 'signs', 'retrogrades', 'transits', 'basics', 'advanced'],
+    enum: [
+      'planets',
+      'houses',
+      'aspects',
+      'signs',
+      'retrogrades',
+      'transits',
+      'basics',
+      'advanced',
+    ],
     example: 'planets',
   })
   @ApiResponse({
@@ -42,7 +45,16 @@ export class EducationController {
   @ApiParam({
     name: 'category',
     description: 'Content category',
-    enum: ['planets', 'houses', 'aspects', 'signs', 'retrogrades', 'transits', 'basics', 'advanced'],
+    enum: [
+      'planets',
+      'houses',
+      'aspects',
+      'signs',
+      'retrogrades',
+      'transits',
+      'basics',
+      'advanced',
+    ],
     example: 'planets',
   })
   @ApiResponse({

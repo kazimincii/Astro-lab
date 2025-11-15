@@ -19,8 +19,7 @@ export class StripeService {
 
   constructor(private configService: ConfigService) {
     const secret =
-      this.configService.get<string>('stripe.secretKey') ||
-      process.env.STRIPE_SECRET_KEY;
+      this.configService.get<string>('stripe.secretKey') || process.env.STRIPE_SECRET_KEY;
     this.stripe = secret
       ? new Stripe(secret, {
           apiVersion: '2023-10-16',
@@ -48,9 +47,7 @@ export class StripeService {
     }
 
     try {
-      const normalizedMetadata = metadata
-        ? this.normalizeMetadata(metadata)
-        : undefined;
+      const normalizedMetadata = metadata ? this.normalizeMetadata(metadata) : undefined;
       const customerId =
         currentCustomerId ??
         (await this.createCustomer(user).catch(error => {
@@ -63,32 +60,25 @@ export class StripeService {
       }
 
       const trialEndTimestamp =
-        trialEnd && trialEnd > new Date()
-          ? Math.floor(trialEnd.getTime() / 1000)
-          : undefined;
+        trialEnd && trialEnd > new Date() ? Math.floor(trialEnd.getTime() / 1000) : undefined;
 
       if (currentSubscriptionId) {
-        const existing = await this.stripe.subscriptions.retrieve(
-          currentSubscriptionId,
-        );
+        const existing = await this.stripe.subscriptions.retrieve(currentSubscriptionId);
 
-        const subscription = await this.stripe.subscriptions.update(
-          currentSubscriptionId,
-          {
-            cancel_at_period_end: false,
-            items: existing.items.data[0]?.id
-              ? [
-                  {
-                    id: existing.items.data[0]?.id,
-                    price: priceId,
-                  },
-                ]
-              : [{ price: priceId }],
-            trial_end: trialEndTimestamp,
-            metadata: normalizedMetadata,
-            proration_behavior: 'create_prorations',
-          },
-        );
+        const subscription = await this.stripe.subscriptions.update(currentSubscriptionId, {
+          cancel_at_period_end: false,
+          items: existing.items.data[0]?.id
+            ? [
+                {
+                  id: existing.items.data[0]?.id,
+                  price: priceId,
+                },
+              ]
+            : [{ price: priceId }],
+          trial_end: trialEndTimestamp,
+          metadata: normalizedMetadata,
+          proration_behavior: 'create_prorations',
+        });
 
         return {
           stripeCustomerId: customerId,
@@ -143,12 +133,9 @@ export class StripeService {
   }
 
   private normalizeMetadata(metadata: Record<string, string | number>) {
-    return Object.entries(metadata).reduce<Record<string, string>>(
-      (acc, [key, value]) => {
-        acc[key] = String(value);
-        return acc;
-      },
-      {},
-    );
+    return Object.entries(metadata).reduce<Record<string, string>>((acc, [key, value]) => {
+      acc[key] = String(value);
+      return acc;
+    }, {});
   }
 }

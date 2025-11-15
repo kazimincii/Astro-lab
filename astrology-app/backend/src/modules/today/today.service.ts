@@ -84,11 +84,14 @@ export class TodayService {
         keywords: starMessage.keywords,
       },
       moon: moonData,
-      keyTransit: events.length > 0 ? {
-        title: events[0].title,
-        description: events[0].description,
-        type: events[0].type,
-      } : null,
+      keyTransit:
+        events.length > 0
+          ? {
+              title: events[0].title,
+              description: events[0].description,
+              type: events[0].type,
+            }
+          : null,
       calendars: {
         beauty: calendars.beauty,
         health: calendars.health,
@@ -118,19 +121,22 @@ export class TodayService {
   private async generateStarMessage(personId: string, date: Date): Promise<StarMessage> {
     const messages = [
       {
-        message: "Today's cosmic energy invites you to trust your intuition and embrace spontaneity. The stars align to support your authentic expression.",
-        theme: "Authenticity",
-        keywords: ["intuition", "spontaneity", "expression"],
+        message:
+          "Today's cosmic energy invites you to trust your intuition and embrace spontaneity. The stars align to support your authentic expression.",
+        theme: 'Authenticity',
+        keywords: ['intuition', 'spontaneity', 'expression'],
       },
       {
-        message: "The universe whispers wisdom through quiet moments today. Pause, listen, and allow divine guidance to illuminate your path forward.",
-        theme: "Divine Guidance",
-        keywords: ["wisdom", "guidance", "patience"],
+        message:
+          'The universe whispers wisdom through quiet moments today. Pause, listen, and allow divine guidance to illuminate your path forward.',
+        theme: 'Divine Guidance',
+        keywords: ['wisdom', 'guidance', 'patience'],
       },
       {
-        message: "Your creative power is amplified today. Channel this energy into projects that light up your soul and inspire those around you.",
-        theme: "Creative Power",
-        keywords: ["creativity", "inspiration", "energy"],
+        message:
+          'Your creative power is amplified today. Channel this energy into projects that light up your soul and inspire those around you.',
+        theme: 'Creative Power',
+        keywords: ['creativity', 'inspiration', 'energy'],
       },
     ];
 
@@ -184,14 +190,34 @@ export class TodayService {
 
   private calculateMoonData(date: Date) {
     // Simplified moon calculation
-    const phases = ['New Moon', 'Waxing Crescent', 'First Quarter', 'Waxing Gibbous',
-                    'Full Moon', 'Waning Gibbous', 'Last Quarter', 'Waning Crescent'];
-    const signs = ['Aries', 'Taurus', 'Gemini', 'Cancer', 'Leo', 'Virgo',
-                   'Libra', 'Scorpio', 'Sagittarius', 'Capricorn', 'Aquarius', 'Pisces'];
+    const phases = [
+      'New Moon',
+      'Waxing Crescent',
+      'First Quarter',
+      'Waxing Gibbous',
+      'Full Moon',
+      'Waning Gibbous',
+      'Last Quarter',
+      'Waning Crescent',
+    ];
+    const signs = [
+      'Aries',
+      'Taurus',
+      'Gemini',
+      'Cancer',
+      'Leo',
+      'Virgo',
+      'Libra',
+      'Scorpio',
+      'Sagittarius',
+      'Capricorn',
+      'Aquarius',
+      'Pisces',
+    ];
 
     const dayOfMonth = date.getDate();
     const phaseIndex = Math.floor((dayOfMonth / 30) * 8) % 8;
-    const signIndex = Math.floor((date.getMonth() * 2.5 + dayOfMonth / 12)) % 12;
+    const signIndex = Math.floor(date.getMonth() * 2.5 + dayOfMonth / 12) % 12;
 
     return {
       phase: phases[phaseIndex],

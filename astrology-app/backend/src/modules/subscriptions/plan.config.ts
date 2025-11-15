@@ -23,11 +23,7 @@ export const PLAN_DEFINITIONS: Record<SubscriptionPlan, PlanDefinition> = {
     label: 'Basic',
     description: 'Free tier with limited premium actions and profiles.',
     trialEligible: false,
-    features: [
-      '2 premium actions per day',
-      '2 profiles',
-      'Short interpretations & previews',
-    ],
+    features: ['2 premium actions per day', '2 profiles', 'Short interpretations & previews'],
     dailyActionLimit: 2,
     profileLimit: 2,
     unlimitedActions: false,

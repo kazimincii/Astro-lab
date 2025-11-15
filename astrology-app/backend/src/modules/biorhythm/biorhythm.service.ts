@@ -21,7 +21,9 @@ export class BiorhythmService {
     }
 
     const birthDate = new Date(person.birthDate);
-    const daysSinceBirth = Math.floor((date.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24));
+    const daysSinceBirth = Math.floor(
+      (date.getTime() - birthDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
 
     // Biorhythm cycles
     const physicalCycle = 23;
@@ -37,7 +39,13 @@ export class BiorhythmService {
     const criticalDays = this.findCriticalDays(daysSinceBirth, birthDate);
 
     // Find next peaks
-    const nextPeaks = this.findNextPeaks(daysSinceBirth, birthDate, physicalCycle, emotionalCycle, intellectualCycle);
+    const nextPeaks = this.findNextPeaks(
+      daysSinceBirth,
+      birthDate,
+      physicalCycle,
+      emotionalCycle,
+      intellectualCycle,
+    );
 
     const data = {
       physical: Math.round(physical * 100) / 100,
@@ -75,7 +83,13 @@ export class BiorhythmService {
     return criticalDays;
   }
 
-  private findNextPeaks(daysSinceBirth: number, birthDate: Date, physical: number, emotional: number, intellectual: number) {
+  private findNextPeaks(
+    daysSinceBirth: number,
+    birthDate: Date,
+    physical: number,
+    emotional: number,
+    intellectual: number,
+  ) {
     const findNextPeak = (cycle: number) => {
       const currentPhase = (daysSinceBirth % cycle) / cycle;
       let daysUntilPeak;

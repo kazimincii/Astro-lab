@@ -85,16 +85,20 @@ export class JournalService {
 
     const entries = await this.getUserEntries(userId, startDate, new Date());
 
-    const moodCounts = entries.reduce((acc, entry) => {
-      if (entry.mood) {
-        acc[entry.mood] = (acc[entry.mood] || 0) + 1;
-      }
-      return acc;
-    }, {} as Record<number, number>);
+    const moodCounts = entries.reduce(
+      (acc, entry) => {
+        if (entry.mood) {
+          acc[entry.mood] = (acc[entry.mood] || 0) + 1;
+        }
+        return acc;
+      },
+      {} as Record<number, number>,
+    );
 
-    const avgMood = entries.length > 0
-      ? entries.reduce((sum, entry) => sum + (entry.mood || 0), 0) / entries.length
-      : 0;
+    const avgMood =
+      entries.length > 0
+        ? entries.reduce((sum, entry) => sum + (entry.mood || 0), 0) / entries.length
+        : 0;
 
     return {
       totalEntries: entries.length,

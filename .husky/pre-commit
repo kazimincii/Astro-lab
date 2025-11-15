@@ -1,0 +1,1 @@
+cd astrology-app/backend && npx lint-staged

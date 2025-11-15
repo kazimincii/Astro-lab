@@ -54,7 +54,7 @@ export class CreateProfileDto {
 
   @ApiProperty({
     description: 'Birth location longitude',
-    example: -74.0060,
+    example: -74.006,
     type: Number,
   })
   @IsNumber()

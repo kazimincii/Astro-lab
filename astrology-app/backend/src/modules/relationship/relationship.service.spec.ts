@@ -49,12 +49,8 @@ describe('RelationshipService', () => {
     relationshipRepository = module.get<Repository<RelationshipProfile>>(
       getRepositoryToken(RelationshipProfile),
     );
-    personRepository = module.get<Repository<PersonProfile>>(
-      getRepositoryToken(PersonProfile),
-    );
-    birthChartRepository = module.get<Repository<BirthChart>>(
-      getRepositoryToken(BirthChart),
-    );
+    personRepository = module.get<Repository<PersonProfile>>(getRepositoryToken(PersonProfile));
+    birthChartRepository = module.get<Repository<BirthChart>>(getRepositoryToken(BirthChart));
     jest.clearAllMocks();
   });
 
@@ -131,20 +127,18 @@ describe('RelationshipService', () => {
     it('should throw error if person1 not found', async () => {
       mockPersonRepository.findOne.mockResolvedValueOnce(null);
 
-      await expect(
-        service.analyzeCompatibility('user-1', 'person-1', 'person-2'),
-      ).rejects.toThrow('One or both persons not found');
+      await expect(service.analyzeCompatibility('user-1', 'person-1', 'person-2')).rejects.toThrow(
+        'One or both persons not found',
+      );
     });
 
     it('should throw error if person2 not found', async () => {
       const mockPerson1 = { id: 'person-1', name: 'Alice' };
-      mockPersonRepository.findOne
-        .mockResolvedValueOnce(mockPerson1)
-        .mockResolvedValueOnce(null);
+      mockPersonRepository.findOne.mockResolvedValueOnce(mockPerson1).mockResolvedValueOnce(null);
 
-      await expect(
-        service.analyzeCompatibility('user-1', 'person-1', 'person-2'),
-      ).rejects.toThrow('One or both persons not found');
+      await expect(service.analyzeCompatibility('user-1', 'person-1', 'person-2')).rejects.toThrow(
+        'One or both persons not found',
+      );
     });
   });
 

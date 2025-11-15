@@ -16,7 +16,11 @@ export class RelationshipService {
     private birthChartRepository: Repository<BirthChart>,
   ) {}
 
-  async analyzeCompatibility(userId: string, person1Id: string, person2Id: string): Promise<RelationshipProfile> {
+  async analyzeCompatibility(
+    userId: string,
+    person1Id: string,
+    person2Id: string,
+  ): Promise<RelationshipProfile> {
     const person1 = await this.personRepository.findOne({ where: { id: person1Id } });
     const person2 = await this.personRepository.findOne({ where: { id: person2Id } });
 
@@ -63,7 +67,9 @@ export class RelationshipService {
   }
 
   private generateSummary(person1: PersonProfile, person2: PersonProfile, scores: any): string {
-    const avgScore = (Object.values(scores) as number[]).reduce((a: number, b: number) => a + b, 0) / Object.keys(scores).length;
+    const avgScore =
+      (Object.values(scores) as number[]).reduce((a: number, b: number) => a + b, 0) /
+      Object.keys(scores).length;
 
     if (avgScore >= 80) {
       return `${person1.name} and ${person2.name} share an excellent connection with strong potential for a harmonious relationship.`;
@@ -116,10 +122,14 @@ export class RelationshipService {
   }
 
   private generateAdvice(scores: any): string {
-    return 'Focus on open communication, spend quality time together, and appreciate each other\'s differences.';
+    return "Focus on open communication, spend quality time together, and appreciate each other's differences.";
   }
 
-  async getRelationship(userId: string, person1Id: string, person2Id: string): Promise<RelationshipProfile | null> {
+  async getRelationship(
+    userId: string,
+    person1Id: string,
+    person2Id: string,
+  ): Promise<RelationshipProfile | null> {
     return await this.relationshipRepository.findOne({
       where: [
         { userId, person1Id, person2Id },

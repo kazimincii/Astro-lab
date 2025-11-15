@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Param, Body, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { BiorhythmService } from './biorhythm.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -24,7 +18,8 @@ export class BiorhythmController {
   @Post(':personId/calculate')
   @ApiOperation({
     summary: 'Calculate biorhythm cycles',
-    description: 'Calculate physical, emotional, and intellectual biorhythm cycles for a specific person and date. This is a premium action that consumes one action credit.',
+    description:
+      'Calculate physical, emotional, and intellectual biorhythm cycles for a specific person and date. This is a premium action that consumes one action credit.',
   })
   @ApiParam({
     name: 'personId',
@@ -40,9 +35,21 @@ export class BiorhythmController {
         id: { type: 'string' },
         personId: { type: 'string' },
         calculationDate: { type: 'string', format: 'date-time' },
-        physical: { type: 'number', example: 85.5, description: 'Physical cycle percentage (0-100)' },
-        emotional: { type: 'number', example: 62.3, description: 'Emotional cycle percentage (0-100)' },
-        intellectual: { type: 'number', example: 45.8, description: 'Intellectual cycle percentage (0-100)' },
+        physical: {
+          type: 'number',
+          example: 85.5,
+          description: 'Physical cycle percentage (0-100)',
+        },
+        emotional: {
+          type: 'number',
+          example: 62.3,
+          description: 'Emotional cycle percentage (0-100)',
+        },
+        intellectual: {
+          type: 'number',
+          example: 45.8,
+          description: 'Intellectual cycle percentage (0-100)',
+        },
         interpretation: { type: 'string', example: 'Your physical energy is very high today...' },
       },
     },

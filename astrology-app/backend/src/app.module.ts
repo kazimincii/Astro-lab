@@ -71,10 +71,12 @@ import { HealthModule } from './modules/health/health.module';
     }),
 
     // Rate Limiting
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 100,
-    }]),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 100,
+      },
+    ]),
 
     // Scheduling (for daily forecasts, etc.)
     ScheduleModule.forRoot(),

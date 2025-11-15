@@ -1,10 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { SubscriptionPlansService } from './subscription-plans.service';
 import { PlanType } from '../../entities/subscription-plan.entity';
 
@@ -16,7 +11,8 @@ export class SubscriptionPlansController {
   @Get()
   @ApiOperation({
     summary: 'Get all subscription plans',
-    description: 'Retrieve all available subscription plans with details, features, and pricing information.',
+    description:
+      'Retrieve all available subscription plans with details, features, and pricing information.',
   })
   @ApiResponse({
     status: 200,

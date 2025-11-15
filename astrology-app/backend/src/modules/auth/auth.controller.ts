@@ -1,11 +1,5 @@
 import { Controller, Post, Body, UseGuards, Request, HttpCode, HttpStatus } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiBody,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -20,7 +14,8 @@ export class AuthController {
   @Post('register')
   @ApiOperation({
     summary: 'Register new user',
-    description: 'Create a new user account with email and password. Returns access token and user info.',
+    description:
+      'Create a new user account with email and password. Returns access token and user info.',
   })
   @ApiResponse({
     status: 201,
@@ -53,7 +48,8 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'User login',
-    description: 'Authenticate user with email and password. Returns access token and refresh token.',
+    description:
+      'Authenticate user with email and password. Returns access token and refresh token.',
   })
   @ApiResponse({
     status: 200,

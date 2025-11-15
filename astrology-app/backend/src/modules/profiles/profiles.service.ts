@@ -48,10 +48,7 @@ export class ProfilesService {
   }
 
   async update(id: string, userId: string, updateData: Partial<PersonProfile>) {
-    await this.profilesRepository.update(
-      { id, owner: { id: userId } },
-      updateData,
-    );
+    await this.profilesRepository.update({ id, owner: { id: userId } }, updateData);
     return this.findOne(id, userId);
   }
 

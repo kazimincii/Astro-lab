@@ -53,7 +53,12 @@ export class AstroMapService {
     };
   }
 
-  async analyzeCityForPerson(personId: string, city: string, latitude: number, longitude: number): Promise<AstroMap> {
+  async analyzeCityForPerson(
+    personId: string,
+    city: string,
+    latitude: number,
+    longitude: number,
+  ): Promise<AstroMap> {
     let astroMap = await this.astroMapRepository.findOne({ where: { personId } });
 
     if (!astroMap) {

@@ -10,7 +10,10 @@ import { User } from '../../entities/user.entity';
 import { ActionsModule } from '../actions/actions.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([SoulmateProfile, PersonProfile, BirthChart, UserConnection, User]), ActionsModule],
+  imports: [
+    TypeOrmModule.forFeature([SoulmateProfile, PersonProfile, BirthChart, UserConnection, User]),
+    ActionsModule,
+  ],
   controllers: [SoulmateController],
   providers: [SoulmateService],
   exports: [SoulmateService],

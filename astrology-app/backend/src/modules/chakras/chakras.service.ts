@@ -43,9 +43,12 @@ export class ChakrasService {
     // This is a simplified version. In production, this would use actual astrological calculations
     const generateChakraState = (name: string, baseScore: number) => ({
       name,
-      status: baseScore > 60 ? ChakraStatus.OVERACTIVE :
-              baseScore < 40 ? ChakraStatus.UNDERACTIVE :
-              ChakraStatus.BALANCED,
+      status:
+        baseScore > 60
+          ? ChakraStatus.OVERACTIVE
+          : baseScore < 40
+            ? ChakraStatus.UNDERACTIVE
+            : ChakraStatus.BALANCED,
       score: baseScore,
       tips: this.getChakraTips(name),
     });
@@ -119,7 +122,7 @@ export class ChakrasService {
 
   private generateOverallGuidance(chakraStates: any): string {
     const balancedCount = Object.values(chakraStates).filter(
-      (chakra: any) => chakra.status === ChakraStatus.BALANCED
+      (chakra: any) => chakra.status === ChakraStatus.BALANCED,
     ).length;
 
     if (balancedCount >= 5) {

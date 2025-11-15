@@ -1,11 +1,15 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
 import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Body,
+  Param,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ProfilesService } from './profiles.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateProfileDto } from './dto/create-profile.dto';
@@ -21,7 +25,8 @@ export class ProfilesController {
   @Post()
   @ApiOperation({
     summary: 'Create new profile',
-    description: 'Create a new person profile for birth chart calculations. Each user can create multiple profiles (family members, friends, etc.).',
+    description:
+      'Create a new person profile for birth chart calculations. Each user can create multiple profiles (family members, friends, etc.).',
   })
   @ApiResponse({
     status: 201,
@@ -36,7 +41,7 @@ export class ProfilesController {
         birthCity: { type: 'string', example: 'New York' },
         birthCountry: { type: 'string', example: 'United States' },
         birthLatitude: { type: 'number', example: 40.7128 },
-        birthLongitude: { type: 'number', example: -74.0060 },
+        birthLongitude: { type: 'number', example: -74.006 },
         isMainProfile: { type: 'boolean', example: false },
         createdAt: { type: 'string', format: 'date-time' },
       },

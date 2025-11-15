@@ -3,7 +3,12 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { BadRequestException } from '@nestjs/common';
 import { SubscriptionsService } from './subscriptions.service';
-import { Subscription, SubscriptionPlan, SubscriptionStatus, BillingPeriod } from '../../entities/subscription.entity';
+import {
+  Subscription,
+  SubscriptionPlan,
+  SubscriptionStatus,
+  BillingPeriod,
+} from '../../entities/subscription.entity';
 import { User } from '../../entities/user.entity';
 import { PersonProfile } from '../../entities/person-profile.entity';
 import { ActionsService } from '../actions/actions.service';
@@ -74,7 +79,9 @@ describe('SubscriptionsService', () => {
     }).compile();
 
     service = module.get<SubscriptionsService>(SubscriptionsService);
-    subscriptionsRepository = module.get<Repository<Subscription>>(getRepositoryToken(Subscription));
+    subscriptionsRepository = module.get<Repository<Subscription>>(
+      getRepositoryToken(Subscription),
+    );
     usersRepository = module.get<Repository<User>>(getRepositoryToken(User));
     profilesRepository = module.get<Repository<PersonProfile>>(getRepositoryToken(PersonProfile));
     actionsService = module.get<ActionsService>(ActionsService);
@@ -388,15 +395,15 @@ describe('SubscriptionsService', () => {
 
       mockSubscriptionsRepository.findOne.mockResolvedValue(mockExistingTrial);
 
-      await expect(
-        service.startTrial('user-1', SubscriptionPlan.STANDARD),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.startTrial('user-1', SubscriptionPlan.STANDARD)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw error for non-paid plan', async () => {
-      await expect(
-        service.startTrial('user-1', SubscriptionPlan.BASIC),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.startTrial('user-1', SubscriptionPlan.BASIC)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -523,9 +530,9 @@ describe('SubscriptionsService', () => {
 
       mockSubscriptionsRepository.findOne.mockResolvedValue(mockBasicSub);
 
-      await expect(
-        service.cancelSubscription('user-1', 'Test'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.cancelSubscription('user-1', 'Test')).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 

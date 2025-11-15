@@ -1,10 +1,5 @@
 import { Controller, Get, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { ActionsService } from './actions.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -18,7 +13,8 @@ export class ActionsController {
   @Get('remaining')
   @ApiOperation({
     summary: 'Get remaining actions',
-    description: 'Retrieve information about remaining premium actions for the current user based on their subscription plan.',
+    description:
+      'Retrieve information about remaining premium actions for the current user based on their subscription plan.',
   })
   @ApiResponse({
     status: 200,

@@ -1,10 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { RelationshipService } from './relationship.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -23,7 +18,8 @@ export class RelationshipController {
   @Post('analyze')
   @ApiOperation({
     summary: 'Analyze relationship compatibility',
-    description: 'Generate a comprehensive astrological compatibility analysis between two profiles. Includes synastry aspects, composite chart insights, and relationship dynamics.',
+    description:
+      'Generate a comprehensive astrological compatibility analysis between two profiles. Includes synastry aspects, composite chart insights, and relationship dynamics.',
   })
   @ApiResponse({
     status: 201,
@@ -57,8 +53,16 @@ export class RelationshipController {
             spiritual: { type: 'number', example: 65 },
           },
         },
-        strengths: { type: 'array', items: { type: 'string' }, example: ['Strong emotional bond', 'Shared values'] },
-        challenges: { type: 'array', items: { type: 'string' }, example: ['Communication differences'] },
+        strengths: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['Strong emotional bond', 'Shared values'],
+        },
+        challenges: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['Communication differences'],
+        },
         advice: { type: 'string', example: 'Focus on open communication and mutual understanding' },
         createdAt: { type: 'string', format: 'date-time' },
       },
@@ -68,14 +72,15 @@ export class RelationshipController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 403, description: 'Action limit reached or premium feature' })
   @ApiResponse({ status: 404, description: 'One or both profiles not found' })
-  async analyzeCompatibility(
-    @Req() req,
-    @Body() body: AnalyzeCompatibilityDto,
-  ) {
+  async analyzeCompatibility(@Req() req, @Body() body: AnalyzeCompatibilityDto) {
     // Check and consume premium action
     await this.actionsService.checkAndConsumeAction(req.user.id);
 
-    return await this.relationshipService.analyzeCompatibility(req.user.id, body.person1Id, body.person2Id);
+    return await this.relationshipService.analyzeCompatibility(
+      req.user.id,
+      body.person1Id,
+      body.person2Id,
+    );
   }
 
   @Get()

@@ -1,4 +1,17 @@
-import { Controller, Post, Get, Put, Delete, Param, Body, Query, UseGuards, Req, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Put,
+  Delete,
+  Param,
+  Body,
+  Query,
+  UseGuards,
+  Req,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -22,7 +35,8 @@ export class JournalController {
   @Post()
   @ApiOperation({
     summary: 'Create journal entry',
-    description: 'Create a new journal entry with mood tracking, content, and optional tags. Entries can be linked to specific person profiles.',
+    description:
+      'Create a new journal entry with mood tracking, content, and optional tags. Entries can be linked to specific person profiles.',
   })
   @ApiResponse({
     status: 201,
@@ -117,7 +131,8 @@ export class JournalController {
   @Get()
   @ApiOperation({
     summary: 'Get user journal entries',
-    description: 'Retrieve all journal entries for the authenticated user, optionally filtered by date range.',
+    description:
+      'Retrieve all journal entries for the authenticated user, optionally filtered by date range.',
   })
   @ApiQuery({
     name: 'startDate',

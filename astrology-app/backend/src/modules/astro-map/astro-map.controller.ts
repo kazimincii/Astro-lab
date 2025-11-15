@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Put, Param, Body, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { AstroMapService } from './astro-map.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -25,7 +19,8 @@ export class AstroMapController {
   @Post(':personId/generate')
   @ApiOperation({
     summary: 'Generate astrocartography map',
-    description: 'Generate a complete astrocartography map showing planetary lines across the world for relocation analysis. This is a premium action that consumes one action credit.',
+    description:
+      'Generate a complete astrocartography map showing planetary lines across the world for relocation analysis. This is a premium action that consumes one action credit.',
   })
   @ApiParam({
     name: 'personId',
@@ -49,7 +44,8 @@ export class AstroMapController {
   @Post(':personId/analyze-city')
   @ApiOperation({
     summary: 'Analyze city for person',
-    description: 'Analyze how a specific city location affects a person based on their astrocartography. Provides life, love, and career ratings. This is a premium action that consumes one action credit.',
+    description:
+      'Analyze how a specific city location affects a person based on their astrocartography. Provides life, love, and career ratings. This is a premium action that consumes one action credit.',
   })
   @ApiParam({
     name: 'personId',
@@ -71,7 +67,12 @@ export class AstroMapController {
     // Check and consume premium action for city analysis
     await this.actionsService.checkAndConsumeAction(req.user.id);
 
-    return await this.astroMapService.analyzeCityForPerson(personId, dto.city, dto.latitude, dto.longitude);
+    return await this.astroMapService.analyzeCityForPerson(
+      personId,
+      dto.city,
+      dto.latitude,
+      dto.longitude,
+    );
   }
 
   @Get(':personId')

@@ -65,7 +65,7 @@ export class AuraScanService {
               },
               {
                 type: 'text',
-                text: 'Please analyze this person\'s aura and provide a personality reading.',
+                text: "Please analyze this person's aura and provide a personality reading.",
               },
             ],
           },

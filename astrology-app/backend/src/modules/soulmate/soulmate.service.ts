@@ -4,7 +4,11 @@ import { Repository } from 'typeorm';
 import { SoulmateProfile } from '../../entities/soulmate.entity';
 import { PersonProfile } from '../../entities/person-profile.entity';
 import { BirthChart } from '../../entities/birth-chart.entity';
-import { UserConnection, ConnectionType, ConnectionStatus } from '../../entities/user-connection.entity';
+import {
+  UserConnection,
+  ConnectionType,
+  ConnectionStatus,
+} from '../../entities/user-connection.entity';
 import { User } from '../../entities/user.entity';
 
 @Injectable()
@@ -64,11 +68,15 @@ export class SoulmateService {
 
   private generateDescription(archetype: string): string {
     const descriptions = {
-      'The Romantic Dreamer': 'Your soulmate is someone who shares your vision of love as a transformative force...',
-      'The Loyal Companion': 'Your ideal partner values loyalty, stability, and building a strong foundation together...',
-      'The Passionate Adventurer': 'Your soulmate brings excitement and spontaneity into your life...',
+      'The Romantic Dreamer':
+        'Your soulmate is someone who shares your vision of love as a transformative force...',
+      'The Loyal Companion':
+        'Your ideal partner values loyalty, stability, and building a strong foundation together...',
+      'The Passionate Adventurer':
+        'Your soulmate brings excitement and spontaneity into your life...',
       'The Wise Protector': 'Your ideal partner provides wisdom, security, and emotional depth...',
-      'The Creative Muse': 'Your soulmate inspires your creativity and shares your artistic vision...',
+      'The Creative Muse':
+        'Your soulmate inspires your creativity and shares your artistic vision...',
       'The Spiritual Partner': 'Your ideal partner walks a spiritual path alongside you...',
     };
     return descriptions[archetype] || 'Your soulmate complements your unique essence...';
@@ -76,10 +84,22 @@ export class SoulmateService {
 
   private generateMeetingScenarios(archetype: string) {
     return [
-      { context: 'work', description: 'Professional environment where skills align', probability: 30 },
-      { context: 'online', description: 'Digital connection through shared interests', probability: 25 },
+      {
+        context: 'work',
+        description: 'Professional environment where skills align',
+        probability: 30,
+      },
+      {
+        context: 'online',
+        description: 'Digital connection through shared interests',
+        probability: 25,
+      },
       { context: 'travel', description: 'Adventure or journey to new places', probability: 20 },
-      { context: 'spiritual', description: 'Spiritual gathering or transformative event', probability: 15 },
+      {
+        context: 'spiritual',
+        description: 'Spiritual gathering or transformative event',
+        probability: 15,
+      },
       { context: 'social', description: 'Through friends or social activities', probability: 10 },
     ];
   }
@@ -123,7 +143,11 @@ export class SoulmateService {
     return [];
   }
 
-  async createConnection(user1Id: string, user2Id: string, type: ConnectionType): Promise<UserConnection> {
+  async createConnection(
+    user1Id: string,
+    user2Id: string,
+    type: ConnectionType,
+  ): Promise<UserConnection> {
     const connection = this.connectionRepository.create({
       user1Id,
       user2Id,

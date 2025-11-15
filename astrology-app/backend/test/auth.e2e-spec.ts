@@ -60,7 +60,7 @@ describe('Auth (e2e)', () => {
           name: 'Test User',
         })
         .expect(201)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('access_token');
           expect(res.body).toHaveProperty('user');
         });
@@ -111,7 +111,7 @@ describe('Auth (e2e)', () => {
           password: 'Password123!',
         })
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('access_token');
         });
     });
@@ -131,13 +131,11 @@ describe('Auth (e2e)', () => {
 
   describe('/auth/me (GET)', () => {
     it('should return user info with valid token', async () => {
-      const registerResponse = await request(app.getHttpServer())
-        .post('/auth/register')
-        .send({
-          email: 'me@example.com',
-          password: 'Password123!',
-          name: 'Me User',
-        });
+      const registerResponse = await request(app.getHttpServer()).post('/auth/register').send({
+        email: 'me@example.com',
+        password: 'Password123!',
+        name: 'Me User',
+      });
 
       const token = registerResponse.body.access_token;
 
@@ -145,7 +143,7 @@ describe('Auth (e2e)', () => {
         .get('/auth/me')
         .set('Authorization', `Bearer ${token}`)
         .expect(200)
-        .expect((res) => {
+        .expect(res => {
           expect(res.body).toHaveProperty('email');
           expect(res.body).toHaveProperty('name');
         });

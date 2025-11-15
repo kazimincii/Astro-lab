@@ -7,7 +7,7 @@ export class UpdateSubscriptionSchema1700000000002 implements MigrationInterface
     // Check if userId column exists, if not add it
     const table = await queryRunner.getTable('subscriptions');
     const userIdColumn = table?.findColumnByName('userId');
-    
+
     if (!userIdColumn) {
       await queryRunner.addColumn(
         'subscriptions',
@@ -40,7 +40,7 @@ export class UpdateSubscriptionSchema1700000000002 implements MigrationInterface
 
     // Check if planType column exists, if not add it
     const planTypeColumn = table?.findColumnByName('planType');
-    
+
     if (!planTypeColumn) {
       await queryRunner.addColumn(
         'subscriptions',
@@ -61,7 +61,7 @@ export class UpdateSubscriptionSchema1700000000002 implements MigrationInterface
 
     // Ensure billingPeriod column exists (replacing old billingCycle if needed)
     const billingPeriodColumn = table?.findColumnByName('billingPeriod');
-    
+
     if (!billingPeriodColumn) {
       await queryRunner.addColumn(
         'subscriptions',

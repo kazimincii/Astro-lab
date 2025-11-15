@@ -154,7 +154,10 @@ describe('ProfilesService', () => {
       const result = await service.remove('profile-1', 'user-1');
 
       expect(result).toEqual({ message: 'Profile deleted successfully' });
-      expect(mockRepository.delete).toHaveBeenCalledWith({ id: 'profile-1', owner: { id: 'user-1' } });
+      expect(mockRepository.delete).toHaveBeenCalledWith({
+        id: 'profile-1',
+        owner: { id: 'user-1' },
+      });
     });
   });
 });

@@ -4,7 +4,12 @@ import { Repository } from 'typeorm';
 import { BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PaymentsService } from './payments.service';
-import { Subscription, SubscriptionStatus, PlanType, BillingPeriod } from '../../entities/subscription.entity';
+import {
+  Subscription,
+  SubscriptionStatus,
+  PlanType,
+  BillingPeriod,
+} from '../../entities/subscription.entity';
 import { User } from '../../entities/user.entity';
 
 describe('PaymentsService', () => {
@@ -97,9 +102,9 @@ describe('PaymentsService', () => {
     it('should throw error when no active subscription found', async () => {
       mockSubscriptionRepository.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.createPortalSession('user-1', 'https://return.url'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.createPortalSession('user-1', 'https://return.url')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw error when subscription has no Stripe customer ID', async () => {
@@ -112,9 +117,9 @@ describe('PaymentsService', () => {
 
       mockSubscriptionRepository.findOne.mockResolvedValue(mockSubscription);
 
-      await expect(
-        service.createPortalSession('user-1', 'https://return.url'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.createPortalSession('user-1', 'https://return.url')).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
@@ -122,9 +127,7 @@ describe('PaymentsService', () => {
     it('should throw error when no active subscription found', async () => {
       mockSubscriptionRepository.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.cancelSubscription('user-1'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.cancelSubscription('user-1')).rejects.toThrow(BadRequestException);
     });
 
     it('should throw error when subscription has no Stripe subscription ID', async () => {
@@ -137,9 +140,7 @@ describe('PaymentsService', () => {
 
       mockSubscriptionRepository.findOne.mockResolvedValue(mockSubscription);
 
-      await expect(
-        service.cancelSubscription('user-1'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.cancelSubscription('user-1')).rejects.toThrow(BadRequestException);
     });
   });
 
@@ -147,9 +148,7 @@ describe('PaymentsService', () => {
     it('should throw error when no active subscription found', async () => {
       mockSubscriptionRepository.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.getUpcomingInvoice('user-1'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.getUpcomingInvoice('user-1')).rejects.toThrow(BadRequestException);
     });
 
     it('should throw error when subscription has no Stripe subscription ID', async () => {
@@ -162,9 +161,7 @@ describe('PaymentsService', () => {
 
       mockSubscriptionRepository.findOne.mockResolvedValue(mockSubscription);
 
-      await expect(
-        service.getUpcomingInvoice('user-1'),
-      ).rejects.toThrow(BadRequestException);
+      await expect(service.getUpcomingInvoice('user-1')).rejects.toThrow(BadRequestException);
     });
   });
 });

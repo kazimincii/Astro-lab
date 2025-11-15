@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Param, Body, Query } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-  ApiQuery,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CosmicClimateService } from './cosmic-climate.service';
 import { AddReactionDto } from './dto/add-reaction.dto';
 
@@ -16,12 +10,13 @@ export class CosmicClimateController {
 
   @Get('today')
   @ApiOperation({
-    summary: 'Get today\'s cosmic climate',
-    description: 'Retrieve the daily cosmic climate post with astrological insights, planetary influences, and guidance for the day.',
+    summary: "Get today's cosmic climate",
+    description:
+      'Retrieve the daily cosmic climate post with astrological insights, planetary influences, and guidance for the day.',
   })
   @ApiResponse({
     status: 200,
-    description: 'Today\'s cosmic climate retrieved successfully',
+    description: "Today's cosmic climate retrieved successfully",
     schema: {
       type: 'object',
       properties: {
@@ -29,7 +24,11 @@ export class CosmicClimateController {
         date: { type: 'string', format: 'date' },
         title: { type: 'string', example: 'Mercury Retrograde Continues' },
         content: { type: 'string', example: 'Today the cosmic energy is focused on...' },
-        mainInfluences: { type: 'array', items: { type: 'string' }, example: ['Mercury Retrograde', 'Venus in Taurus'] },
+        mainInfluences: {
+          type: 'array',
+          items: { type: 'string' },
+          example: ['Mercury Retrograde', 'Venus in Taurus'],
+        },
         mood: { type: 'string', example: 'Reflective and introspective' },
         recommendations: { type: 'array', items: { type: 'string' } },
         warnings: { type: 'array', items: { type: 'string' } },
@@ -88,10 +87,7 @@ export class CosmicClimateController {
     @Query('startDate') startDate: string,
     @Query('endDate') endDate: string,
   ) {
-    return await this.climateService.getPostsByDateRange(
-      new Date(startDate),
-      new Date(endDate),
-    );
+    return await this.climateService.getPostsByDateRange(new Date(startDate), new Date(endDate));
   }
 
   @Post(':postId/react')

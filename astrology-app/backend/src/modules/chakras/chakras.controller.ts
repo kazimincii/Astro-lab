@@ -1,11 +1,5 @@
 import { Controller, Get, Post, Param, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { ChakrasService } from './chakras.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -23,7 +17,8 @@ export class ChakrasController {
   @Post(':personId/generate')
   @ApiOperation({
     summary: 'Generate chakra profile',
-    description: 'Generate a detailed chakra energy analysis and balancing recommendations based on astrological chart. This is a premium action that consumes one action credit.',
+    description:
+      'Generate a detailed chakra energy analysis and balancing recommendations based on astrological chart. This is a premium action that consumes one action credit.',
   })
   @ApiParam({
     name: 'personId',
@@ -45,13 +40,21 @@ export class ChakrasController {
             properties: {
               name: { type: 'string', example: 'Root Chakra' },
               energyLevel: { type: 'number', example: 75, description: 'Energy level (0-100)' },
-              balance: { type: 'string', enum: ['blocked', 'balanced', 'overactive'], example: 'balanced' },
+              balance: {
+                type: 'string',
+                enum: ['blocked', 'balanced', 'overactive'],
+                example: 'balanced',
+              },
               description: { type: 'string' },
               affirmations: { type: 'array', items: { type: 'string' } },
             },
           },
         },
-        overallBalance: { type: 'number', example: 68.5, description: 'Overall chakra balance (0-100)' },
+        overallBalance: {
+          type: 'number',
+          example: 68.5,
+          description: 'Overall chakra balance (0-100)',
+        },
         recommendations: { type: 'array', items: { type: 'string' } },
       },
     },

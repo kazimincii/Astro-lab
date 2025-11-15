@@ -1,10 +1,5 @@
 import { Controller, Post, Get, Body, UseGuards, Request } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { TarotService } from './tarot.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateTarotReadingDto } from './dto/create-reading.dto';
@@ -19,7 +14,8 @@ export class TarotController {
   @Post('reading')
   @ApiOperation({
     summary: 'Create tarot reading',
-    description: 'Perform a tarot card reading with AI-generated interpretation. Choose from various spread types for different areas of life.',
+    description:
+      'Perform a tarot card reading with AI-generated interpretation. Choose from various spread types for different areas of life.',
   })
   @ApiResponse({
     status: 201,
@@ -43,7 +39,10 @@ export class TarotController {
             },
           },
         },
-        interpretation: { type: 'string', example: 'Your reading suggests a journey of new beginnings...' },
+        interpretation: {
+          type: 'string',
+          example: 'Your reading suggests a journey of new beginnings...',
+        },
         advice: { type: 'string', example: 'Trust in the process and embrace change' },
         createdAt: { type: 'string', format: 'date-time' },
       },

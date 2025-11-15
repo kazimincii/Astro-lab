@@ -1,11 +1,5 @@
 import { Controller, Post, Get, Param, Body, UseGuards, Req } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { AuraScanService } from './aura-scan.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ActionsService } from '../actions/actions.service';
@@ -24,7 +18,8 @@ export class AuraScanController {
   @Post('scan')
   @ApiOperation({
     summary: 'Perform aura scan',
-    description: 'Analyze an image to detect aura colors and energy patterns. Uses AI-powered image analysis to identify dominant colors, energy levels, and provide spiritual interpretations. This is a premium action that consumes one action credit.',
+    description:
+      'Analyze an image to detect aura colors and energy patterns. Uses AI-powered image analysis to identify dominant colors, energy levels, and provide spiritual interpretations. This is a premium action that consumes one action credit.',
   })
   @ApiResponse({
     status: 201,
@@ -39,7 +34,10 @@ export class AuraScanController {
         dominantColor: { type: 'string', example: 'Blue' },
         secondaryColors: { type: 'array', items: { type: 'string' }, example: ['Purple', 'Green'] },
         energyLevel: { type: 'number', example: 75, description: 'Energy level (0-100)' },
-        interpretation: { type: 'string', example: 'Blue aura indicates calmness, communication, and spiritual awareness...' },
+        interpretation: {
+          type: 'string',
+          example: 'Blue aura indicates calmness, communication, and spiritual awareness...',
+        },
         characteristics: { type: 'array', items: { type: 'string' } },
         recommendations: { type: 'array', items: { type: 'string' } },
         chakraAlignment: {

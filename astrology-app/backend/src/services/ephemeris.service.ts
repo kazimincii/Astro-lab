@@ -145,7 +145,9 @@ export class EphemerisService {
         // Set ephemeris path (use default path or custom)
         swisseph.swe_set_ephe_path(__dirname + '/../../ephemeris');
       } catch (error) {
-        this.logger.warn('Unable to configure Swiss Ephemeris path, falling back to placeholder data.');
+        this.logger.warn(
+          'Unable to configure Swiss Ephemeris path, falling back to placeholder data.',
+        );
       }
     } else {
       this.logger.warn(
@@ -230,9 +232,7 @@ export class EphemerisService {
 
     const julianDay = this.dateToJulianDay(progressedDate, birthTime);
     if (!this.hasNativeEphemeris) {
-      return this.generateFallbackPlanets(
-        this.createSeed(progressedDate, birthTime, 0, 0),
-      );
+      return this.generateFallbackPlanets(this.createSeed(progressedDate, birthTime, 0, 0));
     }
     return this.calculatePlanets(julianDay);
   }
@@ -264,11 +264,7 @@ export class EphemerisService {
 
     for (const planetId of planetsToCalculate) {
       try {
-        const result = swe_calc_ut(
-          julianDay,
-          planetId,
-          SWISSEPH_CONSTANTS.SEFLG_SWIEPH,
-        );
+        const result = swe_calc_ut(julianDay, planetId, SWISSEPH_CONSTANTS.SEFLG_SWIEPH);
 
         // Check if result is valid and has longitude property
         if (!result || !('longitude' in result)) {
@@ -277,9 +273,10 @@ export class EphemerisService {
         }
 
         const planetNameResult = swe_get_planet_name(planetId);
-        const planetName = typeof planetNameResult === 'string'
-          ? planetNameResult
-          : planetNameResult?.name || `Planet ${planetId}`;
+        const planetName =
+          typeof planetNameResult === 'string'
+            ? planetNameResult
+            : planetNameResult?.name || `Planet ${planetId}`;
 
         const longitude = result.longitude;
         const signIndex = Math.floor(longitude / 30);
@@ -365,7 +362,7 @@ export class EphemerisService {
     planets: PlanetPosition[],
     houses: HousePosition[],
   ): PlanetPosition[] {
-    return planets.map((planet) => {
+    return planets.map(planet => {
       const house = this.findHouseForLongitude(planet.longitude, houses);
       return { ...planet, house };
     });
@@ -581,7 +578,7 @@ export class EphemerisService {
       const longitude = this.normalizeAngle(seed * 0.017 + index * 27.3 + (seed % 11));
       const latitude = ((seed % 20) - 10) / 5;
       const distance = 1 + ((seed + index * 13) % 100) / 500;
-      const speedLongitude = (((seed >> (index % 5)) % 10) - 5) / 20;
+      const speedLongitude = (((seed >> index % 5) % 10) - 5) / 20;
       const signIndex = Math.floor(longitude / 30) % 12;
 
       return {
@@ -641,12 +638,7 @@ export class EphemerisService {
     };
   }
 
-  private createSeed(
-    date: Date,
-    time: string,
-    latitude: number,
-    longitude: number,
-  ) {
+  private createSeed(date: Date, time: string, latitude: number, longitude: number) {
     const [hours, minutes] = time.split(':').map(Number);
     return (
       date.getUTCFullYear() * 1000 +

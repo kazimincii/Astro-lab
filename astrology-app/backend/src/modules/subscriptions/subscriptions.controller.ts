@@ -1,17 +1,8 @@
 import { Body, Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { SubscriptionsService } from './subscriptions.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  CancelSubscriptionDto,
-  ChangePlanDto,
-  StartTrialDto,
-} from './dto/manage-plan.dto';
+import { CancelSubscriptionDto, ChangePlanDto, StartTrialDto } from './dto/manage-plan.dto';
 
 @ApiTags('subscriptions')
 @ApiBearerAuth('JWT-auth')
@@ -23,7 +14,8 @@ export class SubscriptionsController {
   @Get('plans')
   @ApiOperation({
     summary: 'Get available subscription plans',
-    description: 'Retrieve all available subscription plans with their features, pricing, and limits.',
+    description:
+      'Retrieve all available subscription plans with their features, pricing, and limits.',
   })
   @ApiResponse({
     status: 200,
@@ -35,9 +27,16 @@ export class SubscriptionsController {
         properties: {
           key: { type: 'string', example: 'standard' },
           label: { type: 'string', example: 'Standard' },
-          description: { type: 'string', example: 'More daily actions, more profiles, deeper insights.' },
+          description: {
+            type: 'string',
+            example: 'More daily actions, more profiles, deeper insights.',
+          },
           trialEligible: { type: 'boolean', example: true },
-          features: { type: 'array', items: { type: 'string' }, example: ['4 premium actions per day', 'Up to 10 profiles'] },
+          features: {
+            type: 'array',
+            items: { type: 'string' },
+            example: ['4 premium actions per day', 'Up to 10 profiles'],
+          },
           dailyActionLimit: { type: 'number', example: 4 },
           profileLimit: { type: 'number', example: 10 },
           unlimitedActions: { type: 'boolean', example: false },
@@ -60,7 +59,7 @@ export class SubscriptionsController {
   @Get('current')
   @ApiOperation({
     summary: 'Get current subscription',
-    description: 'Retrieve the authenticated user\'s current active subscription or trial details.',
+    description: "Retrieve the authenticated user's current active subscription or trial details.",
   })
   @ApiResponse({
     status: 200,
@@ -91,7 +90,8 @@ export class SubscriptionsController {
   @Get('usage')
   @ApiOperation({
     summary: 'Get usage summary',
-    description: 'Retrieve current usage statistics including action counts, remaining actions, and profile usage.',
+    description:
+      'Retrieve current usage statistics including action counts, remaining actions, and profile usage.',
   })
   @ApiResponse({
     status: 200,
@@ -119,7 +119,8 @@ export class SubscriptionsController {
   @Post('trial')
   @ApiOperation({
     summary: 'Start free trial',
-    description: 'Start a 7-day free trial for Standard or Premium plan. Users can only start one trial per account.',
+    description:
+      'Start a 7-day free trial for Standard or Premium plan. Users can only start one trial per account.',
   })
   @ApiResponse({
     status: 201,
@@ -137,7 +138,10 @@ export class SubscriptionsController {
       },
     },
   })
-  @ApiResponse({ status: 400, description: 'Trial not eligible for this plan or user already used trial' })
+  @ApiResponse({
+    status: 400,
+    description: 'Trial not eligible for this plan or user already used trial',
+  })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 409, description: 'User already has an active subscription or trial' })
   async startTrial(@Body() body: StartTrialDto, @Request() req) {
@@ -147,7 +151,8 @@ export class SubscriptionsController {
   @Post('upgrade')
   @ApiOperation({
     summary: 'Upgrade or change subscription plan',
-    description: 'Upgrade to a higher tier plan or change billing cycle. Processes payment via Stripe and updates user subscription.',
+    description:
+      'Upgrade to a higher tier plan or change billing cycle. Processes payment via Stripe and updates user subscription.',
   })
   @ApiResponse({
     status: 201,
@@ -173,17 +178,14 @@ export class SubscriptionsController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 402, description: 'Payment required - Stripe payment failed' })
   async changePlan(@Body() body: ChangePlanDto, @Request() req) {
-    return this.subscriptionsService.changePlan(
-      req.user.id,
-      body.plan,
-      body.billingCycle,
-    );
+    return this.subscriptionsService.changePlan(req.user.id, body.plan, body.billingCycle);
   }
 
   @Post('cancel')
   @ApiOperation({
     summary: 'Cancel subscription',
-    description: 'Cancel the current active subscription. Subscription will remain active until the end of the current billing period.',
+    description:
+      'Cancel the current active subscription. Subscription will remain active until the end of the current billing period.',
   })
   @ApiResponse({
     status: 200,
@@ -198,26 +200,24 @@ export class SubscriptionsController {
         cancelledAt: { type: 'string', format: 'date-time' },
         cancellationReason: { type: 'string', example: 'Too expensive for my needs' },
         currentPeriodEnd: { type: 'string', format: 'date-time' },
-        message: { type: 'string', example: 'Subscription will be cancelled at the end of the current period' },
+        message: {
+          type: 'string',
+          example: 'Subscription will be cancelled at the end of the current period',
+        },
       },
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'No active subscription found' })
-  async cancelSubscription(
-    @Body() body: CancelSubscriptionDto,
-    @Request() req,
-  ) {
-    return this.subscriptionsService.cancelSubscription(
-      req.user.id,
-      body.reason,
-    );
+  async cancelSubscription(@Body() body: CancelSubscriptionDto, @Request() req) {
+    return this.subscriptionsService.cancelSubscription(req.user.id, body.reason);
   }
 
   @Post('downgrade')
   @ApiOperation({
     summary: 'Downgrade to Basic plan',
-    description: 'Immediately downgrade to the free Basic plan. Cancels any active paid subscription.',
+    description:
+      'Immediately downgrade to the free Basic plan. Cancels any active paid subscription.',
   })
   @ApiResponse({
     status: 200,
@@ -235,7 +235,10 @@ export class SubscriptionsController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 400, description: 'Already on Basic plan or no subscription to downgrade' })
+  @ApiResponse({
+    status: 400,
+    description: 'Already on Basic plan or no subscription to downgrade',
+  })
   async downgrade(@Request() req) {
     return this.subscriptionsService.downgradeToBasic(req.user.id);
   }

@@ -11,13 +11,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-  ApiHeader,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiHeader } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PaymentsService } from './payments.service';
 import { CreateCheckoutDto, CreatePortalDto } from './dto/payment.dto';
@@ -32,7 +26,8 @@ export class PaymentsController {
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Create Stripe checkout session',
-    description: 'Create a Stripe checkout session for subscribing to a paid plan. Returns a session URL to redirect the user.',
+    description:
+      'Create a Stripe checkout session for subscribing to a paid plan. Returns a session URL to redirect the user.',
   })
   @ApiResponse({
     status: 201,
@@ -63,7 +58,8 @@ export class PaymentsController {
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Create Stripe customer portal session',
-    description: 'Create a Stripe customer portal session where users can manage their subscription, payment methods, and billing history.',
+    description:
+      'Create a Stripe customer portal session where users can manage their subscription, payment methods, and billing history.',
   })
   @ApiResponse({
     status: 201,
@@ -87,7 +83,8 @@ export class PaymentsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiOperation({
     summary: 'Cancel active subscription',
-    description: 'Cancel the user\'s active Stripe subscription. The subscription will remain active until the end of the current billing period.',
+    description:
+      "Cancel the user's active Stripe subscription. The subscription will remain active until the end of the current billing period.",
   })
   @ApiResponse({
     status: 204,
@@ -104,7 +101,7 @@ export class PaymentsController {
   @ApiBearerAuth('JWT-auth')
   @ApiOperation({
     summary: 'Get upcoming invoice',
-    description: 'Retrieve details about the next upcoming invoice for the user\'s subscription.',
+    description: "Retrieve details about the next upcoming invoice for the user's subscription.",
   })
   @ApiResponse({
     status: 200,
@@ -132,7 +129,8 @@ export class PaymentsController {
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Handle Stripe webhook events',
-    description: 'Webhook endpoint for Stripe to send payment and subscription events. This endpoint is public and requires Stripe signature verification.',
+    description:
+      'Webhook endpoint for Stripe to send payment and subscription events. This endpoint is public and requires Stripe signature verification.',
   })
   @ApiHeader({
     name: 'stripe-signature',

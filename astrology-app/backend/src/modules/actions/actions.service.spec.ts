@@ -66,7 +66,12 @@ describe('ActionsService', () => {
       mockActionLogRepository.create.mockReturnValue(savedAction);
       mockActionLogRepository.save.mockResolvedValue(savedAction);
 
-      const result = await service.logAction('user-1', ActionType.AI_ASSISTANT, { prompt: 'hello' }, { isPremium: true });
+      const result = await service.logAction(
+        'user-1',
+        ActionType.AI_ASSISTANT,
+        { prompt: 'hello' },
+        { isPremium: true },
+      );
 
       expect(mockActionLogRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -86,7 +91,12 @@ describe('ActionsService', () => {
       mockActionLogRepository.create.mockReturnValue({});
       mockActionLogRepository.save.mockResolvedValue({});
 
-      await service.logPremiumAction('user-1', ActionType.COFFEE_READING, { cupId: 'abc' }, 'Coffee reading');
+      await service.logPremiumAction(
+        'user-1',
+        ActionType.COFFEE_READING,
+        { cupId: 'abc' },
+        'Coffee reading',
+      );
 
       expect(mockActionLogRepository.create).toHaveBeenCalledWith(
         expect.objectContaining({
