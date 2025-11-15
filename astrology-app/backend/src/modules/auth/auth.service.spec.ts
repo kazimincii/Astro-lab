@@ -78,7 +78,7 @@ describe('AuthService', () => {
       );
 
       expect(result).toHaveProperty('user');
-      expect(result).toHaveProperty('access_token');
+      expect(result).toHaveProperty('accessToken');
       expect(mockUserRepository.findOne).toHaveBeenCalledWith({
         where: { email: registerDto.email },
       });
@@ -94,7 +94,7 @@ describe('AuthService', () => {
       mockUserRepository.findOne.mockResolvedValue(mockUser);
 
       await expect(
-        service.register(registerDto.email, registerDto.password, registerDto.name),
+        service.register(registerDto),
       ).rejects.toThrow(ConflictException);
     });
   });
@@ -135,8 +135,8 @@ describe('AuthService', () => {
 
       const result = await service.login(mockUser as User);
 
-      expect(result).toHaveProperty('access_token');
-      expect(result.access_token).toBe('jwt-token');
+      expect(result).toHaveProperty('accessToken');
+      expect(result.accessToken).toBe('jwt-token');
       expect(mockJwtService.sign).toHaveBeenCalledWith({
         email: mockUser.email,
         sub: mockUser.id,

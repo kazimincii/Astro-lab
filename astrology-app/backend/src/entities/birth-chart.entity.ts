@@ -14,8 +14,11 @@ export class BirthChart {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  personId: string;
+
   @ManyToOne(() => PersonProfile, profile => profile.birthCharts)
-  @JoinColumn()
+  @JoinColumn({ name: 'personId' })
   profile: PersonProfile;
 
   // Chart Data (JSON)

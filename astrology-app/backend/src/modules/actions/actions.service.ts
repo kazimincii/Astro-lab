@@ -1,10 +1,9 @@
 import { Injectable, ForbiddenException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThanOrEqual } from 'typeorm';
-import { ActionLog, ActionType } from '@/entities/action-log.entity';
-import { Subscription } from '@/entities/subscription.entity';
-import { Trial } from '@/entities/trial.entity';
-import { PlanType } from '@/entities/subscription-plan.entity';
+import { ActionLog, ActionType } from '../../entities/action-log.entity';
+import { Subscription, PlanType, SubscriptionStatus } from '../../entities/subscription.entity';
+import { Trial, TrialStatus } from '../../entities/trial.entity';
 
 @Injectable()
 export class ActionsService {
@@ -54,21 +53,21 @@ export class ActionsService {
   async getUserPlan(userId: string): Promise<PlanType> {
     // Check for active trial first
     const activeTrial = await this.trialRepository.findOne({
-      where: { userId, status: 'active' },
+      where: { userId, status: TrialStatus.ACTIVE },
     });
 
     if (activeTrial && new Date() <= activeTrial.endDate) {
-      return activeTrial.planType as PlanType;
+      return activeTrial.planType;
     }
 
     // Check for active subscription
     const activeSubscription = await this.subscriptionRepository.findOne({
-      where: { user: { id: userId }, status: 'active' },
+      where: { userId, status: SubscriptionStatus.ACTIVE },
       order: { createdAt: 'DESC' },
     });
 
     if (activeSubscription) {
-      return activeSubscription.plan as PlanType;
+      return activeSubscription.planType;
     }
 
     // Default to Basic
@@ -101,7 +100,7 @@ export class ActionsService {
     await this.logAction(userId, ActionType.PREMIUM_ACTION);
   }
 
-  async getRemainingActions(userId: string): Promise<{ used: number; limit: number; remaining: number }> {
+  async getRemainingActions(userId: string): Promise<{ used: number; limit: number; remaining: number; planType: PlanType; dailyLimit: number }> {
     const planType = await this.getUserPlan(userId);
     const dailyLimit = await this.getDailyLimit(planType);
     const todayCount = await this.getTodayActionsCount(userId);
@@ -109,7 +108,24 @@ export class ActionsService {
     return {
       used: todayCount,
       limit: dailyLimit,
+      dailyLimit,
+      planType,
       remaining: dailyLimit === 0 ? -1 : Math.max(0, dailyLimit - todayCount), // -1 means unlimited
     };
+  }
+
+  async getUserActions(userId: string, startDate?: Date, endDate?: Date): Promise<ActionLog[]> {
+    const query: any = { userId };
+
+    if (startDate || endDate) {
+      query.actionDate = {};
+      if (startDate) query.actionDate.$gte = startDate;
+      if (endDate) query.actionDate.$lte = endDate;
+    }
+
+    return this.actionsRepository.find({
+      where: query,
+      order: { createdAt: 'DESC' },
+    });
   }
 }

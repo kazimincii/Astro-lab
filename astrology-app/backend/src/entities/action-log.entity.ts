@@ -16,6 +16,7 @@ export enum ActionType {
   NUMEROLOGY = 'numerology',
   COMPATIBILITY = 'compatibility',
   AURA_SCAN = 'aura_scan',
+  PREMIUM_ACTION = 'premium_action',
 }
 
 @Entity('action_logs')
@@ -23,8 +24,11 @@ export class ActionLog {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column()
+  userId: string;
+
   @ManyToOne(() => User, user => user.actions)
-  @JoinColumn()
+  @JoinColumn({ name: 'userId' })
   user: User;
 
   @Column({ type: 'enum', enum: ActionType })

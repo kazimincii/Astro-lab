@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import * as swisseph from 'swisseph';
-import { promisify } from 'util';
 
-// Promisify Swiss Ephemeris functions
-const swe_calc_ut = promisify(swisseph.swe_calc_ut);
-const swe_houses_ex = promisify(swisseph.swe_houses_ex);
-const swe_get_planet_name = promisify(swisseph.swe_get_planet_name);
+// Swiss Ephemeris functions are synchronous
+const swe_calc_ut = swisseph.swe_calc_ut;
+const swe_houses_ex = swisseph.swe_houses_ex;
+const swe_get_planet_name = swisseph.swe_get_planet_name;
 
 export enum Planet {
   SUN = 0,
@@ -203,23 +202,27 @@ export class EphemerisService {
 
     for (const planetId of planetsToCalculate) {
       try {
-        const result = await swe_calc_ut(julianDay, planetId, swisseph.SEFLG_SWIEPH);
-        const planetName = await swe_get_planet_name(planetId);
+        const result = swe_calc_ut(julianDay, planetId, swisseph.SEFLG_SWIEPH);
+        const planetNameResult = swe_get_planet_name(planetId);
 
         const longitude = result.longitude;
+        const latitude = result.latitude;
+        const distance = result.distance;
+        const speedLongitude = result.longitudeSpeed;
+
         const signIndex = Math.floor(longitude / 30);
         const signDegree = longitude % 30;
 
         results.push({
-          planet: planetName,
+          planet: planetNameResult.name,
           planetId,
-          longitude: result.longitude,
-          latitude: result.latitude,
-          distance: result.distance,
-          speedLongitude: result.longitudeSpeed,
+          longitude,
+          latitude,
+          distance,
+          speedLongitude,
           sign: this.zodiacSigns[signIndex],
           signDegree: Math.round(signDegree * 100) / 100,
-          retrograde: result.longitudeSpeed < 0,
+          retrograde: speedLongitude < 0,
         });
       } catch (error) {
         console.error(`Error calculating planet ${planetId}:`, error);
@@ -243,11 +246,16 @@ export class EphemerisService {
     midheaven: number;
   }> {
     try {
-      const result = await swe_houses_ex(julianDay, latitude, longitude, houseSystem);
+      const result = swe_houses_ex(julianDay, 0, latitude, longitude, houseSystem);
+
+      // Check for error
+      if ('error' in result) {
+        throw new Error(result.error);
+      }
 
       const houses: HousePosition[] = [];
       for (let i = 0; i < 12; i++) {
-        const cusp = result.houses[i];
+        const cusp = result.house[i];
         const signIndex = Math.floor(cusp / 30);
         const signDegree = cusp % 30;
 
@@ -398,10 +406,13 @@ export class EphemerisService {
   }> {
     const julianDay = this.dateToJulianDay(date, '12:00');
 
-    const sun = await swe_calc_ut(julianDay, Planet.SUN, swisseph.SEFLG_SWIEPH);
-    const moon = await swe_calc_ut(julianDay, Planet.MOON, swisseph.SEFLG_SWIEPH);
+    const sun = swe_calc_ut(julianDay, Planet.SUN, swisseph.SEFLG_SWIEPH);
+    const moon = swe_calc_ut(julianDay, Planet.MOON, swisseph.SEFLG_SWIEPH);
 
-    const angle = (moon.longitude - sun.longitude + 360) % 360;
+    const sunLongitude = sun.longitude;
+    const moonLongitude = moon.longitude;
+
+    const angle = (moonLongitude - sunLongitude + 360) % 360;
     const illumination = (1 - Math.cos((angle * Math.PI) / 180)) / 2;
 
     let phase = '';
