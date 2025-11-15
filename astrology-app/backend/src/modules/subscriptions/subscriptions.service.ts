@@ -6,6 +6,7 @@ import {
   Subscription,
   SubscriptionPlan,
   SubscriptionStatus,
+  BillingPeriod,
 } from '@/entities/subscription.entity';
 import { User } from '@/entities/user.entity';
 import { PersonProfile } from '@/entities/person-profile.entity';
@@ -54,9 +55,11 @@ export class SubscriptionsService {
     const subscription = await this.subscriptionsRepository.save(
       this.subscriptionsRepository.create({
         user: { id: userId } as any,
+        userId,
         plan: SubscriptionPlan.BASIC,
+        planType: SubscriptionPlan.BASIC,
         price: definition.prices.monthly,
-        billingCycle: 'monthly',
+        billingPeriod: BillingPeriod.MONTHLY,
         startDate: start,
         endDate: end,
         nextBillingDate: end,
@@ -320,8 +323,10 @@ export class SubscriptionsService {
 
     const subscription = this.subscriptionsRepository.create({
       user: { id: userId } as any,
+      userId,
       plan,
-      billingCycle,
+      planType: plan,
+      billingPeriod: billingCycle === 'monthly' ? BillingPeriod.MONTHLY : BillingPeriod.YEARLY,
       price: overrides.price ?? definition.prices[billingCycle],
       startDate,
       endDate,
@@ -340,7 +345,7 @@ export class SubscriptionsService {
       cancellationReason: overrides.cancellationReason ?? null,
     });
 
-    const saved = await this.subscriptionsRepository.save(subscription);
+    const saved = await this.subscriptionsRepository.save(subscription) as Subscription;
     await this.setCurrentSubscription(userId, saved.id);
     return saved;
   }

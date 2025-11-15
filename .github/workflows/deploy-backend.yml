@@ -1,0 +1,44 @@
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: astrology-app/backend
+        run: npm ci --production
+
+      - name: Build application
+        working-directory: astrology-app/backend
+        run: npm run build
+
+      - name: Deploy info
+        run: echo "Ready for deployment - add your deployment steps here"
+
+      - name: Run database migrations
+        working-directory: astrology-app/backend
+        run: echo "Add migration commands here"
+
+      - name: Health check
+        run: echo "Add health check commands here"

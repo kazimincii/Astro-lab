@@ -42,7 +42,7 @@ export class TodayService {
     today.setHours(0, 0, 0, 0);
 
     // Get daily forecast
-    const forecast = await this.forecastsService.getTodayForecast(profile.id);
+    const forecast = await this.forecastsService.getTodayForecast(profile.id, userId);
 
     // Get star message
     const starMessage = await this.getOrCreateStarMessage(profile.id, today);

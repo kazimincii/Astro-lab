@@ -44,6 +44,12 @@ export class Trial {
   @Column({ default: 7 })
   durationDays: number;
 
+  @Column({ default: 10 })
+  premiumActionsTotal: number;
+
+  @Column({ default: 10 })
+  premiumActionsRemaining: number;
+
   @Column({ type: 'timestamp', nullable: true })
   convertedAt: Date;
 
