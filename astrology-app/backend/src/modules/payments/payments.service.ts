@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Subscription, PlanType, BillingPeriod } from '../../entities/subscription.entity';
+import { Subscription, PlanType, BillingPeriod, SubscriptionStatus } from '../../entities/subscription.entity';
 import { User } from '../../entities/user.entity';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class PaymentsService {
       this.logger.warn('Stripe API key not configured');
     }
     this.stripe = new Stripe(apiKey || '', {
-      apiVersion: '2024-11-20.acacia',
+      apiVersion: '2023-10-16',
     });
   }
 
@@ -88,7 +88,7 @@ export class PaymentsService {
    */
   async createPortalSession(userId: string, returnUrl: string): Promise<{ url: string }> {
     const subscription = await this.subscriptionRepository.findOne({
-      where: { userId, status: 'active' },
+      where: { userId, status: SubscriptionStatus.ACTIVE },
       order: { createdAt: 'DESC' },
     });
 
@@ -161,7 +161,7 @@ export class PaymentsService {
    */
   async cancelSubscription(userId: string): Promise<void> {
     const subscription = await this.subscriptionRepository.findOne({
-      where: { userId, status: 'active' },
+      where: { userId, status: SubscriptionStatus.ACTIVE },
       order: { createdAt: 'DESC' },
     });
 
@@ -172,7 +172,7 @@ export class PaymentsService {
     try {
       await this.stripe.subscriptions.cancel(subscription.stripeSubscriptionId);
 
-      subscription.status = 'cancelled';
+      subscription.status = SubscriptionStatus.CANCELLED;
       subscription.cancelledAt = new Date();
       await this.subscriptionRepository.save(subscription);
 
@@ -235,16 +235,19 @@ export class PaymentsService {
 
     // Cancel any existing active subscriptions
     await this.subscriptionRepository.update(
-      { userId, status: 'active' },
-      { status: 'cancelled', cancelledAt: new Date() },
+      { userId, status: SubscriptionStatus.ACTIVE },
+      { status: SubscriptionStatus.CANCELLED, cancelledAt: new Date() },
     );
 
     // Create new subscription
     const subscription = this.subscriptionRepository.create({
       userId,
+      plan: planType,
       planType,
       billingPeriod,
-      status: 'active',
+      status: SubscriptionStatus.ACTIVE,
+      startDate: new Date(stripeSubscription.current_period_start * 1000),
+      endDate: new Date(stripeSubscription.current_period_end * 1000),
       stripeSubscriptionId: stripeSubscription.id,
       stripeCustomerId: stripeSubscription.customer as string,
       currentPeriodStart: new Date(stripeSubscription.current_period_start * 1000),
@@ -294,7 +297,7 @@ export class PaymentsService {
       return;
     }
 
-    subscription.status = 'cancelled';
+    subscription.status = SubscriptionStatus.CANCELLED;
     subscription.cancelledAt = new Date();
     await this.subscriptionRepository.save(subscription);
 
@@ -346,7 +349,7 @@ export class PaymentsService {
    */
   async getUpcomingInvoice(userId: string): Promise<any> {
     const subscription = await this.subscriptionRepository.findOne({
-      where: { userId, status: 'active' },
+      where: { userId, status: SubscriptionStatus.ACTIVE },
       order: { createdAt: 'DESC' },
     });
 
