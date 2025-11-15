@@ -37,6 +37,9 @@ import { FamousPeopleModule } from './modules/famous-people/famous-people.module
 import { LiveServicesModule } from './modules/live-services/live-services.module';
 import { AstroMapModule } from './modules/astro-map/astro-map.module';
 import { AdvancedChartsModule } from './modules/advanced-charts/advanced-charts.module';
+import { TodayModule } from './modules/today/today.module';
+import { EducationModule } from './modules/education/education.module';
+import { WidgetsModule } from './modules/widgets/widgets.module';
 
 @Module({
   imports: [
@@ -99,6 +102,9 @@ import { AdvancedChartsModule } from './modules/advanced-charts/advanced-charts.
     LiveServicesModule,
     AstroMapModule,
     AdvancedChartsModule,
+    TodayModule,
+    EducationModule,
+    WidgetsModule,
   ],
 })
 export class AppModule {}
