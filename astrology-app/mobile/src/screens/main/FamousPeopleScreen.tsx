@@ -8,7 +8,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
+import { famousPeopleApi } from '@/api/famousPeople';
+import { useProfile } from '@/contexts/ProfileContext';
+import { ProfileSelector } from '@/components/ProfileSelector';
 
 interface FamousPerson {
   id: string;
@@ -22,21 +24,21 @@ interface FamousPerson {
   imageUrl?: string;
 }
 
-export default function FamousPeopleScreen({ route }: any) {
-  const { profileId } = route.params || {};
+export default function FamousPeopleScreen({ navigation }: any) {
+  const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [people, setPeople] = useState<FamousPerson[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (profileId) {
+    if (selectedProfile?.id) {
       fetchMatches();
     }
-  }, [profileId]);
+  }, [selectedProfile?.id]);
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.get(`/famous-people/matches/${profileId}`);
-      setPeople(response.data);
+      const data = await famousPeopleApi.getMatches(selectedProfile.id);
+      setPeople(data);
     } catch (error) {
       console.error('Error fetching famous matches:', error);
       alert('Failed to load famous people matches');
@@ -45,7 +47,7 @@ export default function FamousPeopleScreen({ route }: any) {
     }
   };
 
-  if (loading) {
+  if (loading || profileLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#6366f1" />

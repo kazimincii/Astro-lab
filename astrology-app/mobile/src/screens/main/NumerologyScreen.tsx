@@ -8,34 +8,30 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
+import { numerologyApi, NumerologyProfile } from '@/api/numerology';
+import { useProfile } from '@/contexts/ProfileContext';
+import { ProfileSelector } from '@/components/ProfileSelector';
 
-interface NumerologyProfile {
-  lifePath: number;
-  destiny: number;
-  soulUrge: number;
-  personality: number;
-  personalYear: number;
-  description: string;
-  strengths: string[];
-  challenges: string[];
-}
-
-export default function NumerologyScreen({ route }: any) {
-  const { profileId } = route.params || {};
+export default function NumerologyScreen({ navigation }: any) {
+  const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [profile, setProfile] = useState<NumerologyProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (profileId) {
+    if (selectedProfile?.id) {
       fetchNumerology();
+    } else {
+      setLoading(false);
     }
-  }, [profileId]);
+  }, [selectedProfile?.id]);
 
   const fetchNumerology = async () => {
+    if (!selectedProfile?.id) return;
+
     try {
-      const response = await axios.get(`/numerology/profile/${profileId}`);
-      setProfile(response.data);
+      setLoading(true);
+      const data = await numerologyApi.getNumerologyProfile(selectedProfile.id);
+      setProfile(data);
     } catch (error) {
       console.error('Error fetching numerology:', error);
       alert('Failed to load numerology profile');
@@ -44,7 +40,7 @@ export default function NumerologyScreen({ route }: any) {
     }
   };
 
-  if (loading) {
+  if (loading || profileLoading) {
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#6366f1" />
@@ -52,11 +48,37 @@ export default function NumerologyScreen({ route }: any) {
     );
   }
 
+  if (!selectedProfile) {
+    return (
+      <ScrollView style={styles.container}>
+        <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
+          <Text style={styles.title}>🔢 Numerology</Text>
+          <Text style={styles.subtitle}>Your Life Path Numbers</Text>
+        </LinearGradient>
+        <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+          <ProfileSelector />
+        </View>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Select a profile to view numerology</Text>
+        </View>
+      </ScrollView>
+    );
+  }
+
   if (!profile) {
     return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>No numerology data available</Text>
-      </View>
+      <ScrollView style={styles.container}>
+        <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
+          <Text style={styles.title}>🔢 Numerology</Text>
+          <Text style={styles.subtitle}>Your Life Path Numbers</Text>
+        </LinearGradient>
+        <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+          <ProfileSelector />
+        </View>
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>No numerology data available</Text>
+        </View>
+      </ScrollView>
     );
   }
 

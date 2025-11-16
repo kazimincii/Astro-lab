@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { chakrasApi, ChakraProfile, ChakraStatus } from '@/api/chakras';
+import { useProfile } from '@/contexts/ProfileContext';
+import { ProfileSelector } from '@/components/ProfileSelector';
 
-export default function ChakrasScreen({ route, navigation }: any) {
-  const { personId } = route.params || {};
+export default function ChakrasScreen({ navigation }: any) {
+  const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [chakraProfile, setChakraProfile] = useState<ChakraProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [generating, setGenerating] = useState(false);
@@ -38,17 +40,17 @@ export default function ChakrasScreen({ route, navigation }: any) {
   };
 
   useEffect(() => {
-    if (personId) {
+    if (selectedProfile?.id) {
       loadChakraProfile();
     } else {
       setLoading(false);
     }
-  }, [personId]);
+  }, [selectedProfile?.id]);
 
   const loadChakraProfile = async () => {
     try {
       setLoading(true);
-      const data = await chakrasApi.getChakraProfile(personId);
+      const data = await chakrasApi.getChakraProfile(selectedProfile.id);
       setChakraProfile(data);
     } catch (error) {
       console.error('Failed to load chakra profile:', error);
@@ -58,14 +60,14 @@ export default function ChakrasScreen({ route, navigation }: any) {
   };
 
   const handleGenerate = async () => {
-    if (!personId) {
+    if (!selectedProfile?.id) {
       Alert.alert('No Profile', 'Please select a profile first');
       return;
     }
 
     try {
       setGenerating(true);
-      const data = await chakrasApi.generateChakraProfile(personId);
+      const data = await chakrasApi.generateChakraProfile(selectedProfile.id);
       setChakraProfile(data);
     } catch (error: any) {
       console.error('Failed to generate chakra profile:', error);
@@ -105,7 +107,7 @@ export default function ChakrasScreen({ route, navigation }: any) {
     }
   };
 
-  if (!personId) {
+  if (!selectedProfile?.id) {
     return (
       <View style={styles.container}>
         <View style={styles.header}>

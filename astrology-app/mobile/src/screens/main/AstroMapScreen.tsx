@@ -9,7 +9,9 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
+import { astroMapApi } from '@/api/astroMap';
+import { useProfile } from '@/contexts/ProfileContext';
+import { ProfileSelector } from '@/components/ProfileSelector';
 
 interface CityAnalysis {
   city: string;
@@ -21,8 +23,8 @@ interface CityAnalysis {
   influences: string[];
 }
 
-export default function AstroMapScreen({ route }: any) {
-  const { profileId } = route.params || {};
+export default function AstroMapScreen({ navigation }: any) {
+  const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [cityName, setCityName] = useState('');
   const [analysis, setAnalysis] = useState<CityAnalysis | null>(null);
   const [loading, setLoading] = useState(false);
@@ -35,11 +37,11 @@ export default function AstroMapScreen({ route }: any) {
 
     setLoading(true);
     try {
-      const response = await axios.post('/astro-map/analyze', {
-        profileId,
+      const data = await astroMapApi.analyzeCity({
+        profileId: selectedProfile?.id || '',
         city: cityName,
       });
-      setAnalysis(response.data);
+      setAnalysis(data);
     } catch (error) {
       console.error('Error analyzing city:', error);
       alert('Failed to analyze city');

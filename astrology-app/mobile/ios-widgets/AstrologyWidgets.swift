@@ -12,7 +12,7 @@ import SwiftUI
 struct AstrologyWidgets: WidgetBundle {
     var body: some Widget {
         TodayWidget()
+        MoonPhaseWidget()
         // ChartWidget() // Coming soon
-        // MoonPhaseWidget() // Coming soon
     }
 }

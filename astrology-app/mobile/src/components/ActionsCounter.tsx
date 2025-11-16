@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
-
-interface ActionsData {
-  dailyLimit: number;
-  used: number;
-  remaining: number;
-  planType: string;
-}
+import { actionsApi, ActionsData } from '@/api/actions';
 
 export default function ActionsCounter() {
   const navigation = useNavigation();
@@ -24,8 +17,8 @@ export default function ActionsCounter() {
 
   const fetchActionsData = async () => {
     try {
-      const response = await axios.get('/actions/remaining');
-      setActionsData(response.data);
+      const data = await actionsApi.getRemainingActions();
+      setActionsData(data);
     } catch (error) {
       console.error('Error fetching actions:', error);
     } finally {
