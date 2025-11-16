@@ -47,28 +47,44 @@ Bu dosya MVP'nin tamamlanması için kalan adımları detaylandırır.
 
 ---
 
-### 2. Stripe Payment Integration (Priority: HIGH)
+### 2. Stripe Payment Integration (Priority: HIGH) ✅ TAMAMLANDI
 
-**Backend:**
+**Backend:** ✅ 100% Complete
 - ✅ Subscription entity mevcut
-- ❌ Stripe webhook endpoints
-- ❌ Payment intent oluşturma
+- ✅ Stripe webhook endpoints (POST /api/payments/webhook)
+- ✅ Payment intent oluşturma
+- ✅ Checkout session oluşturma
+- ✅ Customer portal entegrasyonu
+- ✅ Webhook signature verification
+- ✅ Event handlers (subscription created/updated/deleted, invoice succeeded/failed)
 
-**Mobile:**
+**Mobile:** ✅ 100% Complete
+- ✅ @stripe/stripe-react-native installed
+- ✅ Stripe publishable key yapılandırma
+- ✅ PaymentSheet component oluşturuldu
+- ✅ Subscription satın alma flow (MyPlanScreen)
+- ✅ Plan upgrade/downgrade UI
+
+**Yapılanlar:**
+- ✅ payments.controller.ts - Tüm endpoint'ler implement edildi
+- ✅ payments.service.ts - Webhook handlers complete
+- ✅ PaymentSheet.tsx - Mobile ödeme UI
+- ✅ MyPlanScreen.tsx - Plan yönetimi
+- ✅ stripe.config.ts - Backend configuration
+- ✅ STRIPE_SETUP.md - Kapsamlı setup rehberi
+- ✅ WEBHOOK_TESTING.md - Backend webhook test rehberi
+
+**Test için:**
 ```bash
-npm install @stripe/stripe-react-native
+# Stripe CLI ile local test
+stripe listen --forward-to http://localhost:3000/api/payments/webhook
+stripe trigger customer.subscription.created
 ```
 
-**Yapılacaklar:**
-- [ ] Stripe publishable key yapılandırma
-- [ ] Payment sheet UI oluşturma
-- [ ] Subscription satın alma flow
-- [ ] Webhook handling (backend)
-- [ ] Receipt validation
-
-**Tahmini süre:** 4-6 saat
-
-**Referans:** `mobile/STRIPE_MOBILE.md`
+**Referans:**
+- `mobile/STRIPE_SETUP.md` (Mobile setup)
+- `backend/WEBHOOK_TESTING.md` (Backend webhook testing)
+- `mobile/DEPLOYMENT.md` (Production deployment)
 
 ---
 
@@ -185,8 +201,9 @@ eas build --platform android --profile production
 
 ### Hafta 1 (Kritik)
 1. ✅ **GÜN 1-2:** Navigation & API fixes (TAMAMLANDI)
-2. **GÜN 3:** iOS Widget Xcode setup
-3. **GÜN 4-5:** Stripe integration
+2. ✅ **GÜN 3:** Profile Context & Screen integrations (TAMAMLANDI)
+3. ✅ **GÜN 4-5:** Stripe integration - Backend + Mobile (TAMAMLANDI)
+4. **GÜN 6:** iOS Widget Xcode setup
 
 ### Hafta 2 (Önemli)
 4. **GÜN 6:** Screen integrations (profileId params)
@@ -286,16 +303,17 @@ STRIPE_PUBLISHABLE_KEY=pk_test_...
 | Kategori | Durum | Notlar |
 |----------|-------|--------|
 | Backend API | ✅ 100% | Production ready |
+| Backend Webhooks | ✅ 100% | Stripe webhook handlers complete |
 | Mobile Screens | ✅ 100% | Tüm ekranlar tamamlandı |
 | Navigation | ✅ 100% | Type-safe |
 | API Clients | ✅ 100% | TypeScript types |
 | Profile Context | ✅ 100% | Global state management |
 | iOS Widgets (Code) | ✅ 100% | Xcode setup gerekli |
 | iOS Widgets (Setup) | ❌ 0% | Xcode yapılandırması |
-| Stripe (Mobile) | ✅ 95% | Mobile entegrasyon tamam, backend webhook gerekli |
+| Stripe Integration | ✅ 100% | Backend + Mobile complete |
 | Testing | ✅ 40% | API ve component testleri eklendi |
-| Documentation | ✅ 100% | Setup ve deployment rehberleri hazır |
-| **TOPLAM** | **~85%** | 1-2 hafta kaldı |
+| Documentation | ✅ 100% | Setup, deployment, webhook rehberleri hazır |
+| **TOPLAM** | **~90%** | 1 hafta kaldı |
 
 ---
 
