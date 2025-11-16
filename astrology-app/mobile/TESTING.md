@@ -337,29 +337,33 @@ open coverage/lcov-report/index.html
 
 | Category | Coverage | Files | Tests |
 |----------|----------|-------|-------|
-| API Clients | ~60% | 6/26 | 55+ |
+| API Clients | ~70% | 10/26 | 120+ |
 | Components | ~15% | 1/20+ | 22 |
 | Screens | ~5% | 1/15+ | 8 |
-| **Total** | **~40%** | **8** | **85+** |
+| **Total** | **~50%** | **12** | **150+** |
 
 ### Coverage Goals
 
 | Category | Current | Target | Priority |
 |----------|---------|--------|----------|
-| API Clients | 60% | 80% | HIGH |
-| Components | 15% | 70% | MEDIUM |
-| Screens | 5% | 60% | MEDIUM |
-| **Overall** | **40%** | **>70%** | **HIGH** |
+| API Clients | 70% | 80% | MEDIUM |
+| Components | 15% | 70% | HIGH |
+| Screens | 5% | 60% | HIGH |
+| **Overall** | **50%** | **>70%** | **HIGH** |
 
 ### What's Tested ✅
 
-**API Modules:**
+**API Modules (10/26):**
 - ✅ auth.ts - Authentication (register, login, logout, refresh)
 - ✅ profiles.ts - Profile CRUD operations
 - ✅ payments.ts - Stripe integration
 - ✅ subscriptions.ts - Usage tracking
 - ✅ actions.ts - Action limits & effective plan
 - ✅ trials.ts - Trial management
+- ✅ biorhythm.ts - Physical/emotional/intellectual rhythms ✨ NEW
+- ✅ numerology.ts - Life path, destiny, compatibility ✨ NEW
+- ✅ chakras.ts - 7 chakra analysis & balance ✨ NEW
+- ✅ tarot.ts - Card readings & interpretations ✨ NEW
 
 **Components:**
 - ✅ ProfileSelector - Profile selection UI
@@ -369,12 +373,8 @@ open coverage/lcov-report/index.html
 
 ### Untested API Modules (Remaining)
 
-The following API modules need tests (20 modules):
+The following API modules need tests (16 modules):
 
-- [ ] biorhythm.ts
-- [ ] numerology.ts
-- [ ] chakras.ts
-- [ ] tarot.ts
 - [ ] coffeeReading.ts
 - [ ] auraScan.ts
 - [ ] forecasts.ts
@@ -642,6 +642,6 @@ Add to `.vscode/launch.json`:
 ---
 
 **Last Updated**: 2024-11-16
-**Test Files**: 8
-**Total Tests**: 85+
-**Coverage**: ~40% → Target: >70%
+**Test Files**: 12
+**Total Tests**: 150+
+**Coverage**: ~50% (API: 70%) → Target: >70%
