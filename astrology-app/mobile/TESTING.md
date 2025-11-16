@@ -337,23 +337,23 @@ open coverage/lcov-report/index.html
 
 | Category | Coverage | Files | Tests |
 |----------|----------|-------|-------|
-| API Clients | ~75% | 14/26 | 210+ |
+| API Clients | ~70% | 18/26 | 290+ |
 | Components | ~30% | 3/20+ | 70+ |
 | Screens | ~5% | 1/15+ | 8 |
-| **Total** | **~60%** | **18** | **290+** |
+| **Total** | **~65%** | **22** | **370+** |
 
 ### Coverage Goals
 
 | Category | Current | Target | Priority |
 |----------|---------|--------|----------|
-| API Clients | 75% | 80% | LOW |
+| API Clients | 70% | 80% | LOW |
 | Components | 30% | 70% | MEDIUM |
 | Screens | 5% | 60% | MEDIUM |
-| **Overall** | **60%** | **>70%** | **MEDIUM** |
+| **Overall** | **65%** | **>70%** | **MEDIUM** |
 
 ### What's Tested ✅
 
-**API Modules (14/26):**
+**API Modules (18/26):**
 - ✅ auth.ts - Authentication (register, login, logout, refresh)
 - ✅ profiles.ts - Profile CRUD operations
 - ✅ payments.ts - Stripe integration
@@ -364,10 +364,14 @@ open coverage/lcov-report/index.html
 - ✅ numerology.ts - Life path, destiny, compatibility
 - ✅ chakras.ts - 7 chakra analysis & balance
 - ✅ tarot.ts - Card readings & interpretations
-- ✅ forecasts.ts - Daily forecasts & planetary transits 🌟 NEW
-- ✅ relationship.ts - Compatibility analysis & timelines 🌟 NEW
-- ✅ soulmate.ts - Soulmate profiles & connections 🌟 NEW
-- ✅ today.ts - Today's summary & moon phases 🌟 NEW
+- ✅ forecasts.ts - Daily forecasts & planetary transits
+- ✅ relationship.ts - Compatibility analysis & timelines
+- ✅ soulmate.ts - Soulmate profiles & connections
+- ✅ today.ts - Today's summary & moon phases
+- ✅ coffeeReading.ts - Coffee cup readings & history 🌟 NEW
+- ✅ auraScan.ts - Aura analysis & archetypes 🌟 NEW
+- ✅ calendars.ts - Beauty/health/activity calendars 🌟 NEW
+- ✅ cosmicClimate.ts - Daily cosmic posts & reactions 🌟 NEW
 
 **Components (3):**
 - ✅ ProfileSelector - Profile selection UI
@@ -379,12 +383,8 @@ open coverage/lcov-report/index.html
 
 ### Untested API Modules (Remaining)
 
-The following API modules need tests (12 modules):
+The following API modules need tests (8 modules):
 
-- [ ] coffeeReading.ts
-- [ ] auraScan.ts
-- [ ] calendars.ts
-- [ ] cosmicClimate.ts
 - [ ] advancedCharts.ts
 - [ ] astroMap.ts
 - [ ] famousPeople.ts
@@ -644,6 +644,6 @@ Add to `.vscode/launch.json`:
 ---
 
 **Last Updated**: 2024-11-16
-**Test Files**: 18
-**Total Tests**: 290+
-**Coverage**: ~60% (API: 75%, Components: 30%) → Target: >70%
+**Test Files**: 22
+**Total Tests**: 370+
+**Coverage**: ~65% (API: 70%, Components: 30%) → Target: >70%
