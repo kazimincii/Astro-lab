@@ -338,18 +338,18 @@ open coverage/lcov-report/index.html
 | Category | Coverage | Files | Tests |
 |----------|----------|-------|-------|
 | API Clients | ~70% | 10/26 | 120+ |
-| Components | ~15% | 1/20+ | 22 |
+| Components | ~30% | 3/20+ | 70+ |
 | Screens | ~5% | 1/15+ | 8 |
-| **Total** | **~50%** | **12** | **150+** |
+| **Total** | **~55%** | **14** | **200+** |
 
 ### Coverage Goals
 
 | Category | Current | Target | Priority |
 |----------|---------|--------|----------|
 | API Clients | 70% | 80% | MEDIUM |
-| Components | 15% | 70% | HIGH |
+| Components | 30% | 70% | HIGH |
 | Screens | 5% | 60% | HIGH |
-| **Overall** | **50%** | **>70%** | **HIGH** |
+| **Overall** | **55%** | **>70%** | **HIGH** |
 
 ### What's Tested ✅
 
@@ -365,8 +365,10 @@ open coverage/lcov-report/index.html
 - ✅ chakras.ts - 7 chakra analysis & balance ✨ NEW
 - ✅ tarot.ts - Card readings & interpretations ✨ NEW
 
-**Components:**
+**Components (3):**
 - ✅ ProfileSelector - Profile selection UI
+- ✅ ActionLimitModal - Action limit & upgrade prompts ✨ NEW
+- ✅ PaymentSheet - Stripe payment UI & flow ✨ NEW
 
 **Screens:**
 - ✅ LoginScreen - Authentication UI
@@ -642,6 +644,6 @@ Add to `.vscode/launch.json`:
 ---
 
 **Last Updated**: 2024-11-16
-**Test Files**: 12
-**Total Tests**: 150+
-**Coverage**: ~50% (API: 70%) → Target: >70%
+**Test Files**: 14
+**Total Tests**: 200+
+**Coverage**: ~55% (API: 70%, Components: 30%) → Target: >70%
