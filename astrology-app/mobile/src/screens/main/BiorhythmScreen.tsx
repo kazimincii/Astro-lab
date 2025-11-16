@@ -10,25 +10,29 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { biorhythmApi, BiorhythmProfile } from '@/api/biorhythm';
+import { useProfile } from '@/contexts/ProfileContext';
+import { ProfileSelector } from '@/components/ProfileSelector';
 
-export default function BiorhythmScreen({ route, navigation }: any) {
-  const { personId } = route.params || {};
+export default function BiorhythmScreen({ navigation }: any) {
+  const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [biorhythm, setBiorhythm] = useState<BiorhythmProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [calculating, setCalculating] = useState(false);
 
   useEffect(() => {
-    if (personId) {
+    if (selectedProfile?.id) {
       loadBiorhythm();
     } else {
       setLoading(false);
     }
-  }, [personId]);
+  }, [selectedProfile?.id]);
 
   const loadBiorhythm = async () => {
+    if (!selectedProfile?.id) return;
+
     try {
       setLoading(true);
-      const data = await biorhythmApi.getLatestBiorhythm(personId);
+      const data = await biorhythmApi.getLatestBiorhythm(selectedProfile.id);
       setBiorhythm(data);
     } catch (error) {
       console.error('Failed to load biorhythm:', error);
@@ -38,14 +42,14 @@ export default function BiorhythmScreen({ route, navigation }: any) {
   };
 
   const handleCalculate = async () => {
-    if (!personId) {
+    if (!selectedProfile?.id) {
       Alert.alert('No Profile', 'Please select a profile first');
       return;
     }
 
     try {
       setCalculating(true);
-      const data = await biorhythmApi.calculateBiorhythm(personId);
+      const data = await biorhythmApi.calculateBiorhythm(selectedProfile.id);
       setBiorhythm(data);
     } catch (error: any) {
       console.error('Failed to calculate biorhythm:', error);
@@ -75,7 +79,7 @@ export default function BiorhythmScreen({ route, navigation }: any) {
     return 'Low';
   };
 
-  if (!personId) {
+  if (!selectedProfile || profileLoading) {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -84,10 +88,19 @@ export default function BiorhythmScreen({ route, navigation }: any) {
           </TouchableOpacity>
           <Text style={styles.title}>Biorhythm</Text>
         </View>
-        <View style={styles.emptyState}>
-          <Ionicons name="pulse-outline" size={64} color="#6b7280" />
-          <Text style={styles.emptyText}>Please select a profile to view biorhythm</Text>
+        <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
+          <ProfileSelector />
         </View>
+        {profileLoading ? (
+          <View style={styles.centered}>
+            <ActivityIndicator size="large" color="#6366f1" />
+          </View>
+        ) : (
+          <View style={styles.emptyState}>
+            <Ionicons name="pulse-outline" size={64} color="#6b7280" />
+            <Text style={styles.emptyText}>Select a profile to view biorhythm</Text>
+          </View>
+        )}
       </View>
     );
   }
