@@ -6,14 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
-  Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import Svg, { Circle, Line, Text as SvgText } from 'react-native-svg';
 import axios from 'axios';
-
-const { width } = Dimensions.get('window');
-const CHART_SIZE = width - 40;
+import ChartWheel from '@/components/ChartWheel';
 
 interface BirthChart {
   planets: Array<{
@@ -21,6 +17,8 @@ interface BirthChart {
     sign: string;
     house: number;
     degree: number;
+    longitude: number;
+    retrograde?: boolean;
   }>;
   houses: Array<{
     number: number;
@@ -33,6 +31,8 @@ interface BirthChart {
     type: string;
     angle: number;
   }>;
+  ascendant?: number;
+  midheaven?: number;
   interpretation: {
     sun: string;
     moon: string;
@@ -119,77 +119,25 @@ export default function BirthChartDetailScreen({ route }: any) {
         </TouchableOpacity>
       </View>
 
-      {/* Chart Wheel - Simplified SVG representation */}
+      {/* Chart Wheel - Full Interactive Visualization */}
       <View style={styles.chartContainer}>
-        <Svg width={CHART_SIZE} height={CHART_SIZE}>
-          {/* Outer Circle */}
-          <Circle
-            cx={CHART_SIZE / 2}
-            cy={CHART_SIZE / 2}
-            r={CHART_SIZE / 2 - 10}
-            fill="none"
-            stroke="#6366f1"
-            strokeWidth="2"
-          />
+        <ChartWheel
+          planets={chart.planets}
+          houses={chart.houses}
+          aspects={chart.aspects}
+          ascendant={chart.ascendant}
+          showAspects={false}
+        />
 
-          {/* Inner Circle */}
-          <Circle
-            cx={CHART_SIZE / 2}
-            cy={CHART_SIZE / 2}
-            r={CHART_SIZE / 3}
-            fill="none"
-            stroke="#8b5cf6"
-            strokeWidth="1"
-          />
-
-          {/* House Lines (12 divisions) */}
-          {Array.from({ length: 12 }).map((_, i) => {
-            const angle = (i * 30 * Math.PI) / 180;
-            const x1 = CHART_SIZE / 2 + (CHART_SIZE / 3) * Math.cos(angle);
-            const y1 = CHART_SIZE / 2 + (CHART_SIZE / 3) * Math.sin(angle);
-            const x2 = CHART_SIZE / 2 + (CHART_SIZE / 2 - 10) * Math.cos(angle);
-            const y2 = CHART_SIZE / 2 + (CHART_SIZE / 2 - 10) * Math.sin(angle);
-
-            return (
-              <Line
-                key={i}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke="#4b5563"
-                strokeWidth="1"
-              />
-            );
-          })}
-
-          {/* Planets (simplified positions) */}
-          {chart.planets.slice(0, 10).map((planet, i) => {
-            const angle = ((planet.degree - 90) * Math.PI) / 180;
-            const radius = CHART_SIZE / 2.5;
-            const x = CHART_SIZE / 2 + radius * Math.cos(angle);
-            const y = CHART_SIZE / 2 + radius * Math.sin(angle);
-
-            return (
-              <SvgText
-                key={planet.name}
-                x={x}
-                y={y}
-                fontSize="16"
-                fill="#f59e0b"
-                textAnchor="middle"
-              >
-                {planet.name.substring(0, 2)}
-              </SvgText>
-            );
-          })}
-        </Svg>
-
-        <View style={styles.chartNote}>
-          <Text style={styles.chartNoteText}>
-            Interactive chart visualization coming soon
-          </Text>
-        </View>
+        <TouchableOpacity
+          style={styles.toggleAspectsButton}
+          onPress={() => {
+            // Toggle aspects visibility (add state for this)
+            alert('Aspect visualization toggle coming soon');
+          }}
+        >
+          <Text style={styles.toggleAspectsText}>Toggle Aspects</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Interpretation */}
@@ -340,15 +288,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 24,
   },
-  chartNote: {
+  toggleAspectsButton: {
     marginTop: 16,
-    padding: 12,
-    backgroundColor: '#1a1a2e',
-    borderRadius: 8,
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: '#6366f1',
+    borderRadius: 12,
   },
-  chartNoteText: {
-    color: '#9ca3af',
-    fontSize: 12,
+  toggleAspectsText: {
+    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: '600',
     textAlign: 'center',
   },
   interpretationContainer: {
