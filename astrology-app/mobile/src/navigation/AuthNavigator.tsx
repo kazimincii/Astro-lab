@@ -4,6 +4,8 @@ import LoginScreen from '@/screens/auth/LoginScreen';
 import RegisterScreen from '@/screens/auth/RegisterScreen';
 import WelcomeScreen from '@/screens/auth/WelcomeScreen';
 import OnboardingScreen from '@/screens/auth/OnboardingScreen';
+import ForgotPasswordScreen from '@/screens/auth/ForgotPasswordScreen';
+import ResetPasswordScreen from '@/screens/auth/ResetPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +16,8 @@ export default function AuthNavigator() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
+      <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
     </Stack.Navigator>
   );
 }
