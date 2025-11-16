@@ -11,12 +11,14 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { User } from '@/entities/user.entity';
 import { UsersModule } from '../users/users.module';
 import { SubscriptionsModule } from '../subscriptions/subscriptions.module';
+import { MailModule } from '../mail/mail.module';
 
 @Module({
   imports: [
     PassportModule,
     UsersModule,
     SubscriptionsModule,
+    MailModule,
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
