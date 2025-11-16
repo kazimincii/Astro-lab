@@ -6,9 +6,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
+import { actionsApi, trialsApi, paymentsApi } from '@/api';
+import { PaymentSheet } from '@/components/PaymentSheet';
+import { PLAN_PRICING } from '@/config/stripe';
 
 interface EffectivePlan {
   planType: 'basic' | 'standard' | 'premium';
@@ -28,22 +31,12 @@ interface EffectivePlan {
   };
 }
 
-interface PlanDetails {
-  basic: { monthly: number; yearly: number };
-  standard: { monthly: number; yearly: number };
-  premium: { monthly: number; yearly: number };
-}
-
-const planPrices: PlanDetails = {
-  basic: { monthly: 0, yearly: 0 },
-  standard: { monthly: 10, yearly: 99 },
-  premium: { monthly: 19, yearly: 189 },
-};
-
 export default function MyPlanScreen() {
   const [effectivePlan, setEffectivePlan] = useState<EffectivePlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [showPaymentSheet, setShowPaymentSheet] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'standard' | 'premium' | null>(null);
 
   useEffect(() => {
     fetchEffectivePlan();
@@ -51,8 +44,8 @@ export default function MyPlanScreen() {
 
   const fetchEffectivePlan = async () => {
     try {
-      const response = await axios.get('/subscriptions/effective-plan');
-      setEffectivePlan(response.data);
+      const data = await actionsApi.getEffectivePlan();
+      setEffectivePlan(data);
     } catch (error) {
       console.error('Error fetching plan:', error);
     } finally {
@@ -60,24 +53,26 @@ export default function MyPlanScreen() {
     }
   };
 
-  const handleUpgrade = async (planType: 'standard' | 'premium') => {
-    try {
-      // TODO: Integrate with Stripe
-      await axios.post('/subscriptions/upgrade', {
-        planType,
-        billingPeriod,
-      });
-      fetchEffectivePlan();
-    } catch (error) {
-      console.error('Error upgrading:', error);
-      alert('Failed to upgrade. Please try again.');
-    }
+  const handleUpgrade = (planType: 'standard' | 'premium') => {
+    setSelectedPlan(planType);
+    setShowPaymentSheet(true);
+  };
+
+  const handlePaymentSuccess = async () => {
+    setShowPaymentSheet(false);
+    setSelectedPlan(null);
+    await fetchEffectivePlan();
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPaymentSheet(false);
+    setSelectedPlan(null);
   };
 
   const handleCancelTrial = async () => {
     try {
-      await axios.post('/trials/cancel');
-      fetchEffectivePlan();
+      await trialsApi.cancelTrial();
+      await fetchEffectivePlan();
       alert('Trial cancelled successfully');
     } catch (error) {
       console.error('Error cancelling trial:', error);
@@ -228,7 +223,7 @@ export default function MyPlanScreen() {
             <View style={styles.upgradeCard}>
               <Text style={styles.upgradePlanName}>Standard</Text>
               <Text style={styles.upgradePrice}>
-                ${planPrices.standard[billingPeriod]}
+                ${PLAN_PRICING.standard[billingPeriod]}
                 <Text style={styles.pricePeriod}>
                   /{billingPeriod === 'monthly' ? 'mo' : 'yr'}
                 </Text>
@@ -255,7 +250,7 @@ export default function MyPlanScreen() {
             </View>
             <Text style={styles.upgradePlanName}>Premium</Text>
             <Text style={styles.upgradePrice}>
-              ${planPrices.premium[billingPeriod]}
+              ${PLAN_PRICING.premium[billingPeriod]}
               <Text style={styles.pricePeriod}>
                 /{billingPeriod === 'monthly' ? 'mo' : 'yr'}
               </Text>
@@ -275,6 +270,24 @@ export default function MyPlanScreen() {
           </View>
         </View>
       )}
+
+      {/* Payment Modal */}
+      <Modal
+        visible={showPaymentSheet}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={handlePaymentCancel}
+      >
+        {selectedPlan && (
+          <PaymentSheet
+            planType={selectedPlan}
+            billingCycle={billingPeriod}
+            amount={PLAN_PRICING[selectedPlan][billingPeriod]}
+            onSuccess={handlePaymentSuccess}
+            onCancel={handlePaymentCancel}
+          />
+        )}
+      </Modal>
     </ScrollView>
   );
 }

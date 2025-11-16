@@ -25,6 +25,7 @@ export * from './cosmicClimate';
 export * from './auraScan';
 export * from './actions';
 export * from './trials';
+export * from './payments';
 
 // Re-export client for direct access if needed
 export { default as apiClient } from './client';
