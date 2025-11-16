@@ -1,0 +1,36 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Hata",
+    "success": "Başarılı",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "done": "Tamam"
+  },
+  "auth": {
+    "login": "Giriş Yap",
+    "register": "Kayıt Ol",
+    "logout": "Çıkış",
+    "email": "E-posta",
+    "password": "Şifre",
+    "forgotPassword": "Şifremi Unuttum?",
+    "resetPassword": "Şifreyi Sıfırla",
+    "welcomeBack": "Tekrar Hoş Geldiniz"
+  },
+  "plans": {
+    "basic": "Temel",
+    "standard": "Standart",
+    "premium": "Premium",
+    "upgrade": "Yükselt",
+    "currentPlan": "Mevcut Plan",
+    "startTrial": "Ücretsiz Denemeyi Başlat"
+  },
+  "features": {
+    "birthChart": "Doğum Haritası",
+    "forecast": "Tahmin",
+    "tarot": "Tarot",
+    "numerology": "Numeroloji"
+  }
+}

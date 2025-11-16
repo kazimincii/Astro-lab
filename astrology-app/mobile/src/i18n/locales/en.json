@@ -1,0 +1,36 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "done": "Done"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "resetPassword": "Reset Password",
+    "welcomeBack": "Welcome Back"
+  },
+  "plans": {
+    "basic": "Basic",
+    "standard": "Standard",
+    "premium": "Premium",
+    "upgrade": "Upgrade",
+    "currentPlan": "Current Plan",
+    "startTrial": "Start Free Trial"
+  },
+  "features": {
+    "birthChart": "Birth Chart",
+    "forecast": "Forecast",
+    "tarot": "Tarot",
+    "numerology": "Numerology"
+  }
+}

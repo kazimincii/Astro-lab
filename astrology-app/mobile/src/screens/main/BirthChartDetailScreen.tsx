@@ -46,6 +46,7 @@ export default function BirthChartDetailScreen({ route }: any) {
   const [loading, setLoading] = useState(true);
   const [learnMode, setLearnMode] = useState(false);
   const [selectedElement, setSelectedElement] = useState<any>(null);
+  const [showAspects, setShowAspects] = useState(false);
 
   useEffect(() => {
     if (profileId) {
@@ -126,17 +127,19 @@ export default function BirthChartDetailScreen({ route }: any) {
           houses={chart.houses}
           aspects={chart.aspects}
           ascendant={chart.ascendant}
-          showAspects={false}
+          showAspects={showAspects}
         />
 
         <TouchableOpacity
-          style={styles.toggleAspectsButton}
-          onPress={() => {
-            // Toggle aspects visibility (add state for this)
-            alert('Aspect visualization toggle coming soon');
-          }}
+          style={[
+            styles.toggleAspectsButton,
+            showAspects && styles.toggleAspectsButtonActive,
+          ]}
+          onPress={() => setShowAspects(!showAspects)}
         >
-          <Text style={styles.toggleAspectsText}>Toggle Aspects</Text>
+          <Text style={styles.toggleAspectsText}>
+            {showAspects ? 'Hide Aspects' : 'Show Aspects'}
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -294,6 +297,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     backgroundColor: '#6366f1',
     borderRadius: 12,
+  },
+  toggleAspectsButtonActive: {
+    backgroundColor: '#8b5cf6',
+    borderWidth: 2,
+    borderColor: '#fbbf24',
   },
   toggleAspectsText: {
     color: '#ffffff',

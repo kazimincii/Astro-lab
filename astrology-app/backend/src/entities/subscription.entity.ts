@@ -93,6 +93,9 @@ export class Subscription {
   cancellationReason: string;
 
   @Column({ type: 'timestamp', nullable: true })
+  lastPaymentDate: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
   trialEndsAt: Date;
 
   @Column({ default: false })

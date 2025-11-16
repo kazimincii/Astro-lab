@@ -1,0 +1,8 @@
+# Ephemeris data files (too large for git)
+*.se1
+*.txt
+
+# Keep the download script
+!download.sh
+!README.md
+!.gitignore
