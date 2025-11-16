@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from '@/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { SubscriptionsService } from '../subscriptions/subscriptions.service';
+import { MailService } from '../mail/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +17,7 @@ export class AuthService {
     private usersRepository: Repository<User>,
     private jwtService: JwtService,
     private subscriptionsService: SubscriptionsService,
+    private mailService: MailService,
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
@@ -59,7 +61,11 @@ export class AuthService {
     await this.usersRepository.save(user);
     await this.subscriptionsService.ensureDefaultSubscription(user.id);
 
-    // TODO: Send verification email
+    await this.mailService.sendVerificationEmail(
+      user.email,
+      user.id,
+      emailVerificationToken,
+    );
 
     const { password, ...result } = user;
     return {
@@ -142,7 +148,7 @@ export class AuthService {
       passwordResetExpires: resetExpires,
     });
 
-    // TODO: Send password reset email
+    await this.mailService.sendPasswordResetEmail(user.email, resetToken);
 
     return { message: 'If the email exists, a reset link has been sent' };
   }
