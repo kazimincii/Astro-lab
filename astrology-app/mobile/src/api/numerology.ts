@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface NumerologyProfile {
   lifePath: number;
@@ -20,7 +20,7 @@ export interface NumerologyComparison {
 
 export const numerologyApi = {
   getProfile: async (profileId: string): Promise<NumerologyProfile> => {
-    const response = await client.get(`/numerology/profile/${profileId}`);
+    const response = await apiClient.get(`/numerology/profile/${profileId}`);
     return response.data;
   },
 
@@ -28,7 +28,7 @@ export const numerologyApi = {
     profileId1: string,
     profileId2: string
   ): Promise<NumerologyComparison> => {
-    const response = await client.post('/numerology/compare', {
+    const response = await apiClient.post('/numerology/compare', {
       profileId1,
       profileId2,
     });
@@ -36,7 +36,7 @@ export const numerologyApi = {
   },
 
   analyzeNumber: async (number: string, type: string): Promise<any> => {
-    const response = await client.post('/numerology/analyze', { number, type });
+    const response = await apiClient.post('/numerology/analyze', { number, type });
     return response.data;
   },
 };

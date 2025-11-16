@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface CityAnalysis {
   city: string;
@@ -20,7 +20,7 @@ export interface PlanetaryLine {
 
 export const astroMapApi = {
   analyzeCity: async (profileId: string, city: string): Promise<CityAnalysis> => {
-    const response = await client.post('/astro-map/analyze', {
+    const response = await apiClient.post('/astro-map/analyze', {
       profileId,
       city,
     });
@@ -28,7 +28,7 @@ export const astroMapApi = {
   },
 
   getPlanetaryLines: async (profileId: string): Promise<PlanetaryLine[]> => {
-    const response = await client.get(`/astro-map/lines/${profileId}`);
+    const response = await apiClient.get(`/astro-map/lines/${profileId}`);
     return response.data;
   },
 
@@ -36,7 +36,7 @@ export const astroMapApi = {
     profileId: string,
     theme: 'life' | 'love' | 'career'
   ): Promise<any> => {
-    const response = await client.get(`/astro-map/theme/${profileId}/${theme}`);
+    const response = await apiClient.get(`/astro-map/theme/${profileId}/${theme}`);
     return response.data;
   },
 };

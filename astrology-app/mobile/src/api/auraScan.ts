@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface AuraReading {
   id: string;
@@ -16,7 +16,7 @@ export interface AuraReading {
 
 export const auraScanApi = {
   createReading: async (formData: FormData): Promise<AuraReading> => {
-    const response = await client.post('/aura-scan', formData, {
+    const response = await apiClient.post('/aura-scan', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -25,12 +25,12 @@ export const auraScanApi = {
   },
 
   getReadingHistory: async (): Promise<AuraReading[]> => {
-    const response = await client.get('/aura-scan/history');
+    const response = await apiClient.get('/aura-scan/history');
     return response.data;
   },
 
   getReading: async (readingId: string): Promise<AuraReading> => {
-    const response = await client.get(`/aura-scan/${readingId}`);
+    const response = await apiClient.get(`/aura-scan/${readingId}`);
     return response.data;
   },
 };

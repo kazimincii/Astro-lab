@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface Trial {
   id: string;
@@ -11,16 +11,16 @@ export interface Trial {
 
 export const trialsApi = {
   startTrial: async (planType: 'standard' | 'premium'): Promise<Trial> => {
-    const response = await client.post('/trials/start', { planType });
+    const response = await apiClient.post('/trials/start', { planType });
     return response.data;
   },
 
   getActiveTrial: async (): Promise<Trial | null> => {
-    const response = await client.get('/trials/active');
+    const response = await apiClient.get('/trials/active');
     return response.data;
   },
 
   cancelTrial: async (): Promise<void> => {
-    await client.post('/trials/cancel');
+    await apiClient.post('/trials/cancel');
   },
 };

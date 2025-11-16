@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export type CalendarType = 'beauty' | 'health' | 'activity' | 'spiritual' | 'transit' | 'moon';
 
@@ -17,19 +17,19 @@ export const calendarsApi = {
     month: number,
     year: number
   ): Promise<CalendarEntry[]> => {
-    const response = await client.get(`/calendars/${type}`, {
+    const response = await apiClient.get(`/calendars/${type}`, {
       params: { month, year },
     });
     return response.data;
   },
 
   getDay: async (type: CalendarType, date: string): Promise<CalendarEntry> => {
-    const response = await client.get(`/calendars/${type}/day/${date}`);
+    const response = await apiClient.get(`/calendars/${type}/day/${date}`);
     return response.data;
   },
 
   getAllCalendarsForDay: async (date: string): Promise<CalendarEntry[]> => {
-    const response = await client.get(`/calendars/day/${date}`);
+    const response = await apiClient.get(`/calendars/day/${date}`);
     return response.data;
   },
 };

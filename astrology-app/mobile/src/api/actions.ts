@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface ActionsData {
   dailyLimit: number;
@@ -28,12 +28,12 @@ export interface EffectivePlan {
 
 export const actionsApi = {
   getRemainingActions: async (): Promise<ActionsData> => {
-    const response = await client.get('/actions/remaining');
+    const response = await apiClient.get('/actions/remaining');
     return response.data;
   },
 
   getEffectivePlan: async (): Promise<EffectivePlan> => {
-    const response = await client.get('/subscriptions/effective-plan');
+    const response = await apiClient.get('/subscriptions/effective-plan');
     return response.data;
   },
 };

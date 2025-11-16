@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface Expert {
   id: string;
@@ -25,29 +25,29 @@ export interface Session {
 
 export const liveServicesApi = {
   getExperts: async (type?: string): Promise<Expert[]> => {
-    const response = await client.get('/live-services/experts', {
+    const response = await apiClient.get('/live-services/experts', {
       params: type ? { type } : {},
     });
     return response.data;
   },
 
   getExpert: async (expertId: string): Promise<Expert> => {
-    const response = await client.get(`/live-services/experts/${expertId}`);
+    const response = await apiClient.get(`/live-services/experts/${expertId}`);
     return response.data;
   },
 
   requestSession: async (expertId: string, data: any): Promise<Session> => {
-    const response = await client.post(`/live-services/request/${expertId}`, data);
+    const response = await apiClient.post(`/live-services/request/${expertId}`, data);
     return response.data;
   },
 
   getMySessions: async (): Promise<Session[]> => {
-    const response = await client.get('/live-services/sessions/my');
+    const response = await apiClient.get('/live-services/sessions/my');
     return response.data;
   },
 
   rateSession: async (sessionId: string, rating: number, review: string): Promise<void> => {
-    await client.post(`/live-services/sessions/${sessionId}/rate`, {
+    await apiClient.post(`/live-services/sessions/${sessionId}/rate`, {
       rating,
       review,
     });

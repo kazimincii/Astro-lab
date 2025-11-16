@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface FamousPerson {
   id: string;
@@ -15,19 +15,19 @@ export interface FamousPerson {
 
 export const famousPeopleApi = {
   getMatches: async (profileId: string): Promise<FamousPerson[]> => {
-    const response = await client.get(`/famous-people/matches/${profileId}`);
+    const response = await apiClient.get(`/famous-people/matches/${profileId}`);
     return response.data;
   },
 
   searchByCategory: async (category: string): Promise<FamousPerson[]> => {
-    const response = await client.get('/famous-people/search', {
+    const response = await apiClient.get('/famous-people/search', {
       params: { category },
     });
     return response.data;
   },
 
   getPerson: async (personId: string): Promise<FamousPerson> => {
-    const response = await client.get(`/famous-people/${personId}`);
+    const response = await apiClient.get(`/famous-people/${personId}`);
     return response.data;
   },
 };

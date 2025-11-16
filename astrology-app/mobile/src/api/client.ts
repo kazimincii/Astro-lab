@@ -34,3 +34,6 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+// Default export for backward compatibility
+export default apiClient;

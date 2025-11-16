@@ -1,4 +1,4 @@
-import client from './client';
+import { apiClient } from './client';
 
 export interface TarotReading {
   id: string;
@@ -16,17 +16,17 @@ export interface TarotReading {
 
 export const tarotApi = {
   createReading: async (spreadType: string, question?: string): Promise<TarotReading> => {
-    const response = await client.post('/tarot/reading', { spreadType, question });
+    const response = await apiClient.post('/tarot/reading', { spreadType, question });
     return response.data;
   },
 
   getReadingHistory: async (): Promise<TarotReading[]> => {
-    const response = await client.get('/tarot/history');
+    const response = await apiClient.get('/tarot/history');
     return response.data;
   },
 
   getReading: async (readingId: string): Promise<TarotReading> => {
-    const response = await client.get(`/tarot/${readingId}`);
+    const response = await apiClient.get(`/tarot/${readingId}`);
     return response.data;
   },
 };
