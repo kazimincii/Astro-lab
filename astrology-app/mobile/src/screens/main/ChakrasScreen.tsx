@@ -45,7 +45,7 @@ export default function ChakrasScreen({ navigation }: any) {
     } else {
       setLoading(false);
     }
-  }, [personId]);
+  }, [selectedProfile?.id]);
 
   const loadChakraProfile = async () => {
     try {
