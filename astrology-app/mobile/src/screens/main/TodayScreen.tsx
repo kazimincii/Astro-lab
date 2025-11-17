@@ -119,6 +119,28 @@ export default function TodayScreen({ navigation }: any) {
   const transits = forecast?.planetaryTransits
     ? Object.values(forecast.planetaryTransits)
     : [];
+  const moonPhase = useMemo(() => {
+    if (!forecast?.date) {
+      return { label: 'Loading', emoji: '○' };
+    }
+    const synodicMonth = 29.53058867;
+    const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14));
+    const daysSinceNew =
+      (new Date(forecast.date).getTime() - knownNewMoon.getTime()) / (1000 * 60 * 60 * 24);
+    const phase = ((daysSinceNew % synodicMonth) + synodicMonth) % synodicMonth;
+    const index = Math.floor((phase / synodicMonth) * 8 + 0.5) % 8;
+    const phases = [
+      { label: 'New Moon', emoji: '🌑' },
+      { label: 'Waxing Crescent', emoji: '🌒' },
+      { label: 'First Quarter', emoji: '🌓' },
+      { label: 'Waxing Gibbous', emoji: '🌔' },
+      { label: 'Full Moon', emoji: '🌕' },
+      { label: 'Waning Gibbous', emoji: '🌖' },
+      { label: 'Last Quarter', emoji: '🌗' },
+      { label: 'Waning Crescent', emoji: '🌘' },
+    ];
+    return phases[index];
+  }, [forecast?.date]);
 
   const renderMembershipCard = () => {
     if (isUsageLoading && !subscriptionUsage) {

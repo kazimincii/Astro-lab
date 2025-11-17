@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 type PlanType = 'basic' | 'standard' | 'premium';
@@ -22,58 +23,39 @@ interface PlanOption {
   highlighted?: boolean;
 }
 
-const planOptions: PlanOption[] = [
-  {
-    type: 'basic',
-    name: 'Basic',
-    price: 'Free',
-    features: [
-      'Birth charts & basic interpretations',
-      'Daily forecasts',
-      '2 premium actions per day',
-      'Up to 2 profiles',
-      'Basic AI assistant',
-    ],
-    actionLimit: '2 actions/day',
-    profileLimit: '2 profiles',
-  },
-  {
-    type: 'standard',
-    name: 'Standard',
-    price: '$10/month',
-    features: [
-      'Everything in Basic',
-      '4 premium actions per day',
-      'Up to 10 profiles',
-      'Advanced charts & tools',
-      'Full calendars & soulmate',
-      '7-day FREE trial',
-    ],
-    actionLimit: '4 actions/day',
-    profileLimit: '10 profiles',
-    highlighted: true,
-  },
-  {
-    type: 'premium',
-    name: 'Premium',
-    price: '$19/month',
-    features: [
-      'Everything in Standard',
-      'UNLIMITED premium actions',
-      'Up to 50 profiles',
-      'Pro mode interpretations',
-      'Priority support',
-      '7-day FREE trial',
-    ],
-    actionLimit: 'Unlimited',
-    profileLimit: '50 profiles',
-  },
-];
-
 export default function OnboardingScreen() {
+  const { t } = useTranslation();
   const navigation = useNavigation();
   const [selectedPlan, setSelectedPlan] = useState<PlanType>('standard');
   const [loading, setLoading] = useState(false);
+
+  const planOptions: PlanOption[] = [
+    {
+      type: 'basic',
+      name: t('auth.onboarding.plans.basic.name'),
+      price: t('auth.onboarding.plans.basic.price'),
+      features: t('auth.onboarding.plans.basic.features', { returnObjects: true }) as string[],
+      actionLimit: t('auth.onboarding.plans.basic.actionLimit'),
+      profileLimit: t('auth.onboarding.plans.basic.profileLimit'),
+    },
+    {
+      type: 'standard',
+      name: t('auth.onboarding.plans.standard.name'),
+      price: t('auth.onboarding.plans.standard.price'),
+      features: t('auth.onboarding.plans.standard.features', { returnObjects: true }) as string[],
+      actionLimit: t('auth.onboarding.plans.standard.actionLimit'),
+      profileLimit: t('auth.onboarding.plans.standard.profileLimit'),
+      highlighted: true,
+    },
+    {
+      type: 'premium',
+      name: t('auth.onboarding.plans.premium.name'),
+      price: t('auth.onboarding.plans.premium.price'),
+      features: t('auth.onboarding.plans.premium.features', { returnObjects: true }) as string[],
+      actionLimit: t('auth.onboarding.plans.premium.actionLimit'),
+      profileLimit: t('auth.onboarding.plans.premium.profileLimit'),
+    },
+  ];
 
   const handleContinue = async () => {
     setLoading(true);
@@ -88,7 +70,7 @@ export default function OnboardingScreen() {
       navigation.navigate('Main' as never);
     } catch (error) {
       console.error('Error starting plan:', error);
-      alert('Failed to start plan. Please try again.');
+      alert(t('auth.onboarding.errors.startFailed'));
     } finally {
       setLoading(false);
     }
@@ -97,9 +79,9 @@ export default function OnboardingScreen() {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Choose Your Journey</Text>
+        <Text style={styles.title}>{t('auth.onboarding.title')}</Text>
         <Text style={styles.subtitle}>
-          Select a plan to unlock your cosmic potential
+          {t('auth.onboarding.subtitle')}
         </Text>
       </View>
 
@@ -116,7 +98,7 @@ export default function OnboardingScreen() {
           >
             {plan.highlighted && (
               <View style={styles.badge}>
-                <Text style={styles.badgeText}>POPULAR</Text>
+                <Text style={styles.badgeText}>{t('auth.onboarding.badges.popular')}</Text>
               </View>
             )}
 
@@ -141,7 +123,7 @@ export default function OnboardingScreen() {
 
             {selectedPlan === plan.type && (
               <View style={styles.selectedIndicator}>
-                <Text style={styles.selectedText}>SELECTED</Text>
+                <Text style={styles.selectedText}>{t('auth.onboarding.badges.selected')}</Text>
               </View>
             )}
           </TouchableOpacity>
@@ -158,15 +140,15 @@ export default function OnboardingScreen() {
           style={styles.buttonGradient}
         >
           <Text style={styles.buttonText}>
-            {loading ? 'Starting...' : 'Continue'}
+            {loading ? t('auth.onboarding.starting') : t('auth.onboarding.continueButton')}
           </Text>
         </LinearGradient>
       </TouchableOpacity>
 
       <Text style={styles.disclaimer}>
         {selectedPlan !== 'basic'
-          ? 'Start your 7-day free trial. Cancel anytime before trial ends.'
-          : 'You can upgrade to premium features anytime.'}
+          ? t('auth.onboarding.disclaimer.trial')
+          : t('auth.onboarding.disclaimer.free')}
       </Text>
     </ScrollView>
   );

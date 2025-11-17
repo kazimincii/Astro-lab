@@ -42,11 +42,31 @@ export default function MainNavigator() {
         headerTintColor: '#fff',
       })}
     >
-      <Tab.Screen name="Today" component={TodayScreen} />
-      <Tab.Screen name="Profiles" component={ProfilesScreen} />
-      <Tab.Screen name="Explore" component={ExploreNavigator} />
-      <Tab.Screen name="AI" component={AIAssistantScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen
+        name="Today"
+        component={TodayScreen}
+        options={{ title: t('common.navigation.today') }}
+      />
+      <Tab.Screen
+        name="Profiles"
+        component={ProfilesScreen}
+        options={{ title: t('common.navigation.profile') }}
+      />
+      <Tab.Screen
+        name="Explore"
+        component={ExploreNavigator}
+        options={{ title: t('common.navigation.explore') }}
+      />
+      <Tab.Screen
+        name="AI"
+        component={AIAssistantScreen}
+        options={{ title: 'AI' }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{ title: t('common.navigation.settings') }}
+      />
     </Tab.Navigator>
   );
 }

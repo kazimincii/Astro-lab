@@ -1,0 +1,52 @@
+{
+  "buttons": {
+    "save": "Kaydet",
+    "cancel": "İptal",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "ok": "Tamam",
+    "yes": "Evet",
+    "no": "Hayır",
+    "continue": "Devam Et",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Bitti",
+    "skip": "Atla",
+    "close": "Kapat"
+  },
+  "navigation": {
+    "today": "Bugün",
+    "profile": "Profiller",
+    "explore": "Keşfet",
+    "settings": "Ayarlar",
+    "back": "Geri"
+  },
+  "messages": {
+    "success": "Başarılı!",
+    "saved": "Başarıyla kaydedildi",
+    "deleted": "Başarıyla silindi",
+    "updated": "Başarıyla güncellendi",
+    "loading": "Yükleniyor...",
+    "noData": "Veri yok",
+    "comingSoon": "Yakında"
+  },
+  "errors": {
+    "generic": "Bir şeyler yanlış gitti. Lütfen tekrar deneyin.",
+    "network": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
+    "notFound": "Bulunamadı",
+    "unauthorized": "Yetkisiz erişim",
+    "serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin.",
+    "invalidInput": "Geçersiz giriş",
+    "required": "Bu alan gereklidir"
+  },
+  "loading": {
+    "default": "Yükleniyor...",
+    "pleaseWait": "Lütfen bekleyin...",
+    "processing": "İşleniyor..."
+  },
+  "empty": {
+    "noResults": "Sonuç bulunamadı",
+    "noData": "Veri yok",
+    "tryAgain": "Tekrar dene"
+  }
+}

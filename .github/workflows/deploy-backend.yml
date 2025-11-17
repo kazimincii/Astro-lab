@@ -1,16 +1,66 @@
-name: Deploy Backend
+name: Deploy Backend + Container Registry Push
 
 on:
   push:
     branches: [ main ]
     paths:
       - 'astrology-app/backend/**'
+  workflow_dispatch:
+    inputs:
+      registry:
+        description: 'Container registry target'
+        required: false
+        type: choice
+        options:
+          - ghcr
+          - ecr
+          - both
+        default: 'both'
 
 jobs:
+  test-and-build:
+    name: Test & Build Backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: astrology-app/backend/package-lock.json
+
+      - name: Install dependencies
+        working-directory: astrology-app/backend
+        run: npm ci
+
+      - name: Run linter
+        working-directory: astrology-app/backend
+        run: npm run lint
+
+      - name: Check TypeScript compilation
+        working-directory: astrology-app/backend
+        run: npm run build
+
+      - name: Run unit tests
+        working-directory: astrology-app/backend
+        env:
+          NODE_ENV: test
+        run: npm test
+
+      - name: Generate coverage report
+        working-directory: astrology-app/backend
+        env:
+          NODE_ENV: test
+        run: npm run test:cov
+
   deploy:
     name: Deploy to Production (runs deploy.sh)
     runs-on: ubuntu-latest
     environment: production
+    needs: test-and-build
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,7 +73,6 @@ jobs:
       - name: Configure environment for deployment
         run: |
           echo "Preparing environment variables"
-        # Secrets will be provided as env below
 
       - name: Run deployment script
         working-directory: astrology-app/backend
@@ -43,62 +92,103 @@ jobs:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
         run: |
           chmod +x ./scripts/deploy.sh
           ./scripts/deploy.sh production
 
-      - name: Build and push Docker image to GHCR
-        uses: docker/build-push-action@v4
+  push-to-ghcr:
+    name: Build and Push Docker to GHCR
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' ||
+      github.event.inputs.registry == 'ghcr' ||
+      github.event.inputs.registry == 'both'
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push to GHCR
+        uses: docker/build-push-action@v5
         with:
           context: ./astrology-app/backend
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ghcr.io/${{ github.repository_owner }}/astrology-backend:${{ github.sha }}
-        env:
-          # This action uses GITHUB_TOKEN automatically for authentication to GHCR
-          # If you prefer using a PAT, set GHCR_PAT in repo secrets and add login step
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-name: Deploy Backend
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/astrology-backend:latest
+            ghcr.io/${{ github.repository_owner }}/astrology-backend:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment environment'
-        required: true
-        type: choice
-        options:
-          - staging
-          - production
-
-jobs:
-  deploy:
-    name: Deploy Backend
+  push-to-ecr:
+    name: Build and Push Docker to AWS ECR
     runs-on: ubuntu-latest
-
+    if: |
+      github.event.inputs.registry == 'ecr' ||
+      github.event.inputs.registry == 'both'
+    env:
+      ECR_REGISTRY: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION || 'us-east-1' }}.amazonaws.com
+      ECR_REPOSITORY: astrology-backend
+      IMAGE_TAG: ${{ github.sha }}
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          node-version: '18'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION || 'us-east-1' }}
 
-      - name: Install dependencies
-        working-directory: astrology-app/backend
-        run: npm ci --production
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build application
-        working-directory: astrology-app/backend
-        run: npm run build
+      - name: Build and push to ECR
+        uses: docker/build-push-action@v5
+        with:
+          context: ./astrology-app/backend
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+            ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Deploy info
-        run: echo "Ready for deployment - add your deployment steps here"
+      - name: Output ECR image URI
+        run: |
+          echo "ECR_IMAGE_URI=${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}" >> $GITHUB_OUTPUT
+          echo "Image pushed to ECR: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
 
-      - name: Run database migrations
-        working-directory: astrology-app/backend
-        run: echo "Add migration commands here"
-
-      - name: Health check
-        run: echo "Add health check commands here"
+  notify:
+    name: Notify Deployment Status
+    runs-on: ubuntu-latest
+    needs: [ deploy ]
+    if: always()
+    steps:
+      - name: Check deployment status
+        run: |
+          if [ "${{ needs.deploy.result }}" == "success" ]; then
+            echo "✅ Deployment successful"
+          else
+            echo "❌ Deployment failed"
+            exit 1
+          fi
