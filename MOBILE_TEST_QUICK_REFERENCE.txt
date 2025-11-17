@@ -1,0 +1,164 @@
+MOBILE APP TEST COVERAGE - QUICK REFERENCE
+Location: /home/user/Astro-lab/astrology-app/mobile/src
+
+════════════════════════════════════════════════════════════════════
+
+DIRECTORY-BY-DIRECTORY SUMMARY
+
+1. API (/api) - 27 files
+   With Tests:    10 files (37%)
+                  ✓ actions.ts, auth.ts, biorhythm.ts, chakras.ts
+                  ✓ numerology.ts, payments.ts, profiles.ts
+                  ✓ subscriptions.ts, tarot.ts, trials.ts
+   
+   Missing Tests: 17 files (63%)
+                  ✗ advancedCharts, astroMap, auraScan, calendars
+                  ✗ client (CRITICAL!), coffeeReading, cosmicClimate
+                  ✗ education, famousPeople, forecasts, index (CRITICAL!)
+                  ✗ journal, liveServices, relationship, soulmate
+                  ✗ today, widgets
+
+2. Screens > Main (/screens/main) - 26 files
+   With Tests:    0 files (0%) - CRITICAL GAP!
+   Missing Tests: 26 files (100%) - ALL SCREENS UNTESTED
+                  All 26 screen components completely untested
+
+3. Components (/components) - 7 files
+   With Tests:    1 file (14%)
+                  ✓ ProfileSelector.tsx
+   
+   Missing Tests: 6 files (86%)
+                  ✗ ActionLimitModal, ActionsCounter, ChartWheel
+                  ✗ MembershipCard, PaymentSheet (CRITICAL!), TarotCard
+
+4. Screens > Auth (/screens/auth) - 6 files
+   With Tests:    1 file (17%)
+                  ✓ LoginScreen.tsx
+   
+   Missing Tests: 5 files (83%)
+                  ✗ ForgotPasswordScreen, OnboardingScreen
+                  ✗ RegisterScreen, ResetPasswordScreen, WelcomeScreen
+
+5. Navigation (/navigation) - 4 files
+   With Tests:    0 files (0%)
+   Missing Tests: 4 files (100%)
+                  ✗ AuthNavigator, ExploreNavigator, MainNavigator
+                  ✗ RootNavigator
+
+6. Hooks (/hooks) - 1 file
+   With Tests:    0 files (0%)
+   Missing Tests: 1 file (100%)
+                  ✗ useWidgetUpdates.ts
+
+7. Services (/services) - 1 file
+   With Tests:    0 files (0%)
+   Missing Tests: 1 file (100%)
+                  ✗ widgetService.ts
+
+8. Store (/store) - 1 file
+   With Tests:    0 files (0%)
+   Missing Tests: 1 file (100%)
+                  ✗ authStore.ts
+
+9. Contexts (/contexts) - 1 file
+   With Tests:    0 files (0%)
+   Missing Tests: 1 file (100%)
+                  ✗ ProfileContext.tsx
+
+10. Config (/config) - 1 file
+    With Tests:    0 files (0%)
+    Missing Tests: 1 file (100%)
+                   ✗ stripe.ts (PAYMENT CRITICAL!)
+
+11. Types (/types) - 2 files
+    Status:        N/A (Type definitions don't require tests)
+    Files:         navigation.ts, widgets.d.ts
+
+12. Theme (/theme) - 1 file
+    Status:        N/A (Theme configs don't require tests)
+    Files:         colors.ts
+
+════════════════════════════════════════════════════════════════════
+
+STATISTICS SUMMARY
+
+Total Source Files:              69
+Total Test Files:                11
+Test Coverage:                   16% (11/69)
+Untested Files:                  58 (84%)
+
+By Priority Level:
+├─ Critical (API + Main Screens):      59 files → 11 tests (19%)
+├─ Medium (Components + Services):     10 files → 1 test (10%)
+└─ Low (Navigation + Config):           5 files → 0 tests (0%)
+
+════════════════════════════════════════════════════════════════════
+
+CRITICAL GAPS (TEST IMMEDIATELY)
+
+TIER 1 - Blocking Issues:
+└─ Main Screens: 26 files with 0% coverage
+   User-facing features completely untested
+
+TIER 2 - High Impact:
+├─ API Foundation: client.ts, index.ts untested
+├─ Payment Flow: PaymentSheet.tsx, stripe.ts untested
+├─ Complex Components: ChartWheel.tsx untested
+└─ API Features: 17 untested API modules
+
+TIER 3 - Important:
+├─ Auth Flow: 5 untested auth screens
+├─ Navigation: 4 untested navigation files
+└─ Business Logic: Services, Hooks, Store (3 files)
+
+════════════════════════════════════════════════════════════════════
+
+RECOMMENDED TESTING ORDER
+
+Phase 1 (Immediate): 8 files
+├─ api/client.ts (HTTP foundation)
+├─ api/index.ts (API barrel export)
+├─ config/stripe.ts (Payment critical)
+├─ components/PaymentSheet.tsx (Payment critical)
+├─ screens/main/TodayScreen.tsx (Most used)
+├─ screens/main/ProfilesScreen.tsx (Core feature)
+├─ screens/main/SettingsScreen.tsx (User settings)
+└─ store/authStore.ts (Auth state)
+
+Phase 2 (Week 1): Complete API coverage + Auth screens
+└─ Add 22 tests to reach 50% overall coverage
+
+Phase 3 (Weeks 2-4): Main screens + Components
+└─ Add 20 tests to reach 70% overall coverage
+
+Phase 4 (Month 2+): Navigation + Services + Hooks
+└─ Achieve 85%+ coverage target
+
+════════════════════════════════════════════════════════════════════
+
+TESTING FRAMEWORK DETAILS
+
+Framework:     Jest
+Component Library:     React Testing Library for React Native
+Mocking Pattern:       jest.mock() for dependencies
+Context Mocking:       jest.mock('@/contexts/...')
+API Mocking:           jest.mock('../client') in API tests
+React Query:           jest.mock('@tanstack/react-query')
+
+Example Test Pattern (API):
+  - Mock apiClient.post
+  - Test success/error scenarios
+  - Verify request parameters
+  - Validate response handling
+
+Example Test Pattern (Components):
+  - Mock dependencies (Context, API, React Query)
+  - Render component with mocked props
+  - Use React Testing Library queries
+  - Test user interactions with fireEvent
+
+════════════════════════════════════════════════════════════════════
+
+FULL REPORT LOCATION:
+/home/user/Astro-lab/MOBILE_TEST_COVERAGE_ANALYSIS.md
+
