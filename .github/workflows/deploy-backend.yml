@@ -1,0 +1,104 @@
+name: Deploy Backend
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'astrology-app/backend/**'
+
+jobs:
+  deploy:
+    name: Deploy to Production (runs deploy.sh)
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Configure environment for deployment
+        run: |
+          echo "Preparing environment variables"
+        # Secrets will be provided as env below
+
+      - name: Run deployment script
+        working-directory: astrology-app/backend
+        env:
+          NODE_ENV: production
+          PORT: 3000
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ secrets.ANTHROPIC_MODEL || 'claude-haiku-4.5' }}
+          AI_PROVIDER: ${{ secrets.AI_PROVIDER || 'anthropic' }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          chmod +x ./scripts/deploy.sh
+          ./scripts/deploy.sh production
+
+      - name: Build and push Docker image to GHCR
+        uses: docker/build-push-action@v4
+        with:
+          context: ./astrology-app/backend
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ghcr.io/${{ github.repository_owner }}/astrology-backend:${{ github.sha }}
+        env:
+          # This action uses GITHUB_TOKEN automatically for authentication to GHCR
+          # If you prefer using a PAT, set GHCR_PAT in repo secrets and add login step
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+name: Deploy Backend
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    name: Deploy Backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        working-directory: astrology-app/backend
+        run: npm ci --production
+
+      - name: Build application
+        working-directory: astrology-app/backend
+        run: npm run build
+
+      - name: Deploy info
+        run: echo "Ready for deployment - add your deployment steps here"
+
+      - name: Run database migrations
+        working-directory: astrology-app/backend
+        run: echo "Add migration commands here"
+
+      - name: Health check
+        run: echo "Add health check commands here"

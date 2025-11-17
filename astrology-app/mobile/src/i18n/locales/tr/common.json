@@ -1,0 +1,89 @@
+{
+  "buttons": {
+    "ok": "Tamam",
+    "cancel": "İptal",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "back": "Geri",
+    "next": "İleri",
+    "done": "Bitti",
+    "continue": "Devam Et",
+    "confirm": "Onayla",
+    "skip": "Atla",
+    "refresh": "Yenile",
+    "retry": "Tekrar Dene",
+    "share": "Paylaş",
+    "viewAll": "Tümünü Gör",
+    "learnMore": "Daha Fazla Bilgi",
+    "getStarted": "Başlayalım",
+    "upgrade": "Yükselt",
+    "subscribe": "Abone Ol",
+    "apply": "Uygula",
+    "submit": "Gönder",
+    "send": "Gönder"
+  },
+  "navigation": {
+    "today": "Bugün",
+    "explore": "Keşfet",
+    "education": "Eğitim",
+    "profile": "Profil",
+    "settings": "Ayarlar"
+  },
+  "loading": {
+    "default": "Yükleniyor...",
+    "preparingSpace": "Alanınız hazırlanıyor...",
+    "castingChart": "Bugünün haritası çiziliyor...",
+    "analyzing": "Analiz ediliyor...",
+    "calculating": "Hesaplanıyor...",
+    "fetching": "Veriler alınıyor...",
+    "processing": "İşleniyor...",
+    "pleaseWait": "Lütfen bekleyin..."
+  },
+  "errors": {
+    "general": "Bir şeyler ters gitti",
+    "network": "Ağ hatası. Lütfen bağlantınızı kontrol edin.",
+    "timeout": "İstek zaman aşımına uğradı. Lütfen tekrar deneyin.",
+    "notFound": "Bulunamadı",
+    "unauthorized": "Yetkiniz yok",
+    "serverError": "Sunucu hatası. Lütfen daha sonra tekrar deneyin.",
+    "validation": "Lütfen girişinizi kontrol edin",
+    "tryAgain": "Lütfen tekrar deneyin",
+    "contactSupport": "Sorun devam ederse lütfen destek ile iletişime geçin"
+  },
+  "empty": {
+    "noData": "Veri yok",
+    "noResults": "Sonuç bulunamadı",
+    "nothingHere": "Henüz burada bir şey yok",
+    "comeBackLater": "Güncellemeler için daha sonra tekrar gelin"
+  },
+  "messages": {
+    "success": "Başarılı!",
+    "saved": "Başarıyla kaydedildi",
+    "deleted": "Başarıyla silindi",
+    "updated": "Başarıyla güncellendi",
+    "copied": "Panoya kopyalandı",
+    "areYouSure": "Emin misiniz?",
+    "cannotUndo": "Bu işlem geri alınamaz"
+  },
+  "time": {
+    "today": "Bugün",
+    "yesterday": "Dün",
+    "tomorrow": "Yarın",
+    "thisWeek": "Bu Hafta",
+    "thisMonth": "Bu Ay",
+    "daily": "Günlük",
+    "weekly": "Haftalık",
+    "monthly": "Aylık",
+    "yearly": "Yıllık"
+  },
+  "actions": {
+    "remaining": "{{count}} kaldı",
+    "used": "{{count}} kullanıldı",
+    "unlimited": "Sınırsız",
+    "resetsIn": "{{time}} içinde sıfırlanır",
+    "dailyLimit": "Günlük Limit",
+    "actionsPerDay": "Günlük eylem sayısı"
+  }
+}

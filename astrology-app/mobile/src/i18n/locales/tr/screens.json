@@ -1,0 +1,339 @@
+{
+  "today": {
+    "title": "Bugün",
+    "greeting": "İyi {{timeOfDay}}, {{name}}",
+    "profilesNeeded": {
+      "title": "Profil Gerekli",
+      "description": "Kişiselleştirilmiş içgörülerin kilidini açmak için ilk doğum profilinizi oluşturun",
+      "action": "Profil Ekle"
+    },
+    "energyScores": {
+      "title": "Enerji Skorları",
+      "love": "Aşk",
+      "career": "Kariyer",
+      "health": "Sağlık",
+      "outOf": "/ 100"
+    },
+    "focusAreas": {
+      "title": "Odak Noktaları",
+      "description": "Bugün dikkatinizi hak eden konular"
+    },
+    "luckySignals": {
+      "title": "Şans İşaretleri",
+      "numbers": "Sayılar",
+      "color": "Renk",
+      "gem": "Taş",
+      "time": "Zaman"
+    },
+    "planetaryTransits": {
+      "title": "Gezegen Geçişleri",
+      "description": "Sizi etkileyen mevcut kozmik etkiler"
+    }
+  },
+  "profiles": {
+    "title": "Doğum Profilleri",
+    "subtitle": "Yorum yaptığınız kişileri görüntüleyin, düzenleyin ve önceliklendirin",
+    "loading": "Profiller yükleniyor...",
+    "error": "Profiller yüklenemedi",
+    "empty": {
+      "title": "Henüz profil yok",
+      "description": "Kozmik yolculuğunuza başlamak için ilk doğum profilinizi oluşturun",
+      "action": "Profil Ekle"
+    },
+    "addProfile": "Profil Ekle",
+    "editProfile": "Profili Düzenle",
+    "deleteProfile": "Profili Sil",
+    "setPrimary": "Birincil Yap",
+    "form": {
+      "name": "Ad",
+      "namePlaceholder": "Adı girin",
+      "dateOfBirth": "Doğum Tarihi",
+      "timeOfBirth": "Doğum Saati",
+      "placeOfBirth": "Doğum Yeri",
+      "placePlaceholder": "Şehir, Ülke",
+      "relationship": "İlişki",
+      "relationshipOptions": {
+        "self": "Ben",
+        "partner": "Partner",
+        "family": "Aile",
+        "friend": "Arkadaş",
+        "other": "Diğer"
+      }
+    }
+  },
+  "chakras": {
+    "title": "Çakra Dengesi",
+    "subtitle": "Yedi enerji merkezinizi hizalayın",
+    "root": {
+      "name": "Kök Çakra",
+      "sanskrit": "Muladhara",
+      "location": "Omurganın tabanı",
+      "color": "Kırmızı",
+      "element": "Toprak",
+      "description": "Temelin ve yere bağlı olma hissin",
+      "balanced": "Güvende, istikrarlı ve hayatınızda yere bağlı hissediyorsunuz",
+      "imbalanced": "Endişeli, korkmuş veya bedeninizden kopuk hissedebilirsiniz",
+      "affirmation": "Güvendeyim, güvenliyim ve şu anda yere bağlıyım",
+      "crystals": "Kırmızı Jasper, Hematit, Siyah Turmalin",
+      "activities": "Yalınayak yürümek, bahçe işleri, Dağ Pozu gibi yoga pozları"
+    },
+    "sacral": {
+      "name": "Sakral Çakra",
+      "sanskrit": "Svadhisthana",
+      "location": "Alt karın",
+      "color": "Turuncu",
+      "element": "Su",
+      "description": "Duygular, yaratıcılık ve duyusallıkla bağlantınız",
+      "balanced": "Sağlıklı duygular yaşıyor, yaratıcılık doğal akıyor",
+      "imbalanced": "Duygusal olarak hissiz, yaratıcılıktan yoksun veya suçluluk yaşayabilirsiniz",
+      "affirmation": "Yaratıcılığımı kucaklıyorum ve duygularımın özgürce akmasına izin veriyorum",
+      "crystals": "Karneol, Turuncu Kalsit, Güneş Taşı",
+      "activities": "Dans, yüzme, yaratıcı sanatlar, kalça açıcı yoga pozları"
+    },
+    "solarPlexus": {
+      "name": "Solar Pleksus Çakra",
+      "sanskrit": "Manipura",
+      "location": "Üst karın",
+      "color": "Sarı",
+      "element": "Ateş",
+      "description": "Kişisel gücünüz, özgüveniniz ve benlik saygınız",
+      "balanced": "Kendinden emin, amaçlı ve hayatınızın kontrolünde hissediyorsunuz",
+      "imbalanced": "Güçsüz, özgüvenden yoksun veya aşırı kontrol edici hissedebilirsiniz",
+      "affirmation": "Kendimden eminim, yetenekliyim ve hedeflerime ulaşmaya değerim",
+      "crystals": "Sitrin, Kaplan Gözü, Sarı Jasper",
+      "activities": "Core güçlendirme egzersizleri, güneşlenme, hedefler için harekete geçmek"
+    },
+    "heart": {
+      "name": "Kalp Çakrası",
+      "sanskrit": "Anahata",
+      "location": "Göğsün merkezi",
+      "color": "Yeşil",
+      "element": "Hava",
+      "description": "Sevme, şefkat gösterme ve başkalarıyla bağlantı kurma yeteneğiniz",
+      "balanced": "Sevgiyi özgürce verip alıyor, şefkatli ve bağlı hissediyorsunuz",
+      "imbalanced": "Yalnız, kıskanç hissedebilir veya ilişkilerde zorluk yaşayabilirsiniz",
+      "affirmation": "Sevgiyi özgürce ve koşulsuz verip alıyorum",
+      "crystals": "Gül Kuvars, Yeşil Aventurin, Yeşim",
+      "activities": "Kalp açıcı yoga pozları, iyilik eylemleri, doğada zaman geçirme"
+    },
+    "throat": {
+      "name": "Boğaz Çakrası",
+      "sanskrit": "Vishuddha",
+      "location": "Boğaz",
+      "color": "Mavi",
+      "element": "Ses",
+      "description": "İletişim, kendini ifade etme ve gerçeğini söyleme",
+      "balanced": "Net iletişim kuruyorsunuz, kendinizi otantik şekilde ifade ediyorsunuz",
+      "imbalanced": "Konuşmakta zorluk çekebilir, yargılanmaktan korkabilir veya aşırı konuşabilirsiniz",
+      "affirmation": "Gerçeğimi netlik, özgüven ve şefkatle söylüyorum",
+      "crystals": "Akuamarin, Lapis Lazuli, Turkuaz",
+      "activities": "Şarkı söylemek, mantra okumak, günlük tutmak, dürüst konuşmalar"
+    },
+    "thirdEye": {
+      "name": "Üçüncü Göz Çakrası",
+      "sanskrit": "Ajna",
+      "location": "Alın, kaşların arasında",
+      "color": "İndigo",
+      "element": "Işık",
+      "description": "Sezginiz, hayal gücünüz ve iç bilgeliğiniz",
+      "balanced": "Sezgilerinize güveniyorsunuz ve fiziksel ötesini net görüyorsunuz",
+      "imbalanced": "Kafanız karışık, netlikten yoksun veya aşırı mantıklı olabilirsiniz",
+      "affirmation": "Sezgilerime güveniyorum ve fiziksel gerçekliğin ötesini net görüyorum",
+      "crystals": "Ametist, Lapis Lazuli, Mor Fluorit",
+      "activities": "Meditasyon, görselleştirme egzersizleri, rüya günlüğü"
+    },
+    "crown": {
+      "name": "Taç Çakra",
+      "sanskrit": "Sahasrara",
+      "location": "Başın tepesi",
+      "color": "Mor/Beyaz",
+      "element": "Düşünce",
+      "description": "Spiritüel bağlantınız ve aydınlanmanız",
+      "balanced": "Spiritüel olarak bağlı, huzurlu ve amacınızın farkındasınız",
+      "imbalanced": "Spiritüel olarak kopuk, amaçsız veya şüpheci hissedebilirsiniz",
+      "affirmation": "Evrenin ilahi bilgeliğine bağlıyım",
+      "crystals": "Berrak Kuvars, Selenit, Ametist",
+      "activities": "Meditasyon, dua, sessizlik, spiritüel metinleri okuma"
+    },
+    "scan": {
+      "title": "Çakralarınızı Tarayın",
+      "button": "Çakra Taramasını Başlat",
+      "scanning": "Enerji merkezleriniz analiz ediliyor...",
+      "results": "Çakra Dengeniz"
+    }
+  },
+  "meditation": {
+    "title": "Rehberli Meditasyonlar",
+    "subtitle": "İç huzurunuzu bulun",
+    "breathwork": {
+      "title": "Nefes Çalışması",
+      "beginner": {
+        "name": "Kutu Nefes",
+        "duration": "5 dakika",
+        "description": "Sinir sisteminizi sakinleştirmek için basit bir teknik",
+        "instructions": {
+          "intro": "Rahat bir oturma pozisyonu bulun. Gözlerinizi kapatın.",
+          "step1": "Burnunuzdan yavaşça 4 sayı içeri nefes alın",
+          "step2": "Nefesinizi 4 sayı tutun",
+          "step3": "Ağzınızdan yavaşça 4 sayı dışarı nefes verin",
+          "step4": "Boş tutun 4 sayı",
+          "repeat": "Bu döngüyü 5 dakika boyunca tekrarlayın"
+        }
+      },
+      "intermediate": {
+        "name": "4-7-8 Nefes",
+        "duration": "10 dakika",
+        "description": "Kaygıyı azaltın ve gevşemeyi teşvik edin",
+        "instructions": {
+          "intro": "Sırtınız dik olacak şekilde rahat oturun",
+          "step1": "Ağzınızdan tamamen nefes verin",
+          "step2": "Burnunuzdan sessizce 4 sayı içeri nefes alın",
+          "step3": "Nefesinizi 7 sayı tutun",
+          "step4": "Ağzınızdan tamamen 8 sayı dışarı nefes verin",
+          "repeat": "Bu bir nefes döngüsüdür. 4 kez tekrarlayın."
+        }
+      }
+    },
+    "chakra": {
+      "title": "Çakra Meditasyonu",
+      "sevenChakra": {
+        "name": "7 Çakra Dengeleme",
+        "duration": "21 dakika",
+        "description": "Yedi enerji merkezinin tümünde yolculuk",
+        "intro": "Bu meditasyon sizi kökten taca kadar yedi çakranızın her birini dengelemede yönlendirecek."
+      }
+    },
+    "manifestation": {
+      "title": "Tezahür",
+      "newMoon": {
+        "name": "Yeni Ay Niyetleri",
+        "duration": "15 dakika",
+        "description": "Yeni ay enerjisiyle güçlü niyetler belirleyin"
+      },
+      "abundance": {
+        "name": "Bolluk Meditasyonu",
+        "duration": "12 dakika",
+        "description": "Refah ve bolluk frekansıyla hizalanın"
+      }
+    }
+  },
+  "tarot": {
+    "title": "Tarot Falı",
+    "subtitle": "Kartlardan rehberlik arayın",
+    "spreads": {
+      "daily": "Günlük Kart",
+      "threeCard": "Geçmiş-Şimdi-Gelecek",
+      "celtic": "Kelt Haçı",
+      "relationship": "İlişki Yayılımı",
+      "career": "Kariyer Yolu"
+    },
+    "shuffle": "Kartları Karıştır",
+    "draw": "Kart Çek",
+    "interpret": "Falı Yorumla",
+    "newReading": "Yeni Fal"
+  },
+  "numerology": {
+    "title": "Numeroloji",
+    "subtitle": "Sayıların gücünü keşfedin",
+    "lifePathNumber": {
+      "title": "Yaşam Yolu Sayısı",
+      "description": "Hayatınızın amacı ve yolculuğu",
+      "calculate": "Hesapla"
+    },
+    "expressionNumber": {
+      "title": "İfade Sayısı",
+      "description": "Doğal yetenekleriniz ve kabiliyetleriniz"
+    },
+    "soulUrgeNumber": {
+      "title": "Ruh İsteği Sayısı",
+      "description": "İç arzularınız ve motivasyonunuz"
+    }
+  },
+  "biorhythm": {
+    "title": "Bioritim",
+    "subtitle": "Doğal döngülerinizi takip edin",
+    "physical": {
+      "name": "Fiziksel",
+      "description": "Fiziksel enerjiniz, gücünüz ve koordinasyonunuz",
+      "high": "Yüksek fiziksel enerji - Egzersiz ve fiziksel aktiviteler için harika",
+      "low": "Düşük fiziksel enerji - Dinlenme ve hafif hareketler önerilir",
+      "critical": "Kritik gün - Fiziksel aktivitelerde dikkatli olun"
+    },
+    "emotional": {
+      "name": "Duygusal",
+      "description": "Duygusal durumunuz, ruh haliniz ve hassasiyetiniz",
+      "high": "Yüksek duygusal enerji - Sosyalleşme ve duyguları ifade için iyi",
+      "low": "Düşük duygusal enerji - İç gözlem ve öz bakım zamanı",
+      "critical": "Kritik gün - Duygular öngörülemez olabilir"
+    },
+    "intellectual": {
+      "name": "Zihinsel",
+      "description": "Zihinsel netliğiniz, hafızanız ve analitik yetenekleriniz",
+      "high": "Yüksek zihinsel enerji - Öğrenme ve problem çözme için ideal",
+      "low": "Düşük zihinsel enerji - Mümkünse karmaşık kararlardan kaçının",
+      "critical": "Kritik gün - Önemli işleri iki kez kontrol edin"
+    }
+  },
+  "journal": {
+    "title": "Spiritüel Günlük",
+    "subtitle": "Kozmik yolculuğunuzu kaydedin",
+    "newEntry": "Yeni Kayıt",
+    "prompts": {
+      "gratitude": "Bugün neye minnettarsınız?",
+      "dreams": "Rüyalarınızı veya vizyonlarınızı kaydedin",
+      "insights": "Bugün hangi içgörüleri aldınız?",
+      "intentions": "Yarın için niyetleriniz neler?",
+      "reflection": "Spiritüel gelişiminizi düşünün"
+    }
+  },
+  "education": {
+    "title": "Astroloji Eğitimi",
+    "subtitle": "Kozmik bilginizi genişletin",
+    "beginner": "Başlangıç Kursları",
+    "intermediate": "Orta Seviye Kurslar",
+    "advanced": "İleri Çalışmalar",
+    "categories": {
+      "basics": "Astroloji Temelleri",
+      "birthChart": "Doğum Haritası Okuma",
+      "transits": "Geçişler ve İlerlemeler",
+      "relationships": "Sinastri ve İlişkiler",
+      "predictive": "Öngörü Teknikleri"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "account": {
+      "title": "Hesap",
+      "profile": "Profili Düzenle",
+      "email": "E-posta Ayarları",
+      "password": "Şifre Değiştir",
+      "deleteAccount": "Hesabı Sil"
+    },
+    "preferences": {
+      "title": "Tercihler",
+      "language": "Dil",
+      "notifications": "Bildirimler",
+      "theme": "Tema",
+      "units": "Birimler (Tropikal/Sideral)"
+    },
+    "subscription": {
+      "title": "Abonelik",
+      "currentPlan": "Mevcut Plan",
+      "managePlan": "Aboneliği Yönet",
+      "billingHistory": "Fatura Geçmişi"
+    },
+    "support": {
+      "title": "Destek",
+      "help": "Yardım Merkezi",
+      "contact": "Bize Ulaşın",
+      "feedback": "Geri Bildirim Gönderin",
+      "about": "Hakkında"
+    },
+    "legal": {
+      "title": "Yasal",
+      "terms": "Hizmet Şartları",
+      "privacy": "Gizlilik Politikası",
+      "licenses": "Lisanslar"
+    }
+  }
+}

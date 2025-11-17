@@ -1,0 +1,11 @@
+Claude Görev Listesi (İçerik ve Metin Oluşturma)
+
+Onboarding ve Karşılama Metinleri: Uygulamayı ilk kez kullananlar için Türkçe ve İngilizce onboarding mesajları hazırlanması. Karşılama ekranındaki açıklamalar, uygulamanın özelliklerinin kısa tanıtımı, izin isteme diyalogları (bildirim izni, konum izni vb.) ve ilk kurulum adımlarındaki yönergeler iki dilde de anlaşılır ve sıcak bir dille yazılacak.
+
+Arayüz Metinleri (Buton, Mesaj, Uyarı): Tüm buton etiketleri, menü öğeleri, bildirim ve hata mesajları, boş ekran açıklamaları, form alanı ipuçları gibi UI metinlerinin Türkçe ve İngilizce olarak üretilmesi. Örneğin "Bugün için astrolojik yorum bulunmuyor" veya "Yeni bir günlük girişi ekle" gibi boş ekran mesajları; "Kaydol", "Giriş Yap" gibi buton metinleri; uyarı diyaloglarındaki onay/iptal seçenekleri vb. Tüm metinler uygulamanın tonuna uygun ve tutarlı olacak.
+
+Premium Yükseltme Modalları İçeriği: Kullanıcı ücretsiz plandan premium plana geçmek istediğinde gösterilecek yükseltme pencerelerinin metinlerinin hazırlanması (TR/EN). Bu modallar içinde premium planın faydalarını vurgulayan başlıklar, açıklamalar ve çağrı-aksiyon ifadesi (örn. "Şimdi Yükselt", "7 Gün Ücretsiz Dene") yer alacak. Ayrıca abonelik koşulları, ücretlendirme ve iptal bilgisini net anlatan küçük yazılar (fine-print) her iki dilde de sağlanacak.
+
+Uygulama İçi Açıklayıcı İçerikler: Astroloji ve spiritüel özellikler için gerekli açıklama metinlerinin oluşturulması. Örneğin, astrolojik yorumlar (günlük/haftalık burç yorumları), enerji analizleri (bioritim sonuç açıklamaları veya aura tarama yorumları), meditasyon rehberleri (7 çakra dengeleme önerileri, nefes egzersizi talimatları) gibi içerikler Türkçe ve İngilizce kaleme alınacak. Bu içerikler hem bilgilendirici hem de kullanıcıyı motive edici bir üslupla yazılmalıdır.
+
+Çift Dilli Destek ve Çeviri Yönetimi: Tüm üretilen metinlerin uygulamada dil seçimine göre görüntülenebilmesi için i18n (uluslararasılaştırma) anahtarlarının hazırlanması. Claude’dan gelen TR ve EN metinleri JSON veya benzeri dil dosyalarına yerleştirilecek şekilde yapılandırılacak. Ayrıca metinlerin kültürel olarak doğru çevrildiği, tutarlılık sağlandığı ve uygulama içinde doğru yerlere yerleştirildiği test edilecek.

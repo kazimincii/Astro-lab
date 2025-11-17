@@ -1,0 +1,339 @@
+{
+  "today": {
+    "title": "Today",
+    "greeting": "Good {{timeOfDay}}, {{name}}",
+    "profilesNeeded": {
+      "title": "Profiles Needed",
+      "description": "Create your first birth profile to unlock personalized insights",
+      "action": "Add Profile"
+    },
+    "energyScores": {
+      "title": "Energy Scores",
+      "love": "Love",
+      "career": "Career",
+      "health": "Health",
+      "outOf": "out of 100"
+    },
+    "focusAreas": {
+      "title": "Focus Areas",
+      "description": "What deserves your attention today"
+    },
+    "luckySignals": {
+      "title": "Lucky Signals",
+      "numbers": "Numbers",
+      "color": "Color",
+      "gem": "Gem",
+      "time": "Time"
+    },
+    "planetaryTransits": {
+      "title": "Planetary Transits",
+      "description": "Current cosmic influences affecting you"
+    }
+  },
+  "profiles": {
+    "title": "Birth Profiles",
+    "subtitle": "View, edit and prioritize the people you read for",
+    "loading": "Loading profiles...",
+    "error": "Unable to load profiles",
+    "empty": {
+      "title": "No profiles yet",
+      "description": "Create your first birth profile to begin your cosmic journey",
+      "action": "Add Profile"
+    },
+    "addProfile": "Add Profile",
+    "editProfile": "Edit Profile",
+    "deleteProfile": "Delete Profile",
+    "setPrimary": "Set as Primary",
+    "form": {
+      "name": "Name",
+      "namePlaceholder": "Enter name",
+      "dateOfBirth": "Date of Birth",
+      "timeOfBirth": "Time of Birth",
+      "placeOfBirth": "Place of Birth",
+      "placePlaceholder": "City, Country",
+      "relationship": "Relationship",
+      "relationshipOptions": {
+        "self": "Myself",
+        "partner": "Partner",
+        "family": "Family",
+        "friend": "Friend",
+        "other": "Other"
+      }
+    }
+  },
+  "chakras": {
+    "title": "Chakra Balance",
+    "subtitle": "Align your seven energy centers",
+    "root": {
+      "name": "Root Chakra",
+      "sanskrit": "Muladhara",
+      "location": "Base of spine",
+      "color": "Red",
+      "element": "Earth",
+      "description": "Your foundation and feeling of being grounded",
+      "balanced": "You feel secure, stable, and grounded in your life",
+      "imbalanced": "You may feel anxious, fearful, or disconnected from your body",
+      "affirmation": "I am safe, secure, and grounded in the present moment",
+      "crystals": "Red Jasper, Hematite, Black Tourmaline",
+      "activities": "Walking barefoot, gardening, yoga poses like Mountain Pose"
+    },
+    "sacral": {
+      "name": "Sacral Chakra",
+      "sanskrit": "Svadhisthana",
+      "location": "Lower abdomen",
+      "color": "Orange",
+      "element": "Water",
+      "description": "Your connection to emotions, creativity, and sensuality",
+      "balanced": "You experience healthy emotions, creativity flows naturally",
+      "imbalanced": "You may feel emotionally numb, lack creativity, or experience guilt",
+      "affirmation": "I embrace my creativity and allow my emotions to flow freely",
+      "crystals": "Carnelian, Orange Calcite, Sunstone",
+      "activities": "Dancing, swimming, creative arts, hip-opening yoga poses"
+    },
+    "solarPlexus": {
+      "name": "Solar Plexus Chakra",
+      "sanskrit": "Manipura",
+      "location": "Upper abdomen",
+      "color": "Yellow",
+      "element": "Fire",
+      "description": "Your personal power, confidence, and self-esteem",
+      "balanced": "You feel confident, purposeful, and in control of your life",
+      "imbalanced": "You may feel powerless, lack confidence, or be overly controlling",
+      "affirmation": "I am confident, capable, and worthy of achieving my goals",
+      "crystals": "Citrine, Tiger's Eye, Yellow Jasper",
+      "activities": "Core strengthening exercises, sunbathing, taking action on goals"
+    },
+    "heart": {
+      "name": "Heart Chakra",
+      "sanskrit": "Anahata",
+      "location": "Center of chest",
+      "color": "Green",
+      "element": "Air",
+      "description": "Your ability to love, show compassion, and connect with others",
+      "balanced": "You give and receive love freely, feel compassionate and connected",
+      "imbalanced": "You may feel lonely, jealous, or have difficulty in relationships",
+      "affirmation": "I give and receive love freely and unconditionally",
+      "crystals": "Rose Quartz, Green Aventurine, Jade",
+      "activities": "Heart-opening yoga poses, acts of kindness, spending time in nature"
+    },
+    "throat": {
+      "name": "Throat Chakra",
+      "sanskrit": "Vishuddha",
+      "location": "Throat",
+      "color": "Blue",
+      "element": "Sound",
+      "description": "Your communication, self-expression, and speaking your truth",
+      "balanced": "You communicate clearly, express yourself authentically",
+      "imbalanced": "You may have difficulty speaking up, fear judgment, or talk excessively",
+      "affirmation": "I speak my truth with clarity, confidence, and compassion",
+      "crystals": "Aquamarine, Lapis Lazuli, Turquoise",
+      "activities": "Singing, chanting, journaling, honest conversations"
+    },
+    "thirdEye": {
+      "name": "Third Eye Chakra",
+      "sanskrit": "Ajna",
+      "location": "Forehead, between eyebrows",
+      "color": "Indigo",
+      "element": "Light",
+      "description": "Your intuition, imagination, and inner wisdom",
+      "balanced": "You trust your intuition and see clearly beyond the physical",
+      "imbalanced": "You may feel confused, lack clarity, or be overly logical",
+      "affirmation": "I trust my intuition and see clearly beyond physical reality",
+      "crystals": "Amethyst, Lapis Lazuli, Purple Fluorite",
+      "activities": "Meditation, visualization exercises, dream journaling"
+    },
+    "crown": {
+      "name": "Crown Chakra",
+      "sanskrit": "Sahasrara",
+      "location": "Top of head",
+      "color": "Violet/White",
+      "element": "Thought",
+      "description": "Your spiritual connection and enlightenment",
+      "balanced": "You feel spiritually connected, at peace, and aware of your purpose",
+      "imbalanced": "You may feel spiritually disconnected, lack purpose, or be cynical",
+      "affirmation": "I am connected to the divine wisdom of the universe",
+      "crystals": "Clear Quartz, Selenite, Amethyst",
+      "activities": "Meditation, prayer, silence, studying spiritual texts"
+    },
+    "scan": {
+      "title": "Scan Your Chakras",
+      "button": "Start Chakra Scan",
+      "scanning": "Analyzing your energy centers...",
+      "results": "Your Chakra Balance"
+    }
+  },
+  "meditation": {
+    "title": "Guided Meditations",
+    "subtitle": "Find your inner peace",
+    "breathwork": {
+      "title": "Breathwork",
+      "beginner": {
+        "name": "Box Breathing",
+        "duration": "5 minutes",
+        "description": "A simple technique to calm your nervous system",
+        "instructions": {
+          "intro": "Find a comfortable seated position. Close your eyes.",
+          "step1": "Inhale slowly through your nose for 4 counts",
+          "step2": "Hold your breath for 4 counts",
+          "step3": "Exhale slowly through your mouth for 4 counts",
+          "step4": "Hold empty for 4 counts",
+          "repeat": "Repeat this cycle for 5 minutes"
+        }
+      },
+      "intermediate": {
+        "name": "4-7-8 Breathing",
+        "duration": "10 minutes",
+        "description": "Reduce anxiety and promote relaxation",
+        "instructions": {
+          "intro": "Sit comfortably with your back straight",
+          "step1": "Exhale completely through your mouth",
+          "step2": "Inhale quietly through your nose for 4 counts",
+          "step3": "Hold your breath for 7 counts",
+          "step4": "Exhale completely through your mouth for 8 counts",
+          "repeat": "This is one breath cycle. Repeat 4 times."
+        }
+      }
+    },
+    "chakra": {
+      "title": "Chakra Meditation",
+      "sevenChakra": {
+        "name": "7 Chakra Balancing",
+        "duration": "21 minutes",
+        "description": "Journey through all seven energy centers",
+        "intro": "This meditation will guide you through balancing each of your seven chakras, from root to crown."
+      }
+    },
+    "manifestation": {
+      "title": "Manifestation",
+      "newMoon": {
+        "name": "New Moon Intentions",
+        "duration": "15 minutes",
+        "description": "Set powerful intentions with the new moon energy"
+      },
+      "abundance": {
+        "name": "Abundance Meditation",
+        "duration": "12 minutes",
+        "description": "Align with the frequency of prosperity and abundance"
+      }
+    }
+  },
+  "tarot": {
+    "title": "Tarot Reading",
+    "subtitle": "Seek guidance from the cards",
+    "spreads": {
+      "daily": "Daily Card",
+      "threeCard": "Past-Present-Future",
+      "celtic": "Celtic Cross",
+      "relationship": "Relationship Spread",
+      "career": "Career Path"
+    },
+    "shuffle": "Shuffle Cards",
+    "draw": "Draw Card",
+    "interpret": "Interpret Reading",
+    "newReading": "New Reading"
+  },
+  "numerology": {
+    "title": "Numerology",
+    "subtitle": "Discover the power of numbers",
+    "lifePathNumber": {
+      "title": "Life Path Number",
+      "description": "Your life's purpose and journey",
+      "calculate": "Calculate"
+    },
+    "expressionNumber": {
+      "title": "Expression Number",
+      "description": "Your natural talents and abilities"
+    },
+    "soulUrgeNumber": {
+      "title": "Soul Urge Number",
+      "description": "Your inner desires and motivation"
+    }
+  },
+  "biorhythm": {
+    "title": "Biorhythm",
+    "subtitle": "Track your natural cycles",
+    "physical": {
+      "name": "Physical",
+      "description": "Your physical energy, strength, and coordination",
+      "high": "High physical energy - Great for exercise and physical activities",
+      "low": "Low physical energy - Rest and gentle movement recommended",
+      "critical": "Critical day - Be cautious with physical activities"
+    },
+    "emotional": {
+      "name": "Emotional",
+      "description": "Your emotional state, mood, and sensitivity",
+      "high": "High emotional energy - Good for socializing and expressing feelings",
+      "low": "Low emotional energy - Time for introspection and self-care",
+      "critical": "Critical day - Emotions may be unpredictable"
+    },
+    "intellectual": {
+      "name": "Intellectual",
+      "description": "Your mental clarity, memory, and analytical abilities",
+      "high": "High intellectual energy - Ideal for learning and problem-solving",
+      "low": "Low intellectual energy - Avoid complex decisions if possible",
+      "critical": "Critical day - Double-check important work"
+    }
+  },
+  "journal": {
+    "title": "Spiritual Journal",
+    "subtitle": "Record your cosmic journey",
+    "newEntry": "New Entry",
+    "prompts": {
+      "gratitude": "What are you grateful for today?",
+      "dreams": "Record any dreams or visions",
+      "insights": "What insights did you receive today?",
+      "intentions": "What are your intentions for tomorrow?",
+      "reflection": "Reflect on your spiritual growth"
+    }
+  },
+  "education": {
+    "title": "Astrology Education",
+    "subtitle": "Expand your cosmic knowledge",
+    "beginner": "Beginner Courses",
+    "intermediate": "Intermediate Courses",
+    "advanced": "Advanced Studies",
+    "categories": {
+      "basics": "Astrology Basics",
+      "birthChart": "Birth Chart Reading",
+      "transits": "Transits & Progressions",
+      "relationships": "Synastry & Relationships",
+      "predictive": "Predictive Techniques"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account",
+      "profile": "Edit Profile",
+      "email": "Email Settings",
+      "password": "Change Password",
+      "deleteAccount": "Delete Account"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "notifications": "Notifications",
+      "theme": "Theme",
+      "units": "Units (Tropical/Sidereal)"
+    },
+    "subscription": {
+      "title": "Subscription",
+      "currentPlan": "Current Plan",
+      "managePlan": "Manage Subscription",
+      "billingHistory": "Billing History"
+    },
+    "support": {
+      "title": "Support",
+      "help": "Help Center",
+      "contact": "Contact Us",
+      "feedback": "Send Feedback",
+      "about": "About"
+    },
+    "legal": {
+      "title": "Legal",
+      "terms": "Terms of Service",
+      "privacy": "Privacy Policy",
+      "licenses": "Licenses"
+    }
+  }
+}

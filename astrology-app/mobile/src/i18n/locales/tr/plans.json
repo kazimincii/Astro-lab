@@ -1,0 +1,135 @@
+{
+  "actionLimit": {
+    "title": "Günlük Eylem Limitine Ulaşıldı",
+    "subtitle": "Bugünkü tüm eylemlerinizi kullandınız",
+    "description": "Sınırsız kozmik içgörülerin keyfini sürdürmek için yükseltin",
+    "remaining": "Bugün {{count}} eylem kaldı",
+    "resetTime": "Eylemleriniz yarın gece yarısı sıfırlanacak",
+    "tryTomorrow": "Yarın tekrar deneyin",
+    "upgradeNow": "Şimdi Yükselt"
+  },
+  "plans": {
+    "current": "Mevcut Plan",
+    "yourPlan": "Mevcut Planınız",
+    "freeTrial": "Ücretsiz Deneme",
+    "standard": "Standart",
+    "premium": "Premium",
+    "selectPlan": "Plan Seç",
+    "upgradeTo": "{{plan}} Planına Yükselt",
+    "viewPlans": "Planları Görüntüle",
+    "managePlan": "Planı Yönet"
+  },
+  "free": {
+    "name": "Ücretsiz Deneme",
+    "price": "Ücretsiz",
+    "description": "Kozmik yolculuğunuza başlayın",
+    "features": {
+      "actions": "Günde 4 eylem",
+      "profiles": "En fazla 2 doğum profili",
+      "basicCharts": "Temel doğum haritası",
+      "dailyForecasts": "Günlük tahminler",
+      "limitedContent": "Sınırlı eğitim içeriği"
+    }
+  },
+  "standard": {
+    "name": "Standart",
+    "price": "₺350/ay",
+    "description": "Astrolojik bilginizi genişletin",
+    "popular": "En Popüler",
+    "features": {
+      "actions": "Günde 20 eylem",
+      "profiles": "En fazla 5 doğum profili",
+      "advancedCharts": "Gelişmiş haritalar (Transit, Solar Return)",
+      "weeklyForecasts": "Haftalık ve aylık tahminler",
+      "fullContent": "Tüm eğitim içeriğine erişim",
+      "prioritySupport": "Öncelikli müşteri desteği"
+    },
+    "trial": "7 günlük ücretsiz deneme",
+    "cta": "Ücretsiz Denemeyi Başlat"
+  },
+  "premiumPlan": {
+    "name": "Premium",
+    "price": "₺900/ay",
+    "description": "Sınırsız kozmik bilgeliğin kilidini açın",
+    "badge": "En İyi Değer",
+    "features": {
+      "actions": "SINIRSIZ eylem",
+      "profiles": "Sınırsız doğum profili",
+      "allCharts": "Tüm harita tipleri ve araçlar",
+      "allForecasts": "Tüm tahmin tipleri",
+      "liveServices": "Canlı astroloji seanslarına erişim",
+      "aiAssistant": "Yapay zeka astroloji asistanı",
+      "exclusiveContent": "Özel kurslar ve içerikler",
+      "prioritySupport": "VIP müşteri desteği",
+      "adFree": "Reklamsız deneyim",
+      "offlineMode": "Çevrimdışı mod"
+    },
+    "trial": "7 günlük ücretsiz deneme",
+    "cta": "Premium'un Kilidini Aç"
+  },
+  "upgradeModal": {
+    "title": "Premium'a Yükseltin",
+    "subtitle": "Tam Kozmik Potansiyelinizin Kilidini Açın",
+    "benefits": {
+      "title": "Neler Kazanacaksınız:",
+      "unlimited": "Sınırsız günlük eylemler",
+      "profiles": "Sınırsız doğum profili",
+      "tools": "Tüm astroloji araçlarına erişim",
+      "content": "Özel içerik ve kurslar",
+      "support": "VIP müşteri desteği"
+    },
+    "pricing": {
+      "monthly": "Aylık",
+      "yearly": "Yıllık",
+      "save": "%20 Tasarruf",
+      "perMonth": "aylık",
+      "billedAnnually": "Yıllık ₺{{amount}} olarak faturalandırılır"
+    },
+    "trial": {
+      "title": "7 Günlük Ücretsiz Denemenizi Başlatın",
+      "description": "İstediğiniz zaman iptal edin. Taahhüt gerekmez.",
+      "today": "Bugün: Ücretsiz",
+      "then": "Sonra {{price}}/ay"
+    },
+    "cta": {
+      "startTrial": "7 Günlük Ücretsiz Denemeyi Başlat",
+      "subscribe": "Şimdi Abone Ol",
+      "restore": "Satın Almayı Geri Yükle"
+    },
+    "terms": {
+      "agreement": "Abone olarak",
+      "termsOfService": "Hizmet Şartlarımızı",
+      "and": "ve",
+      "privacyPolicy": "Gizlilik Politikamızı",
+      "autoRenew": "kabul etmiş olursunuz. Abonelik, mevcut dönemin bitiminden en az 24 saat önce otomatik yenileme kapatılmadıkça otomatik olarak yenilenir.",
+      "cancelAnytime": "Aboneliğinizi hesap ayarlarınızdan istediğiniz zaman iptal edebilirsiniz.",
+      "refundPolicy": "Yıllık abonelikler için satın alma tarihinden itibaren 7 gün içinde iade yapılabilir."
+    }
+  },
+  "comparison": {
+    "title": "Planınızı Seçin",
+    "features": {
+      "dailyActions": "Günlük Eylemler",
+      "profiles": "Doğum Profilleri",
+      "charts": "Harita Tipleri",
+      "forecasts": "Tahminler",
+      "education": "Eğitim İçeriği",
+      "liveServices": "Canlı Seanslar",
+      "aiAssistant": "Yapay Zeka Asistanı",
+      "support": "Müşteri Desteği",
+      "ads": "Reklamlar"
+    },
+    "values": {
+      "limited": "Sınırlı",
+      "basic": "Temel",
+      "advanced": "Gelişmiş",
+      "full": "Tam Erişim",
+      "yes": "Evet",
+      "no": "Hayır",
+      "standard": "Standart",
+      "priority": "Öncelikli",
+      "vip": "VIP",
+      "noAds": "Reklamsız"
+    }
+  }
+}
