@@ -5,11 +5,14 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 import helmet from 'helmet';
+import { ensureAiConfig } from './common/utils/ai.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
 
   const configService = app.get(ConfigService);
+  // Validate AI configuration early (fail-fast when Anthropic selected but key missing)
+  ensureAiConfig(configService);
   const port = configService.get('PORT') || 3000;
   const nodeEnv = configService.get('NODE_ENV') || 'development';
   const isProduction = nodeEnv === 'production';

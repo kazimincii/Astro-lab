@@ -73,6 +73,49 @@ NODE_ENV=production
 PORT=3000
 APP_NAME=Astrology Super App
 
+## Anthropic — Enabling Claude Haiku 4.5 (Admin Steps)
+
+If you want the backend to use Claude Haiku 4.5 (Claude Haiku) for all clients, follow these steps.
+
+1. Anthropic account access
+   - Log in to https://console.anthropic.com/ with an account that has admin or billing access.
+   - Verify your organization/project has API access and a valid billing method.
+
+2. Request or enable model access
+   - Some newer models (like Haiku 4.5) may require explicit access approval. In the Anthropic Console:
+     - Open the API keys / Models section and check if `claude-haiku-4.5` appears in the available models list.
+     - If not visible, open a support request via the Anthropic console or contact Anthropic sales/support to request access to `claude-haiku-4.5` for your org.
+
+3. Create an API key
+   - In Anthropic Console > API Keys, create a production API key and copy it securely. This will be used as `ANTHROPIC_API_KEY`.
+
+4. Configure environment variables (production)
+   - Add the following variables to your production environment (or `.env.production`):
+
+```
+ANTHROPIC_API_KEY=sk-ant-your-production-anthropic-key
+ANTHROPIC_MODEL=claude-haiku-4.5
+AI_PROVIDER=anthropic
+```
+
+5. Add secrets to GitHub (recommended for CI/CD)
+   - In your GitHub repository, go to Settings > Secrets and variables > Actions > New repository secret.
+   - Add at least these secrets:
+     - `ANTHROPIC_API_KEY` — your Anthropic API key (keep this secret)
+     - `ANTHROPIC_MODEL` — `claude-haiku-4.5` (optional; you can set this directly in workflow env)
+     - `AI_PROVIDER` — `anthropic` (optional)
+
+6. Rollout strategy
+   - Start in staging: configure staging environment with `ANTHROPIC_MODEL=claude-haiku-4.5` and validate key flows.
+   - Monitor error tracking and usage quotas (Anthropic dashboard) to avoid unexpected billing.
+
+7. Fallback & rollback
+   - If you need to rollback, change `ANTHROPIC_MODEL` to a previously working model (e.g., `claude-3-opus-20240229`) or set `AI_PROVIDER=openai`.
+
+8. Quota & Cost controls
+   - Consider setting token limits and usage alerts in Anthropic Console. Update `ANTHROPIC_MAX_TOKENS` in env to limit individual requests if needed.
+
+If you want, I can create a short PR that adds these instructions to the repo and wire up a deploy workflow to use the new secrets.
 # Database
 DB_HOST=your-production-db.region.rds.amazonaws.com
 DB_PORT=5432
