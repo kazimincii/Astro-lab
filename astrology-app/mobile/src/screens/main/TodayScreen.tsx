@@ -144,7 +144,7 @@ export default function TodayScreen({ navigation }: any) {
   const renderSection = (title: string, content?: string) => (
     <View className="mt-3">
       <Text className="text-base font-semibold text-white">{title}</Text>
-      <Text className="mt-1 text-sm leading-5 text-slate-300">{content ?? 'Awaiting download...'}</Text>
+      <Text className="mt-1 text-sm leading-5 text-slate-300">{content ?? t('screens.today.focusAreas.awaitingDownload')}</Text>
     </View>
   );
 
