@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
 import { ProfileSelector } from '../ProfileSelector';
 import { useProfile } from '@/contexts/ProfileContext';
 import { profilesApi } from '@/api/profiles';
@@ -113,19 +113,20 @@ describe('ProfileSelector', () => {
     });
 
     it('should close modal when close button is pressed', () => {
-      const { getByText, getByLabelText, queryByText } = render(<ProfileSelector />);
+      const { getByText, queryByText } = render(<ProfileSelector />);
 
-      // Open modal
-      fireEvent.press(getByText('John Doe'));
+      act(() => {
+        fireEvent.press(getByText('John Doe'));
+      });
       expect(getByText('Select Profile')).toBeTruthy();
 
-      // Close modal (assuming close icon is accessible)
-      const closeButton = getByLabelText('close') || getByText('Select Profile').parent?.parent;
-      if (closeButton) {
+      // mocked icon renders text "close" via jest.setup mock
+      const closeButton = getByText('close');
+      act(() => {
         fireEvent.press(closeButton);
-      }
+      });
 
-      // Modal should be closed (this might need adjustment based on actual implementation)
+      expect(queryByText('Select Profile')).toBeNull();
     });
   });
 
