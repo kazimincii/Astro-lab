@@ -1,0 +1,38 @@
+{
+  "cli": {
+    "version": ">= 5.0.0",
+    "promptToConfigurePushNotifications": false
+  },
+  "build": {
+    "preview": {
+      "ios": {
+        "buildType": "simulator"
+      }
+    },
+    "preview2": {
+      "ios": {
+        "buildType": "archive"
+      }
+    },
+    "preview3": {
+      "developmentClient": true
+    },
+    "production": {
+      "ios": {
+        "buildType": "archive",
+        "distribution": "store"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "$APPLE_ID",
+        "appleTeamId": "$APPLE_TEAM_ID",
+        "appleIdPassword": "$APPLE_ID_PASSWORD",
+        "appleTeamCertificateId": "$APPLE_TEAM_CERTIFICATE_ID",
+        "appleTeamProvisioningProfileId": "$APPLE_TEAM_PROVISIONING_PROFILE_ID"
+      }
+    }
+  }
+}

@@ -219,17 +219,17 @@ export default function TodayScreen({ navigation }: any) {
   };
 
   const pageContent = () => {
-    if (areProfilesLoading && !profilesData) return renderLoading('Preparing your space...');
+    if (areProfilesLoading && !profilesData) return renderLoading(t('screens.today.loading.preparingSpace'));
     if (isProfilesError) {
-      const message = profilesError instanceof Error ? profilesError.message : 'Unable to load profiles.';
+      const message = profilesError instanceof Error ? profilesError.message : t('screens.today.errors.unableToLoadProfiles');
       return renderError(message, refetchProfiles);
     }
     if (!mainProfile) return renderEmptyProfiles();
     if (isForecastError) {
-      const message = forecastError instanceof Error ? forecastError.message : 'Unable to generate forecast.';
+      const message = forecastError instanceof Error ? forecastError.message : t('screens.today.errors.unableToGenerateForecast');
       return renderError(message, refetchForecast);
     }
-    if (isForecastLoading || !forecast) return renderLoading("Casting today's chart...");
+    if (isForecastLoading || !forecast) return renderLoading(t('screens.today.loading.castingChart'));
 
     return (
       <>
@@ -237,7 +237,7 @@ export default function TodayScreen({ navigation }: any) {
           <View className="flex-row items-center justify-between">
             <View>
               <Text className="text-xs tracking-[1px] uppercase text-slate-400">
-                Today&apos;s Forecast
+                {t('screens.today.forecast.title')}
               </Text>
               <Text className="text-2xl font-semibold text-white">{mainProfile.name}</Text>
               <Text className="text-sm text-slate-400 mt-1">
@@ -249,57 +249,57 @@ export default function TodayScreen({ navigation }: any) {
               onPress={() => navigation.navigate('Profiles')}
             >
               <Ionicons name="swap-horizontal" size={18} color={colors.cosmic.text} />
-              <Text className="ml-1 text-sm font-semibold text-white">Switch</Text>
+              <Text className="ml-1 text-sm font-semibold text-white">{t('screens.today.forecast.switch')}</Text>
             </TouchableOpacity>
           </View>
           <Text className="mt-3 text-base leading-6 text-white">{forecast.generalForecast}</Text>
         </View>
 
         <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
-          <Text className="text-xs tracking-[1px] uppercase text-slate-400">Energy Scores</Text>
+          <Text className="text-xs tracking-[1px] uppercase text-slate-400">{t('screens.today.energyScores.title')}</Text>
           <View className="mt-3 flex-row space-x-3">
-            {renderScore('Love', forecast.loveScore)}
-            {renderScore('Career', forecast.careerScore)}
-            {renderScore('Health', forecast.healthScore)}
+            {renderScore(t('screens.today.energyScores.love'), forecast.loveScore)}
+            {renderScore(t('screens.today.energyScores.career'), forecast.careerScore)}
+            {renderScore(t('screens.today.energyScores.health'), forecast.healthScore)}
           </View>
         </View>
 
         <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
-          <Text className="text-xs tracking-[1px] uppercase text-slate-400">Focus Areas</Text>
-          {renderSection('Love', forecast.loveForecast)}
-          {renderSection('Career', forecast.careerForecast)}
-          {renderSection('Health', forecast.healthForecast)}
+          <Text className="text-xs tracking-[1px] uppercase text-slate-400">{t('screens.today.focusAreas.title')}</Text>
+          {renderSection(t('screens.today.focusAreas.love'), forecast.loveForecast)}
+          {renderSection(t('screens.today.focusAreas.career'), forecast.careerForecast)}
+          {renderSection(t('screens.today.focusAreas.health'), forecast.healthForecast)}
         </View>
 
         <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
           <View className="flex-row gap-3">
             <View className="flex-1 rounded-xl border border-[#24243a] bg-[#1f1f33] p-4">
-              <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">Star Message</Text>
-              <Text className="mt-1 text-lg font-bold text-white">Stay aligned, stay kind</Text>
+              <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">{t('screens.today.starMessage.title')}</Text>
+              <Text className="mt-1 text-lg font-bold text-white">{t('screens.today.starMessage.defaultTitle')}</Text>
               <Text className="mt-2 text-sm leading-5 text-slate-300">
-                Ground into your routines and share encouragement. Your charts favor calm, steady momentum today.
+                {t('screens.today.starMessage.defaultMessage')}
               </Text>
             </View>
             <View className="w-32 rounded-xl border border-[#24243a] bg-[#1f1f33] p-4 items-center">
-              <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">Moon Phase</Text>
+              <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">{t('screens.today.moonPhase.title')}</Text>
               <Text className="my-1 text-2xl">{moonPhase.emoji}</Text>
               <Text className="text-base font-semibold text-white text-center">{moonPhase.label}</Text>
-              <Text className="mt-1 text-xs text-slate-400 text-center">Reflect + recalibrate</Text>
+              <Text className="mt-1 text-xs text-slate-400 text-center">{t('screens.today.moonPhase.subtitle')}</Text>
             </View>
           </View>
         </View>
 
         <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
-          <Text className="text-xs tracking-[1px] uppercase text-slate-400">Lucky Signals</Text>
+          <Text className="text-xs tracking-[1px] uppercase text-slate-400">{t('screens.today.luckySignals.title')}</Text>
           <View className="mt-3 flex-row space-x-3">
             <View className="flex-1">
-              <Text className="text-xs text-slate-400">Numbers</Text>
+              <Text className="text-xs text-slate-400">{t('screens.today.luckySignals.numbers')}</Text>
               <Text className="mt-1 text-lg font-semibold text-white">
                 {luckyNumbers.length ? luckyNumbers.join(' • ') : '--'}
               </Text>
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-slate-400">Color</Text>
+              <Text className="text-xs text-slate-400">{t('screens.today.luckySignals.color')}</Text>
               <View className="mt-1 flex-row items-center">
                 <View
                   className="mr-2 h-4 w-4 rounded-full border border-white/20"
@@ -309,7 +309,7 @@ export default function TodayScreen({ navigation }: any) {
               </View>
             </View>
             <View className="flex-1">
-              <Text className="text-xs text-slate-400">Gem</Text>
+              <Text className="text-xs text-slate-400">{t('screens.today.luckySignals.gem')}</Text>
               <Text className="mt-1 text-lg font-semibold text-white">{forecast.luckyGem ?? 'N/A'}</Text>
             </View>
           </View>
@@ -317,7 +317,7 @@ export default function TodayScreen({ navigation }: any) {
 
         {!!transits.length && (
           <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
-            <Text className="text-xs tracking-[1px] uppercase text-slate-400">Planetary Transits</Text>
+            <Text className="text-xs tracking-[1px] uppercase text-slate-400">{t('screens.today.planetaryTransits.title')}</Text>
             {transits.map(transit => (
               <View key={`${transit.planet}-${transit.theme}`} className="mt-3 flex-row items-start">
                 <View className="mr-3 h-8 w-8 items-center justify-center rounded-full bg-[rgba(99,102,241,0.16)]">
@@ -349,17 +349,17 @@ export default function TodayScreen({ navigation }: any) {
       <LinearGradient colors={['#181a2f', '#0f0f1e']} className="border-b border-[#24243a] px-5 pt-6 pb-4">
         <View className="flex-row items-center justify-between">
           <View>
-            <Text className="text-3xl font-bold text-white">Today</Text>
+            <Text className="text-3xl font-bold text-white">{t('screens.today.title')}</Text>
             <Text className="mt-1 text-slate-400">{new Date().toDateString()}</Text>
           </View>
           <View className="flex-row gap-2">
             <View className="flex-row items-center gap-2 rounded-full border border-[#2d2e3f] bg-white/5 px-3 py-2">
               <Ionicons name="planet" size={16} color="#c7d2fe" />
-              <Text className="text-xs font-semibold text-white">Daily sky</Text>
+              <Text className="text-xs font-semibold text-white">{t('screens.today.header.dailySky')}</Text>
             </View>
             <View className="flex-row items-center gap-2 rounded-full border border-[#2d2e3f] bg-white/5 px-3 py-2">
               <Ionicons name="sparkles" size={16} color="#fcd34d" />
-              <Text className="text-xs font-semibold text-white">Personal focus</Text>
+              <Text className="text-xs font-semibold text-white">{t('screens.today.header.personalFocus')}</Text>
             </View>
           </View>
         </View>
