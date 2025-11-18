@@ -1,0 +1,25 @@
+{
+  "explore": {
+    "title": "Keşfet",
+    "features": {
+      "myPlan": "Planım",
+      "astroAcademy": "Astro Akademi",
+      "iosWidgets": "iOS Widget'lar",
+      "myJournal": "Günlüğüm",
+      "biorhythm": "Biyoritim",
+      "chakras": "Çakralar",
+      "numerology": "Numeroloji",
+      "tarotReading": "Tarot Falı",
+      "coffeeReading": "Kahve Falı",
+      "auraScan": "Aura Tarama",
+      "relationship": "İlişkiler",
+      "famousPeople": "Ünlü Kişiler",
+      "advancedCharts": "Gelişmiş Haritalar",
+      "astroMap": "Astro Harita",
+      "calendars": "Takvimler",
+      "forecasts": "Tahminler",
+      "cosmicClimate": "Kozmik İklim",
+      "liveServices": "Canlı Hizmetler"
+    }
+  }
+}

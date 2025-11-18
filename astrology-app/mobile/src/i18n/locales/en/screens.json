@@ -21,5 +21,81 @@
       "cosmicClimate": "Cosmic Climate",
       "liveServices": "Live Services"
     }
+  },
+  "today": {
+    "title": "Today",
+    "header": {
+      "dailySky": "Daily sky",
+      "personalFocus": "Personal focus"
+    },
+    "loading": {
+      "preparingSpace": "Preparing your space...",
+      "castingChart": "Casting today's chart..."
+    },
+    "errors": {
+      "unableToLoadProfiles": "Unable to load profiles.",
+      "unableToGenerateForecast": "Unable to generate forecast.",
+      "unableToLoadMembership": "Unable to load membership details."
+    },
+    "empty": {
+      "profilesNeeded": "Profiles needed",
+      "addProfileMessage": "Add at least one profile to receive personalized daily insights.",
+      "createProfile": "Create profile"
+    },
+    "forecast": {
+      "title": "Today's Forecast",
+      "switch": "Switch"
+    },
+    "energyScores": {
+      "title": "Energy Scores",
+      "love": "Love",
+      "career": "Career",
+      "health": "Health"
+    },
+    "focusAreas": {
+      "title": "Focus Areas",
+      "love": "Love",
+      "career": "Career",
+      "health": "Health",
+      "awaitingDownload": "Awaiting download..."
+    },
+    "starMessage": {
+      "title": "Star Message",
+      "defaultTitle": "Stay aligned, stay kind",
+      "defaultMessage": "Ground into your routines and share encouragement. Your charts favor calm, steady momentum today."
+    },
+    "moonPhase": {
+      "title": "Moon Phase",
+      "subtitle": "Reflect + recalibrate",
+      "phases": {
+        "newMoon": "New Moon",
+        "waxingCrescent": "Waxing Crescent",
+        "firstQuarter": "First Quarter",
+        "waxingGibbous": "Waxing Gibbous",
+        "fullMoon": "Full Moon",
+        "waningGibbous": "Waning Gibbous",
+        "lastQuarter": "Last Quarter",
+        "waningCrescent": "Waning Crescent",
+        "loading": "Loading"
+      }
+    },
+    "luckySignals": {
+      "title": "Lucky Signals",
+      "numbers": "Numbers",
+      "color": "Color",
+      "gem": "Gem"
+    },
+    "planetaryTransits": {
+      "title": "Planetary Transits"
+    },
+    "membership": {
+      "title": "Membership",
+      "manage": "Manage",
+      "dailyActions": "Daily actions",
+      "unlimited": "Unlimited",
+      "leftToday": "left today",
+      "profiles": "Profiles",
+      "includedInPlan": "Included in your plan"
+    }
   }
 }
