@@ -9,7 +9,13 @@
     "web": "expo start --web",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "detox:build": "detox build-framework-cache && detox build-app-cache",
+    "detox:build:ios": "detox build-framework-cache && detox build-app-cache --configuration ios.sim.release",
+    "detox:test": "detox test e2e --configuration ios.sim.release --cleanup",
+    "detox:test:watch": "detox test e2e --configuration ios.sim.release --cleanup --record-logs all",
+    "detox:test:single": "detox test e2e/auth.e2e.test.ts --configuration ios.sim.release",
+    "detox:report": "detox test-summary"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",

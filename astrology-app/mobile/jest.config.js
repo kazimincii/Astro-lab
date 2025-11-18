@@ -15,7 +15,4 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFiles: ['<rootDir>/jest.setup.js'],
-  transform: {
-    '^.+\\.[jt]sx?$': 'babel-jest',
-  },
 };

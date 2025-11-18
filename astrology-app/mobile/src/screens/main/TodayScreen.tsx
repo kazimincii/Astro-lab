@@ -159,16 +159,16 @@ export default function TodayScreen({ navigation }: any) {
 
     if (isUsageError) {
       const message =
-        usageError instanceof Error ? usageError.message : 'Unable to load membership details.';
+        usageError instanceof Error ? usageError.message : t('screens.today.errors.unableToLoadMembership');
       return (
         <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
-          <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">Membership</Text>
+          <Text className="text-xs tracking-[0.8px] uppercase text-slate-400">{t('screens.today.membership.title')}</Text>
           <Text className="mt-2 text-sm text-white">{message}</Text>
           <TouchableOpacity
             className="mt-3 rounded-xl bg-[#6366f1] px-4 py-2.5"
             onPress={refetchUsage}
           >
-            <Text className="text-sm font-semibold text-white">Retry</Text>
+            <Text className="text-sm font-semibold text-white">{t('common.buttons.retry')}</Text>
           </TouchableOpacity>
         </View>
       );
@@ -179,39 +179,39 @@ export default function TodayScreen({ navigation }: any) {
     const planLabel =
       subscriptionUsage.plan?.charAt(0).toUpperCase() + subscriptionUsage.plan?.slice(1);
     const actionUsageText = subscriptionUsage.unlimitedActions
-      ? 'Unlimited'
+      ? t('screens.today.membership.unlimited')
       : `${subscriptionUsage.actionsUsedToday}/${subscriptionUsage.dailyActionLimit}`;
 
     return (
       <View className="mx-4 mt-4 rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-5">
         <View className="flex-row items-center justify-between">
           <View>
-            <Text className="text-xs tracking-[1px] uppercase text-slate-400">Membership</Text>
+            <Text className="text-xs tracking-[1px] uppercase text-slate-400">{t('screens.today.membership.title')}</Text>
             <Text className="mt-1 text-2xl font-semibold text-white">{planLabel}</Text>
           </View>
           <TouchableOpacity
             className="rounded-full bg-[rgba(99,102,241,0.15)] px-3 py-2.5"
             onPress={() => navigation.navigate('MyPlan')}
           >
-            <Text className="text-sm font-semibold text-white">Manage</Text>
+            <Text className="text-sm font-semibold text-white">{t('screens.today.membership.manage')}</Text>
           </TouchableOpacity>
         </View>
         <View className="mt-4 flex-row">
           <View className="flex-1">
-            <Text className="text-xs text-slate-400">Daily actions</Text>
+            <Text className="text-xs text-slate-400">{t('screens.today.membership.dailyActions')}</Text>
             <Text className="mt-1 text-xl font-semibold text-white">{actionUsageText}</Text>
             {!subscriptionUsage.unlimitedActions && (
               <Text className="text-xs text-slate-400">
-                {subscriptionUsage.actionsRemaining ?? 0} left today
+                {subscriptionUsage.actionsRemaining ?? 0} {t('screens.today.membership.leftToday')}
               </Text>
             )}
           </View>
           <View className="ml-4 flex-1">
-            <Text className="text-xs text-slate-400">Profiles</Text>
+            <Text className="text-xs text-slate-400">{t('screens.today.membership.profiles')}</Text>
             <Text className="mt-1 text-xl font-semibold text-white">
               {subscriptionUsage.profilesUsed}/{subscriptionUsage.profileLimit}
             </Text>
-            <Text className="text-xs text-slate-400">Included in your plan</Text>
+            <Text className="text-xs text-slate-400">{t('screens.today.membership.includedInPlan')}</Text>
           </View>
         </View>
       </View>
