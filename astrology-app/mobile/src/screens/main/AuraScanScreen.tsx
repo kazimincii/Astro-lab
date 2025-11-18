@@ -7,9 +7,11 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import ActionLimitModal from '../../components/ActionLimitModal';
 
@@ -25,6 +27,7 @@ interface AuraReading {
 }
 
 export default function AuraScanScreen() {
+  const { t } = useTranslation();
   const [photoUri, setPhotoUri] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState<AuraReading | null>(null);
@@ -46,7 +49,7 @@ export default function AuraScanScreen() {
 
   const handleScan = async () => {
     if (!photoUri) {
-      alert('Please select a photo first');
+      Alert.alert('', t('screens.auraScan.errors.selectPhotoFirst'));
       return;
     }
 
@@ -67,7 +70,7 @@ export default function AuraScanScreen() {
       if (error.response?.status === 429) {
         setShowLimitModal(true);
       } else {
-        alert('Failed to generate aura reading');
+        Alert.alert('', t('screens.auraScan.errors.failedToGenerate'));
       }
     } finally {
       setLoading(false);
@@ -84,23 +87,25 @@ export default function AuraScanScreen() {
       <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
         <View style={styles.headerRow}>
           <View>
-            <Text style={styles.title}>Aura Scan</Text>
-            <Text style={styles.subtitle}>Upload a portrait, get your vibe decoded.</Text>
+            <Text style={styles.title}>{t('screens.auraScan.title')}</Text>
+            <Text style={styles.subtitle}>{t('screens.auraScan.subtitle')}</Text>
           </View>
-          <Text style={styles.stepBadge}>{reading ? 'Results' : photoUri ? 'Step 2/2' : 'Step 1/2'}</Text>
+          <Text style={styles.stepBadge}>
+            {reading ? t('screens.auraScan.stepBadge.results') : photoUri ? t('screens.auraScan.stepBadge.step2') : t('screens.auraScan.stepBadge.step1')}
+          </Text>
         </View>
       </LinearGradient>
 
       {!reading && (
         <View style={styles.instructionsCard}>
-          <Text style={styles.instructionsTitle}>How it works</Text>
+          <Text style={styles.instructionsTitle}>{t('screens.auraScan.instructions.title')}</Text>
           <View style={styles.instructionsList}>
-            <Text style={styles.instructionText}>• Upload a clear portrait photo</Text>
-            <Text style={styles.instructionText}>• AI analyzes aura colors + vibe</Text>
-            <Text style={styles.instructionText}>• Get personality & presence insights</Text>
+            <Text style={styles.instructionText}>{t('screens.auraScan.instructions.step1')}</Text>
+            <Text style={styles.instructionText}>{t('screens.auraScan.instructions.step2')}</Text>
+            <Text style={styles.instructionText}>{t('screens.auraScan.instructions.step3')}</Text>
           </View>
           <Text style={styles.disclaimerText}>
-            For entertainment purposes only. Not medical or psychological advice.
+            {t('screens.auraScan.instructions.disclaimer')}
           </Text>
         </View>
       )}
@@ -110,14 +115,14 @@ export default function AuraScanScreen() {
           <View style={styles.photoContainer}>
             <Image source={{ uri: photoUri }} style={styles.photo} />
             <TouchableOpacity style={styles.changePhotoButton} onPress={pickImage}>
-              <Text style={styles.changePhotoText}>Change Photo</Text>
+              <Text style={styles.changePhotoText}>{t('screens.auraScan.upload.changePhoto')}</Text>
             </TouchableOpacity>
           </View>
         ) : (
           <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
             <Text style={styles.uploadIcon}>📷</Text>
-            <Text style={styles.uploadText}>Select Photo</Text>
-            <Text style={styles.uploadHint}>Good lighting • Face centered • No filters</Text>
+            <Text style={styles.uploadText}>{t('screens.auraScan.upload.selectPhoto')}</Text>
+            <Text style={styles.uploadHint}>{t('screens.auraScan.upload.hint')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -125,7 +130,7 @@ export default function AuraScanScreen() {
       {photoUri && !reading && (
         <TouchableOpacity style={styles.scanButton} onPress={handleScan} disabled={loading}>
           <LinearGradient colors={['#8b5cf6', '#6366f1']} style={styles.buttonGradient}>
-            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Scan Aura</Text>}
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>{t('screens.auraScan.buttons.scanAura')}</Text>}
           </LinearGradient>
         </TouchableOpacity>
       )}
@@ -134,30 +139,30 @@ export default function AuraScanScreen() {
         <View style={styles.readingContainer}>
           <View style={styles.archetypeCard}>
             <LinearGradient colors={['#1f1b37', '#2d1f52']} style={styles.archetypeGradient}>
-              <Text style={styles.archetypeLabel}>Archetype</Text>
+              <Text style={styles.archetypeLabel}>{t('screens.auraScan.results.archetype')}</Text>
               <Text style={styles.archetypeValue}>{reading.archetype}</Text>
             </LinearGradient>
           </View>
 
           <View style={styles.sectionRow}>
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>Vibe</Text>
+              <Text style={styles.sectionTitle}>{t('screens.auraScan.results.vibe')}</Text>
               <Text style={styles.sectionText}>{reading.sections.vibe}</Text>
             </View>
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>Communication</Text>
+              <Text style={styles.sectionTitle}>{t('screens.auraScan.results.communication')}</Text>
               <Text style={styles.sectionText}>{reading.sections.communication}</Text>
             </View>
           </View>
 
           <View style={styles.sectionCard}>
-            <Text style={styles.sectionTitle}>Relationships</Text>
+            <Text style={styles.sectionTitle}>{t('screens.auraScan.results.relationships')}</Text>
             <Text style={styles.sectionText}>{reading.sections.relationship}</Text>
           </View>
 
           <View style={styles.sectionRow}>
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>Strengths</Text>
+              <Text style={styles.sectionTitle}>{t('screens.auraScan.results.strengths')}</Text>
               {reading.sections.strengths.map((item, index) => (
                 <View key={index} style={styles.listRow}>
                   <Text style={styles.bullet}>•</Text>
@@ -166,7 +171,7 @@ export default function AuraScanScreen() {
               ))}
             </View>
             <View style={styles.sectionCard}>
-              <Text style={styles.sectionTitle}>Watch Outs</Text>
+              <Text style={styles.sectionTitle}>{t('screens.auraScan.results.watchOuts')}</Text>
               {reading.sections.watchOuts.map((item, index) => (
                 <View key={index} style={styles.listRow}>
                   <Text style={styles.bullet}>•</Text>
@@ -177,7 +182,7 @@ export default function AuraScanScreen() {
           </View>
 
           <TouchableOpacity style={styles.newScanButton} onPress={resetScan}>
-            <Text style={styles.newScanText}>Start New Scan</Text>
+            <Text style={styles.newScanText}>{t('screens.auraScan.buttons.startNewScan')}</Text>
           </TouchableOpacity>
         </View>
       )}

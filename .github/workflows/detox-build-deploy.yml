@@ -1,0 +1,124 @@
+name: Detox E2E Tests & Production Build
+
+on:
+  push:
+    branches: [main, feature/claude-haiku-impl]
+  pull_request:
+    branches: [main, feature/claude-haiku-impl]
+
+jobs:
+  test:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: astrology-app/mobile
+
+      - name: Install Detox CLI
+        run: npm install -g detox-cli
+
+      - name: Build Detox framework cache
+        run: npm run detox:build:ios
+        working-directory: astrology-app/mobile
+
+      - name: Run Detox tests
+        run: npm run detox:test
+        working-directory: astrology-app/mobile
+        timeout-minutes: 30
+
+      - name: Generate test report
+        if: always()
+        run: npm run detox:report
+        working-directory: astrology-app/mobile
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: detox-results
+          path: astrology-app/mobile/artifacts/
+
+  build:
+    needs: test
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: astrology-app/mobile
+
+      - name: Setup EAS
+        run: npm install -g eas-cli
+
+      - name: Login to EAS
+        run: |
+          echo "${{ secrets.EAS_TOKEN }}" > ~/.eas-cli-token
+          eas login --token ${{ secrets.EAS_TOKEN }}
+
+      - name: Build for production
+        run: eas build --platform ios --profile production
+        working-directory: astrology-app/mobile
+        env:
+          EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ios-build
+          path: artifacts/
+          retention-days: 7
+
+  deploy:
+    needs: build
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Setup EAS
+        run: npm install -g eas-cli
+
+      - name: Login to EAS
+        run: eas login --token ${{ secrets.EAS_TOKEN }}
+
+      - name: Submit to TestFlight
+        run: eas submit --platform ios --profile production
+        working-directory: astrology-app/mobile
+        env:
+          EAS_PROJECT_ID: ${{ secrets.EAS_PROJECT_ID }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+
+      - name: Notify deployment
+        if: success()
+        run: |
+          echo "✅ Build submitted to TestFlight"
+          echo "Check App Store Connect for build status"

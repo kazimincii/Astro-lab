@@ -97,5 +97,42 @@
       "profiles": "Profiller",
       "includedInPlan": "Planınıza dahil"
     }
+  },
+  "auraScan": {
+    "title": "Aura Tarama",
+    "subtitle": "Bir portre yükleyin, enerjiniz çözülsün.",
+    "stepBadge": {
+      "step1": "Adım 1/2",
+      "step2": "Adım 2/2",
+      "results": "Sonuçlar"
+    },
+    "instructions": {
+      "title": "Nasıl çalışır",
+      "step1": "• Net bir portre fotoğrafı yükleyin",
+      "step2": "• AI aura renklerini + enerjiyi analiz eder",
+      "step3": "• Kişilik ve varlık içgörüleri edinin",
+      "disclaimer": "Sadece eğlence amaçlıdır. Tıbbi veya psikolojik tavsiye değildir."
+    },
+    "upload": {
+      "selectPhoto": "Fotoğraf Seç",
+      "changePhoto": "Fotoğrafı Değiştir",
+      "hint": "İyi aydınlatma • Yüz merkezli • Filtre yok"
+    },
+    "buttons": {
+      "scanAura": "Aura Tara",
+      "startNewScan": "Yeni Tarama Başlat"
+    },
+    "results": {
+      "archetype": "Arketip",
+      "vibe": "Enerji",
+      "communication": "İletişim",
+      "relationships": "İlişkiler",
+      "strengths": "Güçlü Yönler",
+      "watchOuts": "Dikkat Edilmesi Gerekenler"
+    },
+    "errors": {
+      "selectPhotoFirst": "Lütfen önce bir fotoğraf seçin",
+      "failedToGenerate": "Aura okuması oluşturulamadı"
+    }
   }
 }

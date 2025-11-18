@@ -97,5 +97,42 @@
       "profiles": "Profiles",
       "includedInPlan": "Included in your plan"
     }
+  },
+  "auraScan": {
+    "title": "Aura Scan",
+    "subtitle": "Upload a portrait, get your vibe decoded.",
+    "stepBadge": {
+      "step1": "Step 1/2",
+      "step2": "Step 2/2",
+      "results": "Results"
+    },
+    "instructions": {
+      "title": "How it works",
+      "step1": "• Upload a clear portrait photo",
+      "step2": "• AI analyzes aura colors + vibe",
+      "step3": "• Get personality & presence insights",
+      "disclaimer": "For entertainment purposes only. Not medical or psychological advice."
+    },
+    "upload": {
+      "selectPhoto": "Select Photo",
+      "changePhoto": "Change Photo",
+      "hint": "Good lighting • Face centered • No filters"
+    },
+    "buttons": {
+      "scanAura": "Scan Aura",
+      "startNewScan": "Start New Scan"
+    },
+    "results": {
+      "archetype": "Archetype",
+      "vibe": "Vibe",
+      "communication": "Communication",
+      "relationships": "Relationships",
+      "strengths": "Strengths",
+      "watchOuts": "Watch Outs"
+    },
+    "errors": {
+      "selectPhotoFirst": "Please select a photo first",
+      "failedToGenerate": "Failed to generate aura reading"
+    }
   }
 }
