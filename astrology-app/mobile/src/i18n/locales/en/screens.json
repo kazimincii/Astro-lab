@@ -134,5 +134,30 @@
       "selectPhotoFirst": "Please select a photo first",
       "failedToGenerate": "Failed to generate aura reading"
     }
+  },
+  "forecasts": {
+    "title": "Forecasts",
+    "subtitle": "Pick a window and explore your sky",
+    "types": {
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "hero": {
+      "selectedPeriod": "Selected Period"
+    },
+    "sections": {
+      "overall": "Overall",
+      "love": "Love",
+      "money": "Money",
+      "career": "Career",
+      "health": "Health",
+      "spiritual": "Spiritual"
+    },
+    "errors": {
+      "noForecast": "No forecast available",
+      "failedToLoad": "Failed to load forecast"
+    }
   }
 }

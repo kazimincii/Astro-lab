@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 
 type ForecastType = 'daily' | 'weekly' | 'monthly' | 'yearly';
@@ -26,16 +28,17 @@ interface Forecast {
 }
 
 export default function ForecastsScreen({ route }: any) {
+  const { t } = useTranslation();
   const { profileId } = route.params || {};
   const [selectedType, setSelectedType] = useState<ForecastType>('daily');
   const [forecast, setForecast] = useState<Forecast | null>(null);
   const [loading, setLoading] = useState(false);
 
   const forecastTypes: { type: ForecastType; label: string; icon: string }[] = [
-    { type: 'daily', label: 'Daily', icon: '☀️' },
-    { type: 'weekly', label: 'Weekly', icon: '📅' },
-    { type: 'monthly', label: 'Monthly', icon: '🌗' },
-    { type: 'yearly', label: 'Yearly', icon: '🌌' },
+    { type: 'daily', label: t('screens.forecasts.types.daily'), icon: '☀️' },
+    { type: 'weekly', label: t('screens.forecasts.types.weekly'), icon: '📅' },
+    { type: 'monthly', label: t('screens.forecasts.types.monthly'), icon: '🌗' },
+    { type: 'yearly', label: t('screens.forecasts.types.yearly'), icon: '🌌' },
   ];
 
   useEffect(() => {
@@ -51,19 +54,19 @@ export default function ForecastsScreen({ route }: any) {
       setForecast(response.data);
     } catch (error) {
       console.error('Error fetching forecast:', error);
-      alert('Failed to load forecast');
+      Alert.alert('', t('screens.forecasts.errors.failedToLoad'));
     } finally {
       setLoading(false);
     }
   };
 
   const sectionConfig = [
-    { key: 'overall', title: 'Overall', icon: '✨', color: '#8b5cf6' },
-    { key: 'love', title: 'Love', icon: '💖', color: '#ec4899' },
-    { key: 'money', title: 'Money', icon: '💸', color: '#10b981' },
-    { key: 'career', title: 'Career', icon: '📈', color: '#3b82f6' },
-    { key: 'health', title: 'Health', icon: '🌿', color: '#22c55e' },
-    { key: 'spiritual', title: 'Spiritual', icon: '🧘', color: '#a855f7' },
+    { key: 'overall', title: t('screens.forecasts.sections.overall'), icon: '✨', color: '#8b5cf6' },
+    { key: 'love', title: t('screens.forecasts.sections.love'), icon: '💖', color: '#ec4899' },
+    { key: 'money', title: t('screens.forecasts.sections.money'), icon: '💸', color: '#10b981' },
+    { key: 'career', title: t('screens.forecasts.sections.career'), icon: '📈', color: '#3b82f6' },
+    { key: 'health', title: t('screens.forecasts.sections.health'), icon: '🌿', color: '#22c55e' },
+    { key: 'spiritual', title: t('screens.forecasts.sections.spiritual'), icon: '🧘', color: '#a855f7' },
   ];
 
   const renderDate = (date: string) =>
@@ -77,8 +80,8 @@ export default function ForecastsScreen({ route }: any) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#191a2f', '#0f0f1e']} style={styles.header}>
-        <Text style={styles.title}>Forecasts</Text>
-        <Text style={styles.subtitle}>Pick a window and explore your sky</Text>
+        <Text style={styles.title}>{t('screens.forecasts.title')}</Text>
+        <Text style={styles.subtitle}>{t('screens.forecasts.subtitle')}</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -115,7 +118,7 @@ export default function ForecastsScreen({ route }: any) {
         <ScrollView style={styles.forecastContainer}>
           <View style={styles.heroCard}>
             <View>
-              <Text style={styles.heroLabel}>Selected Period</Text>
+              <Text style={styles.heroLabel}>{t('screens.forecasts.hero.selectedPeriod')}</Text>
               <Text style={styles.heroDate}>{renderDate(forecast.date)}</Text>
             </View>
             <View style={styles.heroTag}>
@@ -142,7 +145,7 @@ export default function ForecastsScreen({ route }: any) {
         </ScrollView>
       ) : (
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>No forecast available</Text>
+          <Text style={styles.errorText}>{t('screens.forecasts.errors.noForecast')}</Text>
         </View>
       )}
     </View>

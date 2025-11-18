@@ -160,17 +160,25 @@
     "loading": "Loading plan information...",
     "error": "Failed to load plan information",
     "trial": {
-      "freeTrial": "Free Trial",
+      "freeTrial": "✨ Free Trial - {{count}} days remaining",
       "daysRemaining": "{{count}} days remaining",
       "endsOn": "Ends on {{date}}",
       "cancelTrial": "Cancel Trial",
-      "cancelNote": "Cancel anytime. You will move to Basic after the trial ends."
+      "cancelNote": "Cancel anytime. You will move to Basic after the trial ends.",
+      "sevenDayPremium": "7-day Premium trial",
+      "tryUnlimited": "Try unlimited premium actions and advanced tools. Cancel anytime.",
+      "startTrial": "Start trial",
+      "cancelSuccess": "Trial cancelled successfully",
+      "cancelError": "Failed to cancel trial"
     },
     "billing": {
       "monthly": "Monthly",
       "yearly": "Yearly (Save 17%)",
       "monthShort": "mo",
-      "yearShort": "yr"
+      "yearShort": "yr",
+      "chargedMonthly": "Charged monthly via PaymentSheet",
+      "chargedYearly": "Charged yearly via PaymentSheet",
+      "secureCheckout": "Secure checkout via PaymentSheet"
     },
     "badges": {
       "bestValue": "BEST VALUE"

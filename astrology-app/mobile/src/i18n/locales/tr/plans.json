@@ -160,17 +160,25 @@
     "loading": "Plan bilgileri yükleniyor...",
     "error": "Plan bilgileri yüklenemedi",
     "trial": {
-      "freeTrial": "Ücretsiz Deneme",
+      "freeTrial": "✨ Ücretsiz Deneme - {{count}} gün kaldı",
       "daysRemaining": "{{count}} gün kaldı",
       "endsOn": "{{date}} tarihinde sona eriyor",
       "cancelTrial": "Denemeyi İptal Et",
-      "cancelNote": "İstediğiniz zaman iptal edin. Deneme bitiminde Temel plana geçeceksiniz."
+      "cancelNote": "İstediğiniz zaman iptal edin. Deneme bitiminde Temel plana geçeceksiniz.",
+      "sevenDayPremium": "7 günlük Premium deneme",
+      "tryUnlimited": "Sınırsız premium eylemleri ve gelişmiş araçları deneyin. İstediğiniz zaman iptal edin.",
+      "startTrial": "Denemeyi Başlat",
+      "cancelSuccess": "Deneme başarıyla iptal edildi",
+      "cancelError": "Deneme iptal edilemedi"
     },
     "billing": {
       "monthly": "Aylık",
       "yearly": "Yıllık (%17 Tasarruf)",
       "monthShort": "ay",
-      "yearShort": "yıl"
+      "yearShort": "yıl",
+      "chargedMonthly": "Aylık PaymentSheet ile ücretlendirilir",
+      "chargedYearly": "Yıllık PaymentSheet ile ücretlendirilir",
+      "secureCheckout": "PaymentSheet ile güvenli ödeme"
     },
     "badges": {
       "bestValue": "EN İYİ DEĞER"

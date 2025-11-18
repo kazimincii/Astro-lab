@@ -1,6 +1,7 @@
 module.exports = {
   preset: 'jest-expo',
   testEnvironment: 'node',
+  testPathIgnorePatterns: ['<rootDir>/e2e/'],
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.test.{ts,tsx}',

@@ -134,5 +134,30 @@
       "selectPhotoFirst": "Lütfen önce bir fotoğraf seçin",
       "failedToGenerate": "Aura okuması oluşturulamadı"
     }
+  },
+  "forecasts": {
+    "title": "Tahminler",
+    "subtitle": "Bir zaman dilimi seçin ve gökyüzünüzü keşfedin",
+    "types": {
+      "daily": "Günlük",
+      "weekly": "Haftalık",
+      "monthly": "Aylık",
+      "yearly": "Yıllık"
+    },
+    "hero": {
+      "selectedPeriod": "Seçilen Dönem"
+    },
+    "sections": {
+      "overall": "Genel",
+      "love": "Aşk",
+      "money": "Para",
+      "career": "Kariyer",
+      "health": "Sağlık",
+      "spiritual": "Ruhsal"
+    },
+    "errors": {
+      "noForecast": "Tahmin bulunmuyor",
+      "failedToLoad": "Tahmin yüklenemedi"
+    }
   }
 }

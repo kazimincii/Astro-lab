@@ -7,9 +7,7 @@ import { ProfileProvider } from '@/contexts/ProfileContext';
  * Profile Navigation Hook Tests
  */
 describe('useProfileNavigation', () => {
-  const wrapper = ({ children }: any) => (
-    <ProfileProvider>{children}</ProfileProvider>
-  );
+  const wrapper = ({ children }: any) => <ProfileProvider>{children}</ProfileProvider>;
 
   describe('initialization', () => {
     it('should initialize with no profile selected', () => {
