@@ -153,9 +153,9 @@ export default function ChakrasScreen({ navigation }: any) {
 
       {!chakraProfile ? (
         <Card className="mx-4 mb-6">
-          <Text className="text-lg font-semibold text-white">No chakra profile yet</Text>
+          <Text className="text-lg font-semibold text-white">{t('screens.chakras.empty.title')}</Text>
           <Text className="mt-1 text-sm text-slate-400">
-            Generate a chakra analysis for this profile to see balance, tips, and meditation guidance.
+            {t('screens.chakras.empty.message')}
           </Text>
           <TouchableOpacity
             className="mt-4 rounded-xl bg-[#6366f1] px-4 py-3"
@@ -163,7 +163,7 @@ export default function ChakrasScreen({ navigation }: any) {
             disabled={generating}
           >
             <Text className="text-center text-white font-semibold">
-              {generating ? 'Generating...' : 'Generate Chakra Profile'}
+              {generating ? t('screens.chakras.empty.generating') : t('screens.chakras.empty.button')}
             </Text>
           </TouchableOpacity>
         </Card>
@@ -172,9 +172,9 @@ export default function ChakrasScreen({ navigation }: any) {
           <Card className="mx-4 mb-4">
             <View className="flex-row items-center justify-between">
               <View>
-                <SectionTitle>Chakra Summary</SectionTitle>
+                <SectionTitle>{t('screens.chakras.summary.title')}</SectionTitle>
                 <Text className="mt-1 text-xl font-bold text-white">
-                  {chakraProfile.summaryTitle || 'Energy Overview'}
+                  {chakraProfile.summaryTitle || t('screens.chakras.summary.defaultTitle')}
                 </Text>
                 {chakraProfile.summaryDescription ? (
                   <Text className="mt-1 text-sm text-slate-300">{chakraProfile.summaryDescription}</Text>
@@ -186,14 +186,14 @@ export default function ChakrasScreen({ navigation }: any) {
                 disabled={generating}
               >
                 <Text className="text-sm font-semibold text-white">
-                  {generating ? 'Updating...' : 'Regenerate'}
+                  {generating ? t('screens.chakras.summary.updating') : t('screens.chakras.summary.regenerate')}
                 </Text>
               </TouchableOpacity>
             </View>
           </Card>
 
           <Card className="mx-4 mb-4">
-            <SectionTitle>Chakra Balance</SectionTitle>
+            <SectionTitle>{t('screens.chakras.balance.title')}</SectionTitle>
             <View className="mt-3 space-y-3">
               {chakraProfile.chakras.map(chakra => (
                 <View
@@ -245,7 +245,7 @@ export default function ChakrasScreen({ navigation }: any) {
           </Card>
 
           <Card className="mx-4 mb-4">
-            <SectionTitle>Tips</SectionTitle>
+            <SectionTitle>{t('screens.chakras.sections.tips')}</SectionTitle>
             <View className="mt-2 space-y-2">
               {chakraProfile.tips?.map((tip, idx) => (
                 <View key={idx} className="flex-row items-start gap-2">
@@ -257,7 +257,7 @@ export default function ChakrasScreen({ navigation }: any) {
           </Card>
 
           <Card className="mx-4 mb-8">
-            <SectionTitle>Meditation</SectionTitle>
+            <SectionTitle>{t('screens.chakras.sections.meditation')}</SectionTitle>
             <View className="mt-3 space-y-3">
               {chakraProfile.meditation?.steps?.map((step, idx) => (
                 <View key={idx} className="rounded-xl border border-[#24243a] bg-[#181a2f] p-3">
