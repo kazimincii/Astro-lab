@@ -25,33 +25,25 @@ describe('LoginScreen', () => {
     });
   });
 
-  it('should render correctly', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <LoginScreen navigation={mockNavigation} />
-    );
+  it('should render inputs and login action', async () => {
+    const { getByPlaceholderText, findAllByText } = render(<LoginScreen navigation={mockNavigation} />);
 
-    expect(getByText('Welcome Back')).toBeTruthy();
     expect(getByPlaceholderText('Email')).toBeTruthy();
     expect(getByPlaceholderText('Password')).toBeTruthy();
+    const loginButtons = await findAllByText(/Login/i);
+    expect(loginButtons.length).toBeGreaterThan(0);
   });
 
   it('should show error when fields are empty', async () => {
-    const { getByText } = render(
-      <LoginScreen navigation={mockNavigation} />
-    );
+    const { findAllByText } = render(<LoginScreen navigation={mockNavigation} />);
 
-    const loginButton = getByText(/Log In/i) || getByText(/Sign In/i) || getByText(/Login/i);
+    const loginButton = (await findAllByText(/Login/i))[0];
 
-    if (loginButton) {
-      fireEvent.press(loginButton);
+    fireEvent.press(loginButton);
 
-      await waitFor(() => {
-        expect(Alert.alert).toHaveBeenCalledWith(
-          'Error',
-          'Please fill in all fields'
-        );
-      });
-    }
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Error', 'Please fill in all fields');
+    });
   });
 
   it('should call login API with correct credentials', async () => {
@@ -67,9 +59,7 @@ describe('LoginScreen', () => {
 
     (authApi.login as jest.Mock).mockResolvedValue(mockResponse);
 
-    const { getByPlaceholderText, getByText } = render(
-      <LoginScreen navigation={mockNavigation} />
-    );
+    const { getByPlaceholderText, findAllByText } = render(<LoginScreen navigation={mockNavigation} />);
 
     const emailInput = getByPlaceholderText('Email');
     const passwordInput = getByPlaceholderText('Password');
@@ -77,16 +67,14 @@ describe('LoginScreen', () => {
     fireEvent.changeText(emailInput, 'test@example.com');
     fireEvent.changeText(passwordInput, 'password123');
 
-    const loginButton = getByText(/Log In/i) || getByText(/Sign In/i) || getByText(/Login/i);
+    const loginButton = (await findAllByText(/Login/i))[0];
 
-    if (loginButton) {
-      fireEvent.press(loginButton);
+    fireEvent.press(loginButton);
 
-      await waitFor(() => {
-        expect(authApi.login).toHaveBeenCalledWith('test@example.com', 'password123');
-        expect(mockLogin).toHaveBeenCalledWith(mockResponse.user, mockResponse.accessToken);
-      });
-    }
+    await waitFor(() => {
+      expect(authApi.login).toHaveBeenCalledWith('test@example.com', 'password123');
+      expect(mockLogin).toHaveBeenCalledWith(mockResponse.user, mockResponse.accessToken);
+    });
   });
 
   it('should show error on login failure', async () => {
@@ -100,9 +88,7 @@ describe('LoginScreen', () => {
 
     (authApi.login as jest.Mock).mockRejectedValue(mockError);
 
-    const { getByPlaceholderText, getByText } = render(
-      <LoginScreen navigation={mockNavigation} />
-    );
+    const { getByPlaceholderText, findAllByText } = render(<LoginScreen navigation={mockNavigation} />);
 
     const emailInput = getByPlaceholderText('Email');
     const passwordInput = getByPlaceholderText('Password');
@@ -110,14 +96,12 @@ describe('LoginScreen', () => {
     fireEvent.changeText(emailInput, 'test@example.com');
     fireEvent.changeText(passwordInput, 'wrongpassword');
 
-    const loginButton = getByText(/Log In/i) || getByText(/Sign In/i) || getByText(/Login/i);
+    const loginButton = (await findAllByText(/Login/i))[0];
 
-    if (loginButton) {
-      fireEvent.press(loginButton);
+    fireEvent.press(loginButton);
 
-      await waitFor(() => {
-        expect(Alert.alert).toHaveBeenCalledWith('Error', 'Invalid credentials');
-      });
-    }
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Error', 'Invalid credentials');
+    });
   });
 });

@@ -140,11 +140,11 @@ export default function ChakrasScreen({ navigation }: any) {
               <Ionicons name="arrow-back" size={24} color="#fff" />
             </TouchableOpacity>
             <View>
-              <Text className="text-2xl font-bold text-white">Chakras</Text>
-              <Text className="text-sm text-slate-400">Energy centers & balance guide</Text>
+              <Text className="text-2xl font-bold text-white">{t('screens.chakras.title')}</Text>
+              <Text className="text-sm text-slate-400">{t('screens.chakras.subtitle')}</Text>
             </View>
           </View>
-          <Badge>Profile</Badge>
+          <Badge>{t('screens.chakras.badge')}</Badge>
         </View>
         <View className="mt-4">
           <ProfileSelector />

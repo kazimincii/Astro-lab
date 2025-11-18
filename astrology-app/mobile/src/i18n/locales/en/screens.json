@@ -230,5 +230,29 @@
       "error": "Error"
     },
     "badge": "Profile"
+  },
+  "numerology": {
+    "title": "🔢 Numerology",
+    "subtitle": "Your Life Path Numbers",
+    "noProfile": "Select a profile to view numerology",
+    "noData": "No numerology data available",
+    "numbers": {
+      "lifePath": "Life Path",
+      "destiny": "Destiny",
+      "soulUrge": "Soul Urge",
+      "personality": "Personality"
+    },
+    "personalYear": {
+      "label": "Personal Year",
+      "theme": "Your theme for this year"
+    },
+    "sections": {
+      "overview": "Overview",
+      "strengths": "✨ Strengths",
+      "challenges": "⚡ Challenges to Overcome"
+    },
+    "errors": {
+      "loadFailed": "Failed to load numerology profile"
+    }
   }
 }

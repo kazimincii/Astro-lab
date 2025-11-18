@@ -230,5 +230,29 @@
       "error": "Hata"
     },
     "badge": "Profil"
+  },
+  "numerology": {
+    "title": "🔢 Numeroloji",
+    "subtitle": "Yaşam Yolu Sayılarınız",
+    "noProfile": "Numeroloji görüntülemek için bir profil seçin",
+    "noData": "Numeroloji verisi bulunmuyor",
+    "numbers": {
+      "lifePath": "Yaşam Yolu",
+      "destiny": "Kader",
+      "soulUrge": "Ruh Dürtüsü",
+      "personality": "Kişilik"
+    },
+    "personalYear": {
+      "label": "Kişisel Yıl",
+      "theme": "Bu yılın temanız"
+    },
+    "sections": {
+      "overview": "Genel Bakış",
+      "strengths": "✨ Güçlü Yönler",
+      "challenges": "⚡ Üstesinden Gelinecek Zorluklar"
+    },
+    "errors": {
+      "loadFailed": "Numeroloji profili yüklenemedi"
+    }
   }
 }
