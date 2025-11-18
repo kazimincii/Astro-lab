@@ -10,6 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 import { profilesApi } from '@/api/profiles';
 import { forecastsApi, DailyForecastResponse } from '@/api/forecasts';
@@ -23,6 +24,7 @@ type Profile = {
 };
 
 export default function TodayScreen({ navigation }: any) {
+  const { t } = useTranslation();
   const {
     data: profilesData,
     isLoading: areProfilesLoading,
@@ -86,7 +88,7 @@ export default function TodayScreen({ navigation }: any) {
       <Text className="text-base text-white text-center">{message}</Text>
       {action && (
         <TouchableOpacity className="mt-4 flex-row items-center rounded-xl bg-[#6366f1] px-4 py-2.5" onPress={action}>
-          <Text className="text-sm font-semibold text-white">Retry</Text>
+          <Text className="text-sm font-semibold text-white">{t('common.buttons.retry')}</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -95,16 +97,16 @@ export default function TodayScreen({ navigation }: any) {
   const renderEmptyProfiles = () => (
     <View className="mx-4 mt-8 items-center rounded-2xl border border-[#24243a] bg-[#1a1b2e] p-6">
       <Ionicons name="people-outline" size={64} color={colors.cosmic.textSecondary} />
-      <Text className="mt-4 text-xl font-semibold text-white">Profiles needed</Text>
+      <Text className="mt-4 text-xl font-semibold text-white">{t('screens.today.empty.profilesNeeded')}</Text>
       <Text className="mt-2 text-center text-slate-400">
-        Add at least one profile to receive personalized daily insights.
+        {t('screens.today.empty.addProfileMessage')}
       </Text>
       <TouchableOpacity
         className="mt-4 flex-row items-center rounded-xl bg-[#6366f1] px-4 py-2.5"
         onPress={() => navigation.navigate('Profiles')}
       >
         <Ionicons name="add" size={18} color={colors.cosmic.text} />
-        <Text className="ml-2 font-semibold text-white">Create profile</Text>
+        <Text className="ml-2 font-semibold text-white">{t('screens.today.empty.createProfile')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -112,7 +114,7 @@ export default function TodayScreen({ navigation }: any) {
   const luckyNumbers = (forecast?.luckyNumbers ?? []).slice(0, 4);
   const transits = forecast?.planetaryTransits ? Object.values(forecast.planetaryTransits) : [];
   const moonPhase = useMemo(() => {
-    if (!forecast?.date) return { label: 'Loading', emoji: '○' };
+    if (!forecast?.date) return { label: t('screens.today.moonPhase.phases.loading'), emoji: '○' };
     const synodicMonth = 29.53058867;
     const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14));
     const daysSinceNew =
@@ -120,17 +122,17 @@ export default function TodayScreen({ navigation }: any) {
     const phase = ((daysSinceNew % synodicMonth) + synodicMonth) % synodicMonth;
     const index = Math.floor((phase / synodicMonth) * 8 + 0.5) % 8;
     const phases = [
-      { label: 'New Moon', emoji: '🌑' },
-      { label: 'Waxing Crescent', emoji: '🌒' },
-      { label: 'First Quarter', emoji: '🌓' },
-      { label: 'Waxing Gibbous', emoji: '🌔' },
-      { label: 'Full Moon', emoji: '🌕' },
-      { label: 'Waning Gibbous', emoji: '🌖' },
-      { label: 'Last Quarter', emoji: '🌗' },
-      { label: 'Waning Crescent', emoji: '🌘' },
+      { label: t('screens.today.moonPhase.phases.newMoon'), emoji: '🌑' },
+      { label: t('screens.today.moonPhase.phases.waxingCrescent'), emoji: '🌒' },
+      { label: t('screens.today.moonPhase.phases.firstQuarter'), emoji: '🌓' },
+      { label: t('screens.today.moonPhase.phases.waxingGibbous'), emoji: '🌔' },
+      { label: t('screens.today.moonPhase.phases.fullMoon'), emoji: '🌕' },
+      { label: t('screens.today.moonPhase.phases.waningGibbous'), emoji: '🌖' },
+      { label: t('screens.today.moonPhase.phases.lastQuarter'), emoji: '🌗' },
+      { label: t('screens.today.moonPhase.phases.waningCrescent'), emoji: '🌘' },
     ];
     return phases[index];
-  }, [forecast?.date]);
+  }, [forecast?.date, t]);
 
   const renderScore = (label: string, value?: number | null) => (
     <View className="flex-1 rounded-xl border border-[#2f2f45] bg-[#1f1f33] px-4 py-3">

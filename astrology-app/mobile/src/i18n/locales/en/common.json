@@ -12,7 +12,8 @@
     "next": "Next",
     "done": "Done",
     "skip": "Skip",
-    "close": "Close"
+    "close": "Close",
+    "retry": "Retry"
   },
   "navigation": {
     "today": "Today",

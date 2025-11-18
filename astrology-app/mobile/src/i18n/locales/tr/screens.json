@@ -21,5 +21,81 @@
       "cosmicClimate": "Kozmik İklim",
       "liveServices": "Canlı Hizmetler"
     }
+  },
+  "today": {
+    "title": "Bugün",
+    "header": {
+      "dailySky": "Günlük gökyüzü",
+      "personalFocus": "Kişisel odak"
+    },
+    "loading": {
+      "preparingSpace": "Alanınız hazırlanıyor...",
+      "castingChart": "Bugünün haritası çiziliyor..."
+    },
+    "errors": {
+      "unableToLoadProfiles": "Profiller yüklenemedi.",
+      "unableToGenerateForecast": "Tahmin oluşturulamadı.",
+      "unableToLoadMembership": "Üyelik detayları yüklenemedi."
+    },
+    "empty": {
+      "profilesNeeded": "Profil gerekli",
+      "addProfileMessage": "Kişiselleştirilmiş günlük içgörüler almak için en az bir profil ekleyin.",
+      "createProfile": "Profil oluştur"
+    },
+    "forecast": {
+      "title": "Bugünün Tahmini",
+      "switch": "Değiştir"
+    },
+    "energyScores": {
+      "title": "Enerji Skorları",
+      "love": "Aşk",
+      "career": "Kariyer",
+      "health": "Sağlık"
+    },
+    "focusAreas": {
+      "title": "Odak Alanları",
+      "love": "Aşk",
+      "career": "Kariyer",
+      "health": "Sağlık",
+      "awaitingDownload": "İndirme bekleniyor..."
+    },
+    "starMessage": {
+      "title": "Yıldız Mesajı",
+      "defaultTitle": "Hizalanmış ve nazik kalın",
+      "defaultMessage": "Rutinlerinize bağlı kalın ve cesaretlendirme paylaşın. Haritalarınız bugün sakin, istikrarlı bir ivmeyi destekliyor."
+    },
+    "moonPhase": {
+      "title": "Ay Evresi",
+      "subtitle": "Yansıt + yeniden kalibre et",
+      "phases": {
+        "newMoon": "Yeni Ay",
+        "waxingCrescent": "Hilal",
+        "firstQuarter": "İlk Dördün",
+        "waxingGibbous": "Şişkin Ay",
+        "fullMoon": "Dolunay",
+        "waningGibbous": "Azalan Şişkin",
+        "lastQuarter": "Son Dördün",
+        "waningCrescent": "Azalan Hilal",
+        "loading": "Yükleniyor"
+      }
+    },
+    "luckySignals": {
+      "title": "Şanslı Sinyaller",
+      "numbers": "Sayılar",
+      "color": "Renk",
+      "gem": "Taş"
+    },
+    "planetaryTransits": {
+      "title": "Gezegen Geçişleri"
+    },
+    "membership": {
+      "title": "Üyelik",
+      "manage": "Yönet",
+      "dailyActions": "Günlük eylemler",
+      "unlimited": "Sınırsız",
+      "leftToday": "bugün kaldı",
+      "profiles": "Profiller",
+      "includedInPlan": "Planınıza dahil"
+    }
   }
 }

@@ -12,7 +12,8 @@
     "next": "İleri",
     "done": "Bitti",
     "skip": "Atla",
-    "close": "Kapat"
+    "close": "Kapat",
+    "retry": "Tekrar Dene"
   },
   "navigation": {
     "today": "Bugün",
