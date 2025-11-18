@@ -1,7 +1,12 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 import { useAuthStore } from '@/store/authStore';
 
-const API_URL = 'http://localhost:3000/api/v1';
+// Resolve API URL from env, fallback to dev fallback
+const API_URL =
+  process.env.EXPO_PUBLIC_API_URL ||
+  Constants.expoConfig?.extra?.API_URL ||
+  'http://localhost:3000/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_URL,

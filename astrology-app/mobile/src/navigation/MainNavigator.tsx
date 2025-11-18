@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import TodayScreen from '@/screens/main/TodayScreen';
 import ProfilesScreen from '@/screens/main/ProfilesScreen';
 import ExploreNavigator from '@/navigation/ExploreNavigator';
@@ -10,6 +11,8 @@ import SettingsScreen from '@/screens/main/SettingsScreen';
 const Tab = createBottomTabNavigator();
 
 export default function MainNavigator() {
+  const { t } = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

@@ -5,12 +5,14 @@ import clsx from 'clsx';
 type BadgeProps = ViewProps & {
   icon?: ReactNode;
   children: ReactNode;
+  className?: string;
 };
 
 export function Badge({ icon, children, style, ...rest }: BadgeProps) {
   return (
     <View
       {...rest}
+      // @ts-expect-error className provided by NativeWind runtime
       className={clsx(
         'flex-row items-center gap-2 rounded-full border border-[#2d2e3f] bg-white/5 px-3 py-2',
         rest.className,
@@ -18,6 +20,7 @@ export function Badge({ icon, children, style, ...rest }: BadgeProps) {
       style={style}
     >
       {icon}
+      {/* @ts-expect-error className provided by NativeWind runtime */}
       <Text className="text-xs font-semibold text-white">{children}</Text>
     </View>
   );

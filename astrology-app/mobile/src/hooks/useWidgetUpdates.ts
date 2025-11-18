@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Widget Updates Hook
  *
  * Automatically updates iOS widgets when relevant data changes
@@ -111,18 +111,19 @@ export const useWidgetUpdates = (props: UseWidgetUpdatesProps = {}) => {
         moonPhaseEmoji: getMoonPhaseEmoji(moonPhase ?? 'Unknown'),
         date: new Date().toISOString(),
         timestamp: Date.now(),
-        birthChart,
-        transits,
+        birthChart: birthChart ?? undefined,
+        transits: transits ?? undefined,
       };
 
       // Update via native or AsyncStorage
-      if (Platform.OS === 'ios' && WidgetDataManager?.updateWidgetData) {
-        await WidgetDataManager.updateWidgetData(
+      const manager = WidgetDataManager as any;
+      if (Platform.OS === 'ios' && manager?.updateWidgetData) {
+        await manager.updateWidgetData(
           JSON.stringify(widgetData),
           APP_GROUPS_CONTAINER
         );
-        if (WidgetDataManager?.notifyWidgets) {
-          await WidgetDataManager.notifyWidgets();
+        if (manager?.notifyWidgets) {
+          await manager.notifyWidgets();
         }
       } else {
         // Fallback to AsyncStorage
@@ -196,6 +197,4 @@ export const getMoonPhaseEmoji = (phase: string): string => {
     'Waning Crescent': '🌘',
   };
   return phaseMap[phase] || '🌙';
-};
-  };
 };

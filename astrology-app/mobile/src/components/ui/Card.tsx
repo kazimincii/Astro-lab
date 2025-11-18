@@ -6,12 +6,14 @@ type CardProps = ViewProps & {
   children: ReactNode;
   padded?: boolean;
   borderless?: boolean;
+  className?: string;
 };
 
 export function Card({ children, padded = true, borderless = false, style, ...rest }: CardProps) {
   return (
     <View
       {...rest}
+      // @ts-expect-error className provided by NativeWind runtime
       className={clsx(
         'rounded-2xl bg-[#1a1b2e]',
         !borderless && 'border border-[#24243a]',

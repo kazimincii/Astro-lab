@@ -55,7 +55,7 @@ describe('ProfileSelector', () => {
 
   describe('Full mode', () => {
     it('should render full selector with selected profile', () => {
-      const { getByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText } = render(<ProfileSelector />);
 
       expect(getByText('Reading For:')).toBeTruthy();
       expect(getAllByText('John Doe')[0]).toBeTruthy();
@@ -63,7 +63,7 @@ describe('ProfileSelector', () => {
     });
 
     it('should open modal when selector is pressed', () => {
-      const { getByText, queryByText } = render(<ProfileSelector />);
+      const { getByText, queryByText, getAllByText } = render(<ProfileSelector />);
 
       expect(queryByText('Select Profile')).toBeNull();
 
@@ -75,7 +75,7 @@ describe('ProfileSelector', () => {
     });
 
     it('should display all profiles in modal', async () => {
-      const { getByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText } = render(<ProfileSelector />);
 
       act(() => {
         fireEvent.press(getAllByText('John Doe')[0]);

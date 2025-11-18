@@ -37,10 +37,7 @@ export default function AstroMapScreen({ navigation }: any) {
 
     setLoading(true);
     try {
-      const data = await astroMapApi.analyzeCity({
-        profileId: selectedProfile?.id || '',
-        city: cityName,
-      });
+      const data = await astroMapApi.analyzeCity(selectedProfile?.id || '', cityName);
       setAnalysis(data);
     } catch (error) {
       console.error('Error analyzing city:', error);

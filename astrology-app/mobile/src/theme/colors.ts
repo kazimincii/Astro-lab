@@ -6,6 +6,7 @@ export const colors = {
     pink: '#ec4899',
     blue: '#3b82f6',
     gold: '#f59e0b',
+    accent: '#6366f1',
     text: '#ffffff',
     textSecondary: '#9ca3af',
   },

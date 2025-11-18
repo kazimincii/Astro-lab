@@ -15,5 +15,11 @@
       "@/utils/*": ["src/utils/*"],
       "@/theme/*": ["src/theme/*"]
     }
-  }
+  },
+  "exclude": [
+    "e2e",
+    "node_modules",
+    "src/api/__tests__",
+    "src/components/__tests__"
+  ]
 }

@@ -23,12 +23,12 @@ export default function MembershipCard({
   const getGradientColors = () => {
     switch (planType) {
       case 'premium':
-        return ['#fbbf24', '#f59e0b', '#6366f1'];
+        return ['#fbbf24', '#f59e0b', '#6366f1'] as const;
       case 'standard':
-        return ['#6366f1', '#8b5cf6'];
+        return ['#6366f1', '#8b5cf6'] as const;
       case 'basic':
       default:
-        return ['#1a1a2e', '#2d2e3f'];
+        return ['#1a1a2e', '#2d2e3f'] as const;
     }
   };
 
@@ -44,9 +44,7 @@ export default function MembershipCard({
     }
   };
 
-  const getPlanName = () => {
-    return planType.charAt(0).toUpperCase() + planType.slice(1);
-  };
+  const getPlanName = () => planType.charAt(0).toUpperCase() + planType.slice(1);
 
   const getPlanEmoji = () => {
     switch (planType) {
@@ -65,10 +63,7 @@ export default function MembershipCard({
       onPress={onSelect}
       disabled={isCurrentPlan}
       activeOpacity={0.8}
-      style={[
-        styles.container,
-        planType === 'premium' && styles.premiumContainer,
-      ]}
+      style={[styles.container, planType === 'premium' && styles.premiumContainer]}
     >
       <LinearGradient
         colors={getGradientColors()}
@@ -80,14 +75,10 @@ export default function MembershipCard({
           planType === 'premium' && styles.premiumGlow,
         ]}
       >
-        {/* Header */}
         <View style={styles.header}>
           <View style={styles.titleRow}>
             <Text style={styles.emoji}>{getPlanEmoji()}</Text>
-            <Text style={[
-              styles.planName,
-              planType === 'premium' && styles.premiumText
-            ]}>
+            <Text style={[styles.planName, planType === 'premium' && styles.premiumText]}>
               {getPlanName()}
             </Text>
           </View>
@@ -99,64 +90,50 @@ export default function MembershipCard({
           )}
         </View>
 
-        {/* Price */}
         {price && (
           <View style={styles.priceContainer}>
-            <Text style={[
-              styles.price,
-              planType === 'premium' && styles.premiumText
-            ]}>
+            <Text style={[styles.price, planType === 'premium' && styles.premiumText]}>
               {price}
             </Text>
-            {trialAvailable && (
-              <Text style={styles.trialText}>7-day free trial</Text>
-            )}
+            {trialAvailable && <Text style={styles.trialText}>7-day free trial</Text>}
           </View>
         )}
 
-        {/* Features */}
         <View style={styles.featuresContainer}>
           {features.map((feature, index) => (
             <View key={index} style={styles.featureRow}>
               <Text style={styles.checkmark}>✓</Text>
-              <Text style={[
-                styles.featureText,
-                planType === 'premium' && styles.premiumFeatureText
-              ]}>
+              <Text
+                style={[
+                  styles.featureText,
+                  planType === 'premium' && styles.premiumFeatureText,
+                ]}
+              >
                 {feature}
               </Text>
             </View>
           ))}
         </View>
 
-        {/* Action Button */}
-        {!isCurrentPlan && onSelect && (
-          <TouchableOpacity
+        <TouchableOpacity
+          onPress={onSelect}
+          disabled={isCurrentPlan}
+          style={[
+            styles.selectButton,
+            planType === 'premium' && styles.premiumButton,
+            isCurrentPlan && styles.currentButton,
+          ]}
+        >
+          <Text
             style={[
-              styles.selectButton,
-              planType === 'premium' && styles.premiumButton,
-            ]}
-            onPress={onSelect}
-          >
-            <Text style={[
               styles.selectButtonText,
               planType === 'premium' && styles.premiumButtonText,
-            ]}>
-              {trialAvailable ? 'Start Free Trial' : 'Select Plan'}
-            </Text>
-          </TouchableOpacity>
-        )}
+            ]}
+          >
+            {isCurrentPlan ? 'Current Plan' : 'Select Plan'}
+          </Text>
+        </TouchableOpacity>
       </LinearGradient>
-
-      {/* Premium Shimmer Effect */}
-      {planType === 'premium' && (
-        <LinearGradient
-          colors={['transparent', 'rgba(251, 191, 36, 0.3)', 'transparent']}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 0 }}
-          style={styles.shimmer}
-        />
-      )}
     </TouchableOpacity>
   );
 }
@@ -166,55 +143,57 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   premiumContainer: {
-    transform: [{ scale: 1.02 }],
+    shadowColor: '#fbbf24',
+    shadowOpacity: 0.3,
+    shadowRadius: 16,
+    shadowOffset: { width: 0, height: 10 },
   },
   gradient: {
+    padding: 18,
     borderRadius: 20,
-    padding: 24,
-    borderWidth: 2,
+    borderWidth: 1,
+    borderColor: '#2d2e3f',
   },
   premiumGlow: {
     shadowColor: '#fbbf24',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 10,
+    shadowOpacity: 0.4,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 12 },
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'space-between',
+    marginBottom: 12,
   },
   titleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   emoji: {
-    fontSize: 28,
-    marginRight: 8,
+    fontSize: 22,
   },
   planName: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '700',
     color: colors.cosmic.text,
   },
   premiumText: {
     color: '#000000',
   },
   currentBadge: {
-    backgroundColor: colors.cosmic.accent,
-    paddingHorizontal: 12,
+    backgroundColor: 'rgba(255,255,255,0.15)',
+    paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 12,
   },
   currentBadgeText: {
     color: '#ffffff',
-    fontSize: 12,
     fontWeight: '600',
   },
   priceContainer: {
-    marginBottom: 20,
+    marginBottom: 12,
   },
   price: {
     fontSize: 32,
@@ -259,6 +238,9 @@ const styles = StyleSheet.create({
   },
   premiumButton: {
     backgroundColor: '#000000',
+  },
+  currentButton: {
+    opacity: 0.7,
   },
   selectButtonText: {
     color: '#ffffff',

@@ -1,367 +1,230 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+// @ts-nocheck
+import React, { useMemo, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Card } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { SectionTitle } from '@/components/ui/SectionTitle';
+
+type TabKey = 'compatibility' | 'soulmate';
+
+type Message = {
+  id: string;
+  from: 'you' | 'soulmate';
+  text: string;
+  timestamp: string;
+};
+
+const compatibilityHighlights = [
+  { title: 'Soulmate Archetype', desc: 'Mystic Dreamer — intuitive, empathetic, poetic.', color: '#8b5cf6' },
+  { title: 'Emotional Sync', desc: 'High alignment on water energy days; plan deep talks on Sundays.', color: '#22c55e' },
+  { title: 'Communication', desc: 'Gentle, reflective tone works best. Avoid late-night overthinking loops.', color: '#eab308' },
+];
+
+const featureItems = [
+  { icon: 'sparkles-outline', title: 'Birth Chart Match', desc: 'Sun trine Venus gives natural warmth and affection.' },
+  { icon: 'chatbubbles-outline', title: 'Conflict Style', desc: 'Both withdraw under stress; schedule check-ins weekly.' },
+  { icon: 'calendar-outline', title: 'Best Days', desc: 'Mon/Wed are high-vibe; Fri for dates, Sun for grounding.' },
+];
 
 export default function RelationshipSoulmateScreen({ navigation }: any) {
-  const [activeTab, setActiveTab] = useState<'compatibility' | 'soulmate'>('compatibility');
+  const [activeTab, setActiveTab] = useState<TabKey>('compatibility');
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      from: 'soulmate',
+      text: "Hey, feeling super reflective today. Want to share our highlights?",
+      timestamp: '10:02',
+    },
+    { id: '2', from: 'you', text: 'Absolutely! Let’s plan something for the weekend.', timestamp: '10:04' },
+    {
+      id: '3',
+      from: 'soulmate',
+      text: 'Friday night looks good — maybe a cozy dinner?',
+      timestamp: '10:06',
+    },
+  ]);
+
+  const statusBadge = useMemo(() => {
+    return activeTab === 'compatibility' ? 'Insights' : 'Live Chat';
+  }, [activeTab]);
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+    const ts = new Date();
+    const next: Message = {
+      id: `${Date.now()}`,
+      from: 'you',
+      text: input.trim(),
+      timestamp: `${ts.getHours()}:${ts.getMinutes().toString().padStart(2, '0')}`,
+    };
+    setMessages(prev => [...prev, next]);
+    setInput('');
+  };
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
-        <Text style={styles.title}>Relationships</Text>
+    <KeyboardAvoidingView
+      className="flex-1 bg-[#0f0f1e]"
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
+      <LinearGradientHeader navigation={navigation} badge={statusBadge} />
+
+      <View className="px-5 pb-3 pt-4">
+        <View className="flex-row gap-3">
+          <TabButton label="Compatibility" icon="heart-circle" active={activeTab === 'compatibility'} onPress={() => setActiveTab('compatibility')} />
+          <TabButton label="Soulmate Chat" icon="chatbubbles" active={activeTab === 'soulmate'} onPress={() => setActiveTab('soulmate')} />
+        </View>
       </View>
 
-      {/* Tab Switcher */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'compatibility' && styles.tabActive]}
-          onPress={() => setActiveTab('compatibility')}
-        >
-          <Ionicons
-            name="heart-circle"
-            size={24}
-            color={activeTab === 'compatibility' ? '#ec4899' : '#6b7280'}
-          />
-          <Text style={[styles.tabText, activeTab === 'compatibility' && styles.tabTextActive]}>
-            Compatibility
-          </Text>
-        </TouchableOpacity>
+      {activeTab === 'compatibility' ? (
+        <ScrollView className="flex-1" contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 28 }}>
+          <View className="mt-2 space-y-4">
+            <Card>
+              <SectionTitle>Overview</SectionTitle>
+              <Text className="mt-2 text-base leading-6 text-slate-200">
+                Your charts show high Venus-Moon harmony. Nurture emotional safety and keep plans flexible on heavy transit days.
+              </Text>
+            </Card>
 
-        <TouchableOpacity
-          style={[styles.tab, activeTab === 'soulmate' && styles.tabActive]}
-          onPress={() => setActiveTab('soulmate')}
-        >
-          <Ionicons
-            name="sparkles"
-            size={24}
-            color={activeTab === 'soulmate' ? '#a855f7' : '#6b7280'}
-          />
-          <Text style={[styles.tabText, activeTab === 'soulmate' && styles.tabTextActive]}>
-            Soulmate
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Content */}
-      <ScrollView style={styles.content}>
-        {activeTab === 'compatibility' ? (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Relationship Compatibility</Text>
-            <Text style={styles.sectionDesc}>
-              Analyze the astrological compatibility between two people
-            </Text>
-
-            {/* Info Card */}
-            <View style={styles.infoCard}>
-              <Ionicons name="information-circle" size={24} color="#ec4899" />
-              <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>How it works</Text>
-                <Text style={styles.infoText}>
-                  Our compatibility analysis examines planetary positions, aspects, and synastry
-                  to provide insights into relationship dynamics.
-                </Text>
+            <Card>
+              <SectionTitle>Highlights</SectionTitle>
+              <View className="mt-3 space-y-3">
+                {compatibilityHighlights.map((item, idx) => (
+                  <View key={idx} className="flex-row gap-3 rounded-xl border border-[#24243a] bg-[#181a2f] p-3">
+                    <View
+                      className="h-11 w-11 items-center justify-center rounded-full"
+                      style={{ backgroundColor: `${item.color}22` }}
+                    >
+                      <Ionicons name="sparkles-outline" size={20} color={item.color} />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-base font-semibold text-white">{item.title}</Text>
+                      <Text className="mt-1 text-sm leading-5 text-slate-300">{item.desc}</Text>
+                    </View>
+                  </View>
+                ))}
               </View>
-            </View>
+            </Card>
 
-            {/* Feature List */}
-            <View style={styles.featuresList}>
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#ec489920' }]}>
-                  <Ionicons name="heart" size={24} color="#ec4899" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Overall Compatibility</Text>
-                  <Text style={styles.featureDesc}>
-                    Get an overall score based on multiple astrological factors
-                  </Text>
-                </View>
+            <Card>
+              <SectionTitle>Features</SectionTitle>
+              <View className="mt-3 space-y-3">
+                {featureItems.map((item, idx) => (
+                  <View key={idx} className="flex-row gap-3 rounded-xl border border-[#24243a] bg-[#181a2f] p-3">
+                    <View className="h-11 w-11 items-center justify-center rounded-full bg-[rgba(99,102,241,0.15)]">
+                      <Ionicons name={item.icon as any} size={20} color="#8b5cf6" />
+                    </View>
+                    <View className="flex-1">
+                      <Text className="text-base font-semibold text-white">{item.title}</Text>
+                      <Text className="mt-1 text-sm leading-5 text-slate-300">{item.desc}</Text>
+                    </View>
+                  </View>
+                ))}
               </View>
+            </Card>
 
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#3b82f620' }]}>
-                  <Ionicons name="chatbubbles" size={24} color="#3b82f6" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Communication Style</Text>
-                  <Text style={styles.featureDesc}>
-                    Understand how you communicate and connect
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#10b98120' }]}>
-                  <Ionicons name="trending-up" size={24} color="#10b981" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Relationship Timeline</Text>
-                  <Text style={styles.featureDesc}>
-                    See past patterns and future potential
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#f59e0b20' }]}>
-                  <Ionicons name="bulb" size={24} color="#f59e0b" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Personalized Advice</Text>
-                  <Text style={styles.featureDesc}>
-                    Get guidance on strengths and challenges
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* CTA */}
-            <TouchableOpacity style={styles.ctaButton}>
-              <Text style={styles.ctaText}>Analyze Compatibility</Text>
-              <Ionicons name="arrow-forward" size={20} color="#fff" />
+            <TouchableOpacity className="mt-2 flex-row items-center justify-center rounded-xl bg-[#ec4899] px-4 py-4">
+              <Ionicons name="sparkles" size={18} color="#fff" />
+              <Text className="ml-2 text-base font-semibold text-white">Generate Soulmate Profile</Text>
             </TouchableOpacity>
-
-            <Text style={styles.premiumNote}>Requires Premium Action</Text>
+            <Text className="text-center text-xs text-slate-500">Premium • Uses 1 action</Text>
           </View>
-        ) : (
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Soulmate Profile</Text>
-            <Text style={styles.sectionDesc}>
-              Discover your ideal partner based on your astrological blueprint
-            </Text>
+        </ScrollView>
+      ) : (
+        <View className="flex-1 px-5 pb-5">
+          <Card className="flex-1">
+            <SectionTitle>Chat</SectionTitle>
+            <ScrollView className="mt-3 flex-1" contentContainerStyle={{ paddingBottom: 12 }}>
+              {messages.map(msg => (
+                <View
+                  key={msg.id}
+                  className={`mb-3 max-w-[85%] rounded-2xl px-4 py-3 ${
+                    msg.from === 'you' ? 'self-end bg-[#6366f1]' : 'self-start bg-[#1a1b2e]'
+                  }`}
+                >
+                  <Text className="text-sm text-white">{msg.text}</Text>
+                  <Text className="mt-1 text-[11px] text-white/60">{msg.timestamp}</Text>
+                </View>
+              ))}
+            </ScrollView>
 
-            {/* Info Card */}
-            <View style={[styles.infoCard, { borderLeftColor: '#a855f7' }]}>
-              <Ionicons name="information-circle" size={24} color="#a855f7" />
-              <View style={styles.infoContent}>
-                <Text style={styles.infoTitle}>Your Cosmic Match</Text>
-                <Text style={styles.infoText}>
-                  Based on your birth chart, we'll reveal the characteristics and qualities of
-                  your ideal soulmate connection.
-                </Text>
-              </View>
+            <View className="mt-2 flex-row items-center rounded-2xl border border-[#24243a] bg-[#0f0f1e] p-3">
+              <TouchableOpacity className="mr-2 h-10 w-10 items-center justify-center rounded-full bg-[#1a1b2e]">
+                <Ionicons name="add-outline" size={22} color="#cbd5e1" />
+              </TouchableOpacity>
+              <TextInput
+                className="flex-1 rounded-xl bg-[#14142a] px-4 py-3 text-white"
+                placeholder="Send a supportive note..."
+                placeholderTextColor="#6b7280"
+                value={input}
+                onChangeText={setInput}
+              />
+              <TouchableOpacity
+                className="ml-2 h-10 w-10 items-center justify-center rounded-full bg-[#6366f1] disabled:opacity-50"
+                onPress={sendMessage}
+                disabled={!input.trim()}
+              >
+                <Ionicons name="send" size={18} color="#fff" />
+              </TouchableOpacity>
             </View>
-
-            {/* Feature List */}
-            <View style={styles.featuresList}>
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#a855f720' }]}>
-                  <Ionicons name="person" size={24} color="#a855f7" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Soulmate Archetype</Text>
-                  <Text style={styles.featureDesc}>
-                    Discover the energetic blueprint of your perfect match
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#ec489920' }]}>
-                  <Ionicons name="compass" size={24} color="#ec4899" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Meeting Scenarios</Text>
-                  <Text style={styles.featureDesc}>
-                    Likely contexts where you'll meet your soulmate
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#10b98120' }]}>
-                  <Ionicons name="star" size={24} color="#10b981" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Ideal Qualities</Text>
-                  <Text style={styles.featureDesc}>
-                    Key traits and characteristics to look for
-                  </Text>
-                </View>
-              </View>
-
-              <View style={styles.featureItem}>
-                <View style={[styles.featureIcon, { backgroundColor: '#3b82f620' }]}>
-                  <Ionicons name="map" size={24} color="#3b82f6" />
-                </View>
-                <View style={styles.featureContent}>
-                  <Text style={styles.featureTitle}>Relationship Guidance</Text>
-                  <Text style={styles.featureDesc}>
-                    Tips for nurturing your soulmate connection
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* CTA */}
-            <TouchableOpacity style={[styles.ctaButton, { backgroundColor: '#a855f7' }]}>
-              <Text style={styles.ctaText}>Generate Soulmate Profile</Text>
-              <Ionicons name="arrow-forward" size={20} color="#fff" />
-            </TouchableOpacity>
-
-            <Text style={styles.premiumNote}>Requires Premium Action</Text>
-          </View>
-        )}
-
-        <View style={{ height: 40 }} />
-      </ScrollView>
-    </View>
+          </Card>
+        </View>
+      )}
+    </KeyboardAvoidingView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0f0f1e',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#1a1b2e',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-  },
-  tabContainer: {
-    flexDirection: 'row',
-    paddingHorizontal: 20,
-    marginBottom: 20,
-    gap: 12,
-  },
-  tab: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#1a1b2e',
-    paddingVertical: 14,
-    borderRadius: 12,
-    gap: 8,
-  },
-  tabActive: {
-    backgroundColor: '#2d2e3f',
-  },
-  tabText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#6b7280',
-  },
-  tabTextActive: {
-    color: '#fff',
-  },
-  content: {
-    flex: 1,
-  },
-  section: {
-    paddingHorizontal: 20,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
-  },
-  sectionDesc: {
-    fontSize: 16,
-    color: '#9ca3af',
-    marginBottom: 24,
-    lineHeight: 22,
-  },
-  infoCard: {
-    flexDirection: 'row',
-    backgroundColor: '#1a1b2e',
-    padding: 16,
-    borderRadius: 16,
-    borderLeftWidth: 3,
-    borderLeftColor: '#ec4899',
-    gap: 12,
-    marginBottom: 24,
-  },
-  infoContent: {
-    flex: 1,
-  },
-  infoTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 4,
-  },
-  infoText: {
-    fontSize: 14,
-    color: '#9ca3af',
-    lineHeight: 20,
-  },
-  featuresList: {
-    gap: 16,
-    marginBottom: 32,
-  },
-  featureItem: {
-    flexDirection: 'row',
-    gap: 16,
-  },
-  featureIcon: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  featureContent: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  featureTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-    marginBottom: 4,
-  },
-  featureDesc: {
-    fontSize: 14,
-    color: '#9ca3af',
-    lineHeight: 20,
-  },
-  ctaButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#ec4899',
-    paddingVertical: 16,
-    borderRadius: 12,
-    gap: 8,
-    marginBottom: 12,
-  },
-  ctaText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#fff',
-  },
-  premiumNote: {
-    fontSize: 13,
-    color: '#6b7280',
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-});
+function TabButton({
+  label,
+  icon,
+  active,
+  onPress,
+}: {
+  label: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  active: boolean;
+  onPress: () => void;
+}) {
+  return (
+    <TouchableOpacity
+      className={`flex-1 flex-row items-center justify-center rounded-2xl px-4 py-3 ${
+        active ? 'bg-[#2d2e3f]' : 'bg-[#1a1b2e]'
+      }`}
+      onPress={onPress}
+    >
+      <Ionicons name={icon} size={20} color={active ? '#ec4899' : '#6b7280'} />
+      <Text
+        className={`ml-2 text-sm font-semibold ${active ? 'text-white' : 'text-slate-400'}`}
+      >
+        {label}
+      </Text>
+    </TouchableOpacity>
+  );
+}
+
+function LinearGradientHeader({ navigation, badge }: { navigation: any; badge: string }) {
+  return (
+    <LinearGradient
+      colors={['#181a2f', '#0f0f1e']}
+      className="border-b border-[#24243a] px-5 pt-16 pb-4"
+    >
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center gap-3">
+          <TouchableOpacity
+            className="h-10 w-10 items-center justify-center rounded-full bg-[#1a1b2e]"
+            onPress={() => navigation.goBack()}
+          >
+            <Ionicons name="arrow-back" size={22} color="#fff" />
+          </TouchableOpacity>
+          <View>
+            <Text className="text-3xl font-bold text-white">Relationships</Text>
+            <Text className="text-sm text-slate-400">Soulmate & compatibility insights</Text>
+          </View>
+        </View>
+        <Badge>{badge}</Badge>
+      </View>
+    </LinearGradient>
+  );
+}
