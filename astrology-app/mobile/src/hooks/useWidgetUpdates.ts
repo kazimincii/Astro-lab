@@ -3,19 +3,53 @@
  *
  * Automatically updates iOS widgets when relevant data changes
  * Listens to app state and profile changes
+ * Supports App Groups for native widget communication
  */
 
 import { useEffect, useRef } from 'react';
-import { AppState, AppStateStatus } from 'react-native';
-import { widgetService, WidgetData } from '@/services/widgetService';
+import { AppState, AppStateStatus, NativeModules, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const { WidgetDataManager } = NativeModules;
+
+/**
+ * Widget Data Interface
+ * Shared between app and widgets via App Groups
+ */
+export interface WidgetData {
+  dailyMessage: string;
+  dailyMessageSource?: 'horoscope' | 'cosmic' | 'ai';
+  moonPhase: string;
+  moonPhaseEmoji?: string;
+  date: string;
+  timestamp: number;
+  birthChart?: {
+    sunSign: string;
+    moonSign: string;
+    risingSign: string;
+  };
+  nextEvent?: {
+    name: string;
+    date: string;
+  };
+  todayHoroscope?: string;
+  transits?: Array<{
+    planet: string;
+    sign: string;
+    degree: number;
+  }>;
+}
 
 interface UseWidgetUpdatesProps {
   enabled?: boolean;
-  fetchHoroscope?: () => Promise<WidgetData['todayHoroscope']>;
-  fetchMoonPhase?: () => Promise<WidgetData['moonPhase']>;
+  fetchHoroscope?: () => Promise<string>;
+  fetchMoonPhase?: () => Promise<string>;
   fetchBirthChart?: () => Promise<WidgetData['birthChart']>;
   fetchTransits?: () => Promise<WidgetData['transits']>;
 }
+
+const WIDGET_DATA_KEY = 'widget_data';
+const APP_GROUPS_CONTAINER = 'group.com.astrologyapp.superapp';
 
 /**
  * Hook to automatically update widgets based on app state and data changes
@@ -37,7 +71,7 @@ export const useWidgetUpdates = (props: UseWidgetUpdatesProps = {}) => {
   const MIN_UPDATE_INTERVAL = 5 * 60 * 1000;
 
   const shouldUpdate = (): boolean => {
-    if (!enabled || !widgetService.isWidgetSupported()) {
+    if (!enabled) {
       return false;
     }
 
@@ -71,26 +105,29 @@ export const useWidgetUpdates = (props: UseWidgetUpdatesProps = {}) => {
       }
 
       const widgetData: WidgetData = {
-        todayHoroscope: horoscope ?? {
-          sign: 'Unknown',
-          text: 'Open app to see your horoscope',
-          date: new Date().toISOString().split('T')[0],
-          mood: 'neutral',
-          luckyNumber: 0,
-          luckyColor: 'purple',
-        },
-        moonPhase: moonPhase ?? {
-          phase: 'Unknown',
-          illumination: 0,
-          emoji: '🌑',
-        },
-        birthChart: birthChart ?? undefined,
-        transits: transits ?? undefined,
-        lastUpdated: new Date().toISOString(),
+        dailyMessage: horoscope ?? 'Open app to see your horoscope',
+        dailyMessageSource: 'horoscope',
+        moonPhase: moonPhase ?? 'Unknown',
+        moonPhaseEmoji: getMoonPhaseEmoji(moonPhase ?? 'Unknown'),
+        date: new Date().toISOString(),
+        timestamp: Date.now(),
+        birthChart,
+        transits,
       };
 
-      await widgetService.updateWidgetData(widgetData);
-      await widgetService.reloadWidgets();
+      // Update via native or AsyncStorage
+      if (Platform.OS === 'ios' && WidgetDataManager?.updateWidgetData) {
+        await WidgetDataManager.updateWidgetData(
+          JSON.stringify(widgetData),
+          APP_GROUPS_CONTAINER
+        );
+        if (WidgetDataManager?.notifyWidgets) {
+          await WidgetDataManager.notifyWidgets();
+        }
+      } else {
+        // Fallback to AsyncStorage
+        await AsyncStorage.setItem(WIDGET_DATA_KEY, JSON.stringify(widgetData));
+      }
 
       lastUpdateRef.current = new Date();
       console.log('Widgets updated successfully');
@@ -113,7 +150,7 @@ export const useWidgetUpdates = (props: UseWidgetUpdatesProps = {}) => {
   };
 
   useEffect(() => {
-    if (!enabled || !widgetService.isWidgetSupported()) {
+    if (!enabled) {
       return;
     }
 
@@ -140,6 +177,25 @@ export const useWidgetUpdates = (props: UseWidgetUpdatesProps = {}) => {
 
   return {
     updateWidgets,
-    isSupported: widgetService.isWidgetSupported(),
+    isSupported: Platform.OS === 'ios',
+  };
+};
+
+/**
+ * Helper to get moon phase emoji
+ */
+export const getMoonPhaseEmoji = (phase: string): string => {
+  const phaseMap: Record<string, string> = {
+    'New Moon': '🌑',
+    'Waxing Crescent': '🌒',
+    'First Quarter': '🌓',
+    'Waxing Gibbous': '🌔',
+    'Full Moon': '🌕',
+    'Waning Gibbous': '🌖',
+    'Last Quarter': '🌗',
+    'Waning Crescent': '🌘',
+  };
+  return phaseMap[phase] || '🌙';
+};
   };
 };

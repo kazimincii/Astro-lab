@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 
 export default function AIAssistantScreen() {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>AI Assistant</Text>
-      <Text style={styles.text}>Coming soon...</Text>
+      <Text style={styles.text}>{t('common.messages.comingSoon')}</Text>
     </View>
   );
 }

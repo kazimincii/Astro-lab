@@ -36,27 +36,70 @@ export default function ExploreNavigator() {
     >
       <Stack.Screen name="ExploreHome" component={ExploreScreen} />
 
-      {/* Existing screens */}
-      <Stack.Screen name="Education" component={EducationScreen} />
-      <Stack.Screen name="EducationArticle" component={EducationArticleScreen} />
-      <Stack.Screen name="Widgets" component={WidgetsScreen} />
-      <Stack.Screen name="Journal" component={JournalScreen} />
-      <Stack.Screen name="Biorhythm" component={BiorhythmScreen} />
-      <Stack.Screen name="Chakras" component={ChakrasScreen} />
-      <Stack.Screen name="RelationshipSoulmate" component={RelationshipSoulmateScreen} />
-      <Stack.Screen name="AdvancedCharts" component={AdvancedChartsScreen} />
-      <Stack.Screen name="ChartTypeDetail" component={ChartTypeDetailScreen} />
+      {/* Existing screens - with profileId parameter support */}
+      <Stack.Screen 
+        name="Education" 
+        component={EducationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="EducationArticle" 
+        component={EducationArticleScreen}
+        options={{ headerShown: true, title: 'Article' }}
+      />
+      <Stack.Screen 
+        name="Widgets" 
+        component={WidgetsScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="Journal" 
+        component={JournalScreen}
+        options={{ headerShown: true, title: 'Journal' }}
+        initialParams={{ profileId: '' }}
+      />
+      <Stack.Screen 
+        name="Biorhythm" 
+        component={BiorhythmScreen}
+        options={{ headerShown: true, title: 'Biorhythm' }}
+        initialParams={{ profileId: '' }}
+      />
+      <Stack.Screen 
+        name="Chakras" 
+        component={ChakrasScreen}
+        options={{ headerShown: true, title: 'Chakras' }}
+        initialParams={{ profileId: '' }}
+      />
+      <Stack.Screen 
+        name="RelationshipSoulmate" 
+        component={RelationshipSoulmateScreen}
+        options={{ headerShown: true, title: 'Soul Mate Match' }}
+        initialParams={{ profileId: '' }}
+      />
+      <Stack.Screen 
+        name="AdvancedCharts" 
+        component={AdvancedChartsScreen}
+        options={{ headerShown: true, title: 'Advanced Charts' }}
+        initialParams={{ profileId: '' }}
+      />
+      <Stack.Screen 
+        name="ChartTypeDetail" 
+        component={ChartTypeDetailScreen}
+        options={{ headerShown: true, title: 'Chart Type' }}
+        initialParams={{ profileId: '', chartType: '' }}
+      />
 
-      {/* New MVP screens */}
       <Stack.Screen
         name="BirthChartDetail"
         component={BirthChartDetailScreen}
         options={{ headerShown: true, title: 'Birth Chart' }}
+        initialParams={{ profileId: '' }}
       />
       <Stack.Screen
         name="Forecasts"
         component={ForecastsScreen}
         options={{ headerShown: true, title: 'Forecasts' }}
+        initialParams={{ profileId: '' }}
       />
       <Stack.Screen
         name="Tarot"
@@ -72,6 +115,7 @@ export default function ExploreNavigator() {
         name="Numerology"
         component={NumerologyScreen}
         options={{ headerShown: true, title: 'Numerology' }}
+        initialParams={{ profileId: '' }}
       />
       <Stack.Screen
         name="Calendars"
@@ -82,11 +126,13 @@ export default function ExploreNavigator() {
         name="FamousPeople"
         component={FamousPeopleScreen}
         options={{ headerShown: true, title: 'Famous Matches' }}
+        initialParams={{ profileId: '' }}
       />
       <Stack.Screen
         name="AstroMap"
         component={AstroMapScreen}
         options={{ headerShown: true, title: 'Astro Map' }}
+        initialParams={{ profileId: '' }}
       />
       <Stack.Screen
         name="LiveServices"

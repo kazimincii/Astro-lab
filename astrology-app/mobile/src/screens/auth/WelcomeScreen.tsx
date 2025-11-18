@@ -1,31 +1,34 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 
 export default function WelcomeScreen({ navigation }: any) {
+  const { t } = useTranslation();
+
   return (
     <LinearGradient
       colors={[colors.cosmic.bg, colors.cosmic.purple]}
       style={styles.container}
     >
       <View style={styles.content}>
-        <Text style={styles.title}>Astrology Super App</Text>
-        <Text style={styles.subtitle}>Discover Your Cosmic Journey</Text>
+        <Text style={styles.title}>{t('auth.welcome.appTitle')}</Text>
+        <Text style={styles.subtitle}>{t('auth.welcome.subtitle')}</Text>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, styles.primaryButton]}
             onPress={() => navigation.navigate('Login')}
           >
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>{t('auth.welcome.loginButton')}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.button, styles.secondaryButton]}
             onPress={() => navigation.navigate('Register')}
           >
-            <Text style={styles.buttonText}>Sign Up</Text>
+            <Text style={styles.buttonText}>{t('auth.welcome.signUpButton')}</Text>
           </TouchableOpacity>
         </View>
       </View>

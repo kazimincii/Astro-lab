@@ -9,10 +9,10 @@ import {
   Modal,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useTranslation } from 'react-i18next';
-import { actionsApi, trialsApi, paymentsApi } from '@/api';
+import { actionsApi, trialsApi } from '@/api';
 import { PaymentSheet } from '@/components/PaymentSheet';
 import { PLAN_PRICING } from '@/config/stripe';
+import { colors } from '@/theme/colors';
 
 interface EffectivePlan {
   planType: 'basic' | 'standard' | 'premium';
@@ -40,12 +40,13 @@ const comparisonRows = [
 ];
 
 export default function MyPlanScreen() {
-  const { t } = useTranslation();
   const [effectivePlan, setEffectivePlan] = useState<EffectivePlan | null>(null);
   const [loading, setLoading] = useState(true);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [showPaymentSheet, setShowPaymentSheet] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'standard' | 'premium' | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'standard' | 'premium' | null>(
+    null,
+  );
 
   useEffect(() => {
     fetchEffectivePlan();
@@ -82,17 +83,17 @@ export default function MyPlanScreen() {
     try {
       await trialsApi.cancelTrial();
       await fetchEffectivePlan();
-      alert(t('common.messages.success'));
+      alert('Trial cancelled successfully');
     } catch (error) {
       console.error('Error cancelling trial:', error);
-      alert(t('common.errors.generic'));
+      alert('Failed to cancel trial');
     }
   };
 
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
+        <ActivityIndicator size="large" color={colors.cosmic.purple} />
       </View>
     );
   }
@@ -100,14 +101,13 @@ export default function MyPlanScreen() {
   if (!effectivePlan) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{t('plans.myPlan.error')}</Text>
+        <Text style={styles.errorText}>Failed to load plan information</Text>
       </View>
     );
   }
 
-  const getPlanDisplayName = (type: string) => {
-    return type.charAt(0).toUpperCase() + type.slice(1);
-  };
+  const getPlanDisplayName = (type: string) =>
+    type.charAt(0).toUpperCase() + type.slice(1);
 
   const getPlanColor = (type: string) => {
     switch (type) {
@@ -122,23 +122,17 @@ export default function MyPlanScreen() {
 
   return (
     <ScrollView style={styles.container}>
-      {/* Current Plan Card */}
-      <LinearGradient
-        colors={getPlanColor(effectivePlan.planType)}
-        style={styles.currentPlanCard}
-      >
-        <Text style={styles.currentPlanLabel}>{t('plans.myPlan.currentPlan')}</Text>
-        <Text style={styles.currentPlanName}>
-          {getPlanDisplayName(effectivePlan.planType)}
-        </Text>
+      <LinearGradient colors={getPlanColor(effectivePlan.planType)} style={styles.currentPlanCard}>
+        <Text style={styles.currentPlanLabel}>Your Current Plan</Text>
+        <Text style={styles.currentPlanName}>{getPlanDisplayName(effectivePlan.planType)}</Text>
 
         {effectivePlan.source === 'trial' && effectivePlan.trial && (
           <View style={styles.trialBadge}>
             <Text style={styles.trialText}>
-              ✨ {t('plans.myPlan.trial.freeTrial')} - {t('plans.myPlan.trial.daysRemaining', { count: effectivePlan.trial.daysRemaining })}
+              ✨ Free Trial - {effectivePlan.trial.daysRemaining} days remaining
             </Text>
             <Text style={styles.trialEndDate}>
-              {t('plans.myPlan.trial.endsOn', { date: new Date(effectivePlan.trial.endDate).toLocaleDateString() })}
+              Ends on {new Date(effectivePlan.trial.endDate).toLocaleDateString()}
             </Text>
           </View>
         )}
@@ -146,23 +140,20 @@ export default function MyPlanScreen() {
         <View style={styles.planStats}>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>
-              {effectivePlan.dailyActionLimit === -1
-                ? '∞'
-                : effectivePlan.dailyActionLimit}
+              {effectivePlan.dailyActionLimit === -1 ? '∞' : effectivePlan.dailyActionLimit}
             </Text>
-            <Text style={styles.statLabel}>{t('plans.myPlan.actionsPerDay')}</Text>
+            <Text style={styles.statLabel}>Actions/Day</Text>
           </View>
           <View style={styles.statDivider} />
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{effectivePlan.maxProfiles}</Text>
-            <Text style={styles.statLabel}>{t('plans.myPlan.maxProfiles')}</Text>
+            <Text style={styles.statLabel}>Max Profiles</Text>
           </View>
         </View>
       </LinearGradient>
 
-      {/* Features */}
       <View style={styles.featuresSection}>
-        <Text style={styles.sectionTitle}>{t('plans.myPlan.whatsIncluded')}</Text>
+        <Text style={styles.sectionTitle}>What's Included</Text>
         {effectivePlan.features.map((feature, index) => (
           <View key={index} style={styles.featureRow}>
             <Text style={styles.checkmark}>✓</Text>
@@ -171,116 +162,113 @@ export default function MyPlanScreen() {
         ))}
       </View>
 
-      {/* Trial Actions */}
+      <View style={styles.comparisonSection}>
+        <Text style={styles.sectionTitle}>Plan Comparison</Text>
+        <View style={styles.comparisonHeader}>
+          <Text style={styles.comparisonLabel}>Feature</Text>
+          <Text style={styles.comparisonPlan}>Basic</Text>
+          <Text style={styles.comparisonPlan}>Standard</Text>
+          <Text style={styles.comparisonPlan}>Premium</Text>
+        </View>
+        {comparisonRows.map(row => (
+          <View key={row.label} style={styles.comparisonRow}>
+            <Text style={styles.comparisonLabel}>{row.label}</Text>
+            <Text style={styles.comparisonValue}>{row.basic}</Text>
+            <Text style={styles.comparisonValue}>{row.standard}</Text>
+            <Text style={styles.comparisonValue}>{row.premium}</Text>
+          </View>
+        ))}
+      </View>
+
+      {effectivePlan.source !== 'trial' && effectivePlan.planType === 'basic' && (
+        <View style={styles.trialOffer}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.trialOfferTitle}>7-day Premium trial</Text>
+            <Text style={styles.trialOfferText}>
+              Try unlimited premium actions and advanced tools. Cancel anytime.
+            </Text>
+          </View>
+          <TouchableOpacity style={styles.trialOfferButton} onPress={() => handleUpgrade('premium')}>
+            <Text style={styles.trialOfferButtonText}>Start trial</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+
       {effectivePlan.source === 'trial' && (
         <View style={styles.trialActions}>
-          <TouchableOpacity
-            style={styles.cancelTrialButton}
-            onPress={handleCancelTrial}
-          >
-            <Text style={styles.cancelTrialText}>{t('plans.myPlan.trial.cancelTrial')}</Text>
+          <TouchableOpacity style={styles.cancelTrialButton} onPress={handleCancelTrial}>
+            <Text style={styles.cancelTrialText}>Cancel Trial</Text>
           </TouchableOpacity>
           <Text style={styles.trialNote}>
-            {t('plans.myPlan.trial.cancelNote')}
+            Cancel anytime. You will move to Basic after the trial ends.
           </Text>
         </View>
       )}
 
-      {/* Upgrade Options */}
       {effectivePlan.planType !== 'premium' && (
         <View style={styles.upgradeSection}>
-          <Text style={styles.sectionTitle}>{t('plans.myPlan.upgradePlan')}</Text>
+          <Text style={styles.sectionTitle}>Upgrade Your Plan</Text>
 
-          {/* Billing Period Selector */}
           <View style={styles.billingSelector}>
             <TouchableOpacity
-              style={[
-                styles.billingOption,
-                billingPeriod === 'monthly' && styles.billingOptionActive,
-              ]}
+              style={[styles.billingOption, billingPeriod === 'monthly' && styles.billingOptionActive]}
               onPress={() => setBillingPeriod('monthly')}
             >
-              <Text
-                style={[
-                  styles.billingText,
-                  billingPeriod === 'monthly' && styles.billingTextActive,
-                ]}
-              >
-                {t('plans.myPlan.billing.monthly')}
+              <Text style={[styles.billingText, billingPeriod === 'monthly' && styles.billingTextActive]}>
+                Monthly
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.billingOption,
-                billingPeriod === 'yearly' && styles.billingOptionActive,
-              ]}
+              style={[styles.billingOption, billingPeriod === 'yearly' && styles.billingOptionActive]}
               onPress={() => setBillingPeriod('yearly')}
             >
-              <Text
-                style={[
-                  styles.billingText,
-                  billingPeriod === 'yearly' && styles.billingTextActive,
-                ]}
-              >
-                {t('plans.myPlan.billing.yearly')}
+              <Text style={[styles.billingText, billingPeriod === 'yearly' && styles.billingTextActive]}>
+                Yearly (Save 17%)
               </Text>
             </TouchableOpacity>
           </View>
 
-          {/* Upgrade Cards */}
           {effectivePlan.planType === 'basic' && (
             <View style={styles.upgradeCard}>
-              <Text style={styles.upgradePlanName}>{t('plans.standard.name')}</Text>
+              <Text style={styles.upgradePlanName}>Standard</Text>
               <Text style={styles.upgradePrice}>
                 ${PLAN_PRICING.standard[billingPeriod]}
-                <Text style={styles.pricePeriod}>
-                  /{t(`plans.myPlan.billing.${billingPeriod === 'monthly' ? 'monthShort' : 'yearShort'}`)}
-                </Text>
+                <Text style={styles.pricePeriod}>/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</Text>
               </Text>
-              <Text style={styles.upgradeFeature}>
-                • {t('plans.myPlan.planFeatures.standard.actions')}
-              </Text>
-              <Text style={styles.upgradeFeature}>• {t('plans.myPlan.planFeatures.standard.profiles')}</Text>
-              <Text style={styles.upgradeFeature}>
-                • {t('plans.myPlan.planFeatures.standard.charts')}
-              </Text>
-              <TouchableOpacity
-                style={styles.upgradeButton}
-                onPress={() => handleUpgrade('standard')}
-              >
-                <Text style={styles.upgradeButtonText}>{t('plans.myPlan.upgradeButtons.upgradeToStandard')}</Text>
+              <Text style={styles.upgradeFeature}>• 4 premium actions/day</Text>
+              <Text style={styles.upgradeFeature}>• Up to 10 profiles</Text>
+              <Text style={styles.upgradeFeature}>• Advanced charts &amp; tools</Text>
+              <TouchableOpacity style={styles.upgradeButton} onPress={() => handleUpgrade('standard')}>
+                <Text style={styles.upgradeButtonText}>Upgrade to Standard</Text>
               </TouchableOpacity>
+              <Text style={styles.upgradeNote}>Charged {billingPeriod === 'monthly' ? 'monthly' : 'yearly'} via PaymentSheet</Text>
             </View>
           )}
 
           <View style={styles.upgradeCard}>
             <View style={styles.popularBadge}>
-              <Text style={styles.popularText}>{t('plans.myPlan.badges.bestValue')}</Text>
+              <Text style={styles.popularText}>BEST VALUE</Text>
             </View>
-            <Text style={styles.upgradePlanName}>{t('plans.premiumPlan.name')}</Text>
+            <Text style={styles.upgradePlanName}>Premium</Text>
             <Text style={styles.upgradePrice}>
               ${PLAN_PRICING.premium[billingPeriod]}
-              <Text style={styles.pricePeriod}>
-                /{t(`plans.myPlan.billing.${billingPeriod === 'monthly' ? 'monthShort' : 'yearShort'}`)}
-              </Text>
+              <Text style={styles.pricePeriod}>/{billingPeriod === 'monthly' ? 'mo' : 'yr'}</Text>
             </Text>
-            <Text style={styles.upgradeFeature}>
-              • {t('plans.myPlan.planFeatures.premium.actions')}
-            </Text>
-            <Text style={styles.upgradeFeature}>• {t('plans.myPlan.planFeatures.premium.profiles')}</Text>
-            <Text style={styles.upgradeFeature}>• {t('plans.myPlan.planFeatures.premium.proMode')}</Text>
-            <Text style={styles.upgradeFeature}>• {t('plans.myPlan.planFeatures.premium.support')}</Text>
+            <Text style={styles.upgradeFeature}>• Unlimited premium actions</Text>
+            <Text style={styles.upgradeFeature}>• Up to 50 profiles</Text>
+            <Text style={styles.upgradeFeature}>• Pro mode features</Text>
+            <Text style={styles.upgradeFeature}>• Priority support</Text>
             <TouchableOpacity
               style={[styles.upgradeButton, styles.upgradeButtonPremium]}
               onPress={() => handleUpgrade('premium')}
             >
-              <Text style={styles.upgradeButtonText}>{t('plans.myPlan.upgradeButtons.upgradeToPremium')}</Text>
+              <Text style={styles.upgradeButtonText}>Upgrade to Premium</Text>
             </TouchableOpacity>
+            <Text style={styles.upgradeNote}>Secure checkout via PaymentSheet</Text>
           </View>
         </View>
       )}
 
-      {/* Payment Modal */}
       <Modal
         visible={showPaymentSheet}
         animationType="slide"
@@ -369,22 +357,22 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   statLabel: {
-    color: 'rgba(255,255,255,0.8)',
-    fontSize: 12,
+    color: 'rgba(255,255,255,0.85)',
+    fontSize: 14,
   },
   statDivider: {
     width: 1,
     height: 40,
-    backgroundColor: 'rgba(255,255,255,0.3)',
+    backgroundColor: 'rgba(255,255,255,0.2)',
   },
   featuresSection: {
     paddingHorizontal: 20,
-    marginBottom: 24,
+    paddingBottom: 16,
   },
   sectionTitle: {
-    color: '#ffffff',
     fontSize: 20,
     fontWeight: 'bold',
+    color: '#ffffff',
     marginBottom: 16,
   },
   featureRow: {
@@ -401,6 +389,76 @@ const styles = StyleSheet.create({
   featureText: {
     color: '#d1d5db',
     fontSize: 16,
+  },
+  comparisonSection: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: '#1a1b2e',
+    borderWidth: 1,
+    borderColor: '#24243a',
+  },
+  comparisonHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 12,
+  },
+  comparisonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#24243a',
+  },
+  comparisonLabel: {
+    flex: 1.2,
+    color: '#e5e7eb',
+    fontSize: 14,
+  },
+  comparisonPlan: {
+    flex: 0.8,
+    color: '#9ca3af',
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  comparisonValue: {
+    flex: 0.8,
+    color: '#ffffff',
+    textAlign: 'center',
+    fontWeight: '600',
+  },
+  trialOffer: {
+    marginHorizontal: 20,
+    marginBottom: 20,
+    padding: 16,
+    borderRadius: 16,
+    backgroundColor: 'rgba(99, 102, 241, 0.12)',
+    borderWidth: 1,
+    borderColor: '#3f4180',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  trialOfferTitle: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  trialOfferText: {
+    color: '#c7d2fe',
+    fontSize: 13,
+    marginTop: 4,
+  },
+  trialOfferButton: {
+    backgroundColor: '#6366f1',
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 12,
+  },
+  trialOfferButtonText: {
+    color: '#ffffff',
+    fontWeight: '700',
   },
   trialActions: {
     paddingHorizontal: 20,
@@ -429,7 +487,7 @@ const styles = StyleSheet.create({
   },
   billingSelector: {
     flexDirection: 'row',
-    backgroundColor: '#1a1a2e',
+    backgroundColor: '#1a1b2e',
     borderRadius: 12,
     padding: 4,
     marginBottom: 20,
@@ -457,6 +515,8 @@ const styles = StyleSheet.create({
     padding: 20,
     marginBottom: 16,
     position: 'relative',
+    borderWidth: 1,
+    borderColor: '#24243a',
   },
   popularBadge: {
     position: 'absolute',
@@ -507,5 +567,10 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  upgradeNote: {
+    color: '#9ca3af',
+    fontSize: 12,
+    marginTop: 8,
   },
 });

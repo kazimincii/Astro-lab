@@ -1,0 +1,25 @@
+{
+  "explore": {
+    "title": "Explore",
+    "features": {
+      "myPlan": "My Plan",
+      "astroAcademy": "Astro Academy",
+      "iosWidgets": "iOS Widgets",
+      "myJournal": "My Journal",
+      "biorhythm": "Biorhythm",
+      "chakras": "Chakras",
+      "numerology": "Numerology",
+      "tarotReading": "Tarot Reading",
+      "coffeeReading": "Coffee Reading",
+      "auraScan": "Aura Scan",
+      "relationship": "Relationship",
+      "famousPeople": "Famous People",
+      "advancedCharts": "Advanced Charts",
+      "astroMap": "Astro Map",
+      "calendars": "Calendars",
+      "forecasts": "Forecasts",
+      "cosmicClimate": "Cosmic Climate",
+      "liveServices": "Live Services"
+    }
+  }
+}

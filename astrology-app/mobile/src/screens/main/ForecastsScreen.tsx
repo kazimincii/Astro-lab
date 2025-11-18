@@ -32,10 +32,10 @@ export default function ForecastsScreen({ route }: any) {
   const [loading, setLoading] = useState(false);
 
   const forecastTypes: { type: ForecastType; label: string; icon: string }[] = [
-    { type: 'daily', label: 'Daily', icon: '📅' },
-    { type: 'weekly', label: 'Weekly', icon: '📆' },
-    { type: 'monthly', label: 'Monthly', icon: '🗓️' },
-    { type: 'yearly', label: 'Yearly', icon: '📖' },
+    { type: 'daily', label: 'Daily', icon: '☀️' },
+    { type: 'weekly', label: 'Weekly', icon: '📅' },
+    { type: 'monthly', label: 'Monthly', icon: '🌗' },
+    { type: 'yearly', label: 'Yearly', icon: '🌌' },
   ];
 
   useEffect(() => {
@@ -47,9 +47,7 @@ export default function ForecastsScreen({ route }: any) {
   const fetchForecast = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `/forecasts/${profileId}/${selectedType}`
-      );
+      const response = await axios.get(`/forecasts/${profileId}/${selectedType}`);
       setForecast(response.data);
     } catch (error) {
       console.error('Error fetching forecast:', error);
@@ -61,23 +59,32 @@ export default function ForecastsScreen({ route }: any) {
 
   const sectionConfig = [
     { key: 'overall', title: 'Overall', icon: '✨', color: '#8b5cf6' },
-    { key: 'love', title: 'Love', icon: '💕', color: '#ec4899' },
-    { key: 'money', title: 'Money', icon: '💰', color: '#10b981' },
-    { key: 'career', title: 'Career', icon: '💼', color: '#3b82f6' },
-    { key: 'health', title: 'Health', icon: '💚', color: '#22c55e' },
-    { key: 'spiritual', title: 'Spiritual', icon: '🔮', color: '#a855f7' },
+    { key: 'love', title: 'Love', icon: '💖', color: '#ec4899' },
+    { key: 'money', title: 'Money', icon: '💸', color: '#10b981' },
+    { key: 'career', title: 'Career', icon: '📈', color: '#3b82f6' },
+    { key: 'health', title: 'Health', icon: '🌿', color: '#22c55e' },
+    { key: 'spiritual', title: 'Spiritual', icon: '🧘', color: '#a855f7' },
   ];
+
+  const renderDate = (date: string) =>
+    new Date(date).toLocaleDateString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
 
   return (
     <View style={styles.container}>
-      {/* Type Selector */}
-      <View style={styles.typeSelectorContainer}>
+      <LinearGradient colors={['#191a2f', '#0f0f1e']} style={styles.header}>
+        <Text style={styles.title}>Forecasts</Text>
+        <Text style={styles.subtitle}>Pick a window and explore your sky</Text>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={styles.typeSelector}
         >
-          {forecastTypes.map((type) => (
+          {forecastTypes.map(type => (
             <TouchableOpacity
               key={type.type}
               style={[
@@ -98,23 +105,23 @@ export default function ForecastsScreen({ route }: any) {
             </TouchableOpacity>
           ))}
         </ScrollView>
-      </View>
+      </LinearGradient>
 
-      {/* Forecast Content */}
       {loading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#6366f1" />
         </View>
       ) : forecast ? (
         <ScrollView style={styles.forecastContainer}>
-          <Text style={styles.dateText}>
-            {new Date(forecast.date).toLocaleDateString('en-US', {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-            })}
-          </Text>
+          <View style={styles.heroCard}>
+            <View>
+              <Text style={styles.heroLabel}>Selected Period</Text>
+              <Text style={styles.heroDate}>{renderDate(forecast.date)}</Text>
+            </View>
+            <View style={styles.heroTag}>
+              <Text style={styles.heroTagText}>{selectedType.toUpperCase()}</Text>
+            </View>
+          </View>
 
           {sectionConfig.map(
             (section) =>
@@ -122,12 +129,7 @@ export default function ForecastsScreen({ route }: any) {
                 <View key={section.key} style={styles.sectionCard}>
                   <View style={styles.sectionHeader}>
                     <Text style={styles.sectionIcon}>{section.icon}</Text>
-                    <Text
-                      style={[
-                        styles.sectionTitle,
-                        { color: section.color },
-                      ]}
-                    >
+                    <Text style={[styles.sectionTitle, { color: section.color }]}>
                       {section.title}
                     </Text>
                   </View>
@@ -152,32 +154,47 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#0f0f1e',
   },
-  typeSelectorContainer: {
-    backgroundColor: '#1a1a2e',
-    paddingVertical: 12,
+  header: {
+    paddingTop: 60,
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '800',
+    color: '#ffffff',
+  },
+  subtitle: {
+    color: '#9ca3af',
+    marginTop: 6,
+    marginBottom: 14,
   },
   typeSelector: {
-    paddingHorizontal: 20,
-    gap: 12,
+    paddingVertical: 6,
+    paddingHorizontal: 4,
+    gap: 8,
   },
   typeButton: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 20,
-    backgroundColor: '#0f0f1e',
+    paddingVertical: 10,
+    borderRadius: 14,
+    backgroundColor: '#1f2033',
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    borderWidth: 1,
+    borderColor: '#2a2b44',
   },
   typeButtonActive: {
     backgroundColor: '#6366f1',
+    borderColor: '#6366f1',
   },
   typeIcon: {
-    fontSize: 20,
+    fontSize: 18,
   },
   typeLabel: {
     color: '#9ca3af',
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '600',
   },
   typeLabelActive: {
@@ -192,17 +209,49 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
   },
-  dateText: {
-    fontSize: 16,
+  heroCard: {
+    backgroundColor: '#1a1b2e',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#242545',
+  },
+  heroLabel: {
     color: '#9ca3af',
-    marginBottom: 20,
-    textAlign: 'center',
+    fontSize: 12,
+    letterSpacing: 0.6,
+    textTransform: 'uppercase',
+  },
+  heroDate: {
+    color: '#ffffff',
+    fontSize: 16,
+    marginTop: 6,
+    fontWeight: '700',
+  },
+  heroTag: {
+    backgroundColor: '#2a2b44',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#3f4180',
+  },
+  heroTagText: {
+    color: '#c7d2fe',
+    fontWeight: '700',
+    fontSize: 12,
   },
   sectionCard: {
     backgroundColor: '#1a1a2e',
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#24243a',
   },
   sectionHeader: {
     flexDirection: 'row',

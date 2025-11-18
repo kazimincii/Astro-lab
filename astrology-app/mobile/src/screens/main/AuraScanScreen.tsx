@@ -82,161 +82,110 @@ export default function AuraScanScreen() {
   return (
     <ScrollView style={styles.container}>
       <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
-        <Text style={styles.title}>✨ Aura Scan</Text>
-        <Text style={styles.subtitle}>
-          Discover personality insights from a photo
-        </Text>
+        <View style={styles.headerRow}>
+          <View>
+            <Text style={styles.title}>Aura Scan</Text>
+            <Text style={styles.subtitle}>Upload a portrait, get your vibe decoded.</Text>
+          </View>
+          <Text style={styles.stepBadge}>{reading ? 'Results' : photoUri ? 'Step 2/2' : 'Step 1/2'}</Text>
+        </View>
       </LinearGradient>
 
-      {!reading ? (
-        <>
-          {/* Instructions */}
-          <View style={styles.instructionsContainer}>
-            <Text style={styles.instructionsTitle}>How it works:</Text>
-            <Text style={styles.instructionText}>
-              📸 Upload a clear portrait photo
-            </Text>
-            <Text style={styles.instructionText}>
-              ✨ Our AI analyzes the vibe and energy
-            </Text>
-            <Text style={styles.instructionText}>
-              🔮 Get personalized insights about personality and presence
-            </Text>
-            <View style={styles.disclaimer}>
-              <Text style={styles.disclaimerText}>
-                For entertainment only. Not medical or psychological advice.
-              </Text>
+      {!reading && (
+        <View style={styles.instructionsCard}>
+          <Text style={styles.instructionsTitle}>How it works</Text>
+          <View style={styles.instructionsList}>
+            <Text style={styles.instructionText}>• Upload a clear portrait photo</Text>
+            <Text style={styles.instructionText}>• AI analyzes aura colors + vibe</Text>
+            <Text style={styles.instructionText}>• Get personality & presence insights</Text>
+          </View>
+          <Text style={styles.disclaimerText}>
+            For entertainment purposes only. Not medical or psychological advice.
+          </Text>
+        </View>
+      )}
+
+      <View style={styles.uploadSection}>
+        {photoUri ? (
+          <View style={styles.photoContainer}>
+            <Image source={{ uri: photoUri }} style={styles.photo} />
+            <TouchableOpacity style={styles.changePhotoButton} onPress={pickImage}>
+              <Text style={styles.changePhotoText}>Change Photo</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
+            <Text style={styles.uploadIcon}>📷</Text>
+            <Text style={styles.uploadText}>Select Photo</Text>
+            <Text style={styles.uploadHint}>Good lighting • Face centered • No filters</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {photoUri && !reading && (
+        <TouchableOpacity style={styles.scanButton} onPress={handleScan} disabled={loading}>
+          <LinearGradient colors={['#8b5cf6', '#6366f1']} style={styles.buttonGradient}>
+            {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Scan Aura</Text>}
+          </LinearGradient>
+        </TouchableOpacity>
+      )}
+
+      {reading && (
+        <View style={styles.readingContainer}>
+          <View style={styles.archetypeCard}>
+            <LinearGradient colors={['#1f1b37', '#2d1f52']} style={styles.archetypeGradient}>
+              <Text style={styles.archetypeLabel}>Archetype</Text>
+              <Text style={styles.archetypeValue}>{reading.archetype}</Text>
+            </LinearGradient>
+          </View>
+
+          <View style={styles.sectionRow}>
+            <View style={styles.sectionCard}>
+              <Text style={styles.sectionTitle}>Vibe</Text>
+              <Text style={styles.sectionText}>{reading.sections.vibe}</Text>
+            </View>
+            <View style={styles.sectionCard}>
+              <Text style={styles.sectionTitle}>Communication</Text>
+              <Text style={styles.sectionText}>{reading.sections.communication}</Text>
             </View>
           </View>
 
-          {/* Photo Upload */}
-          <View style={styles.uploadSection}>
-            {photoUri ? (
-              <View style={styles.photoContainer}>
-                <Image source={{ uri: photoUri }} style={styles.photo} />
-                <TouchableOpacity
-                  style={styles.changePhotoButton}
-                  onPress={pickImage}
-                >
-                  <Text style={styles.changePhotoText}>Change Photo</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <TouchableOpacity
-                style={styles.uploadButton}
-                onPress={pickImage}
-              >
-                <Text style={styles.uploadIcon}>📸</Text>
-                <Text style={styles.uploadText}>Select Photo</Text>
-              </TouchableOpacity>
-            )}
+          <View style={styles.sectionCard}>
+            <Text style={styles.sectionTitle}>Relationships</Text>
+            <Text style={styles.sectionText}>{reading.sections.relationship}</Text>
           </View>
 
-          {/* Scan Button */}
-          {photoUri && (
-            <TouchableOpacity
-              style={styles.scanButton}
-              onPress={handleScan}
-              disabled={loading}
-            >
-              <LinearGradient
-                colors={['#8b5cf6', '#6366f1']}
-                style={styles.buttonGradient}
-              >
-                {loading ? (
-                  <ActivityIndicator color="#fff" />
-                ) : (
-                  <Text style={styles.buttonText}>Scan Aura</Text>
-                )}
-              </LinearGradient>
-            </TouchableOpacity>
-          )}
-        </>
-      ) : (
-        <>
-          {/* Reading Result */}
-          <View style={styles.readingContainer}>
-            {/* Archetype */}
-            <View style={styles.archetypeCard}>
-              <LinearGradient
-                colors={['#f59e0b', '#d97706']}
-                style={styles.archetypeGradient}
-              >
-                <Text style={styles.archetypeLabel}>Your Archetype</Text>
-                <Text style={styles.archetypeValue}>{reading.archetype}</Text>
-              </LinearGradient>
+          <View style={styles.sectionRow}>
+            <View style={styles.sectionCard}>
+              <Text style={styles.sectionTitle}>Strengths</Text>
+              {reading.sections.strengths.map((item, index) => (
+                <View key={index} style={styles.listRow}>
+                  <Text style={styles.bullet}>•</Text>
+                  <Text style={styles.listText}>{item}</Text>
+                </View>
+              ))}
             </View>
-
-            {/* Sections */}
-            {reading.sections.vibe && (
-              <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>✨ Vibe & Presence</Text>
-                <Text style={styles.sectionText}>{reading.sections.vibe}</Text>
-              </View>
-            )}
-
-            {reading.sections.communication && (
-              <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>💬 Communication Style</Text>
-                <Text style={styles.sectionText}>
-                  {reading.sections.communication}
-                </Text>
-              </View>
-            )}
-
-            {reading.sections.relationship && (
-              <View style={styles.sectionCard}>
-                <Text style={styles.sectionTitle}>💕 Relationship Style</Text>
-                <Text style={styles.sectionText}>
-                  {reading.sections.relationship}
-                </Text>
-              </View>
-            )}
-
-            {/* Strengths */}
-            {reading.sections.strengths &&
-              reading.sections.strengths.length > 0 && (
-                <View style={styles.sectionCard}>
-                  <Text style={styles.sectionTitle}>🌟 Strengths</Text>
-                  {reading.sections.strengths.map((strength, index) => (
-                    <View key={index} style={styles.listRow}>
-                      <Text style={styles.bullet}>•</Text>
-                      <Text style={styles.listText}>{strength}</Text>
-                    </View>
-                  ))}
+            <View style={styles.sectionCard}>
+              <Text style={styles.sectionTitle}>Watch Outs</Text>
+              {reading.sections.watchOuts.map((item, index) => (
+                <View key={index} style={styles.listRow}>
+                  <Text style={styles.bullet}>•</Text>
+                  <Text style={styles.listText}>{item}</Text>
                 </View>
-              )}
-
-            {/* Watch Outs */}
-            {reading.sections.watchOuts &&
-              reading.sections.watchOuts.length > 0 && (
-                <View style={styles.sectionCard}>
-                  <Text style={styles.sectionTitle}>⚠️ Gentle Watch-Outs</Text>
-                  {reading.sections.watchOuts.map((watchOut, index) => (
-                    <View key={index} style={styles.listRow}>
-                      <Text style={styles.bullet}>•</Text>
-                      <Text style={styles.listText}>{watchOut}</Text>
-                    </View>
-                  ))}
-                </View>
-              )}
-
-            <TouchableOpacity
-              style={styles.newScanButton}
-              onPress={resetScan}
-            >
-              <Text style={styles.newScanText}>New Scan</Text>
-            </TouchableOpacity>
+              ))}
+            </View>
           </View>
-        </>
+
+          <TouchableOpacity style={styles.newScanButton} onPress={resetScan}>
+            <Text style={styles.newScanText}>Start New Scan</Text>
+          </TouchableOpacity>
+        </View>
       )}
 
       <ActionLimitModal
         visible={showLimitModal}
         onClose={() => setShowLimitModal(false)}
-        currentPlan="basic"
-        actionsUsed={2}
-        dailyLimit={2}
+        onUpgrade={() => setShowLimitModal(false)}
       />
     </ScrollView>
   );
@@ -248,48 +197,61 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f0f1e',
   },
   header: {
-    padding: 24,
+    padding: 20,
     paddingTop: 60,
+    paddingBottom: 16,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 8,
   },
   subtitle: {
     fontSize: 16,
     color: '#9ca3af',
+    marginTop: 4,
   },
-  instructionsContainer: {
-    margin: 20,
-    padding: 20,
+  stepBadge: {
+    backgroundColor: 'rgba(255,255,255,0.08)',
+    color: '#c7d2fe',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    fontWeight: '700',
+    fontSize: 12,
+  },
+  instructionsCard: {
     backgroundColor: '#1a1a2e',
+    marginHorizontal: 20,
+    marginTop: 12,
+    padding: 16,
     borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#24243a',
   },
   instructionsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 12,
+    fontSize: 18,
+    fontWeight: '700',
+    marginBottom: 10,
+  },
+  instructionsList: {
+    marginBottom: 10,
+    gap: 4,
   },
   instructionText: {
-    fontSize: 14,
     color: '#d1d5db',
-    marginBottom: 8,
-    lineHeight: 20,
-  },
-  disclaimer: {
-    marginTop: 12,
-    paddingTop: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#2a2a4e',
+    fontSize: 14,
   },
   disclaimerText: {
-    fontSize: 12,
     color: '#9ca3af',
-    fontStyle: 'italic',
-    textAlign: 'center',
+    fontSize: 12,
+    marginTop: 8,
   },
   uploadSection: {
     padding: 20,
@@ -315,6 +277,12 @@ const styles = StyleSheet.create({
     color: '#6366f1',
     fontWeight: '600',
   },
+  uploadHint: {
+    marginTop: 6,
+    color: '#9ca3af',
+    fontSize: 12,
+    textAlign: 'center',
+  },
   photoContainer: {
     alignItems: 'center',
   },
@@ -329,6 +297,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     backgroundColor: '#1a1a2e',
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#2f2f44',
   },
   changePhotoText: {
     color: '#6366f1',
@@ -337,7 +307,7 @@ const styles = StyleSheet.create({
   },
   scanButton: {
     marginHorizontal: 20,
-    marginBottom: 40,
+    marginBottom: 20,
     borderRadius: 12,
     overflow: 'hidden',
   },
@@ -373,11 +343,18 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     textAlign: 'center',
   },
+  sectionRow: {
+    flexDirection: 'row',
+    gap: 12,
+  },
   sectionCard: {
     backgroundColor: '#1a1a2e',
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#24243a',
+    flex: 1,
   },
   sectionTitle: {
     fontSize: 18,

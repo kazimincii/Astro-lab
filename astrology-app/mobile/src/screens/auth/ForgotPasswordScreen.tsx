@@ -10,22 +10,24 @@ import {
   Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 import { authApi } from '@/api/auth';
 
 export default function ForgotPasswordScreen({ navigation }: any) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleForgotPassword = async () => {
     if (!email) {
-      Alert.alert('Error', 'Please enter your email address');
+      Alert.alert(t('common.errors.required'), t('common.errors.invalidEmail'));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
+      Alert.alert(t('common.errors.required'), t('common.errors.invalidEmail'));
       return;
     }
 
@@ -33,19 +35,19 @@ export default function ForgotPasswordScreen({ navigation }: any) {
     try {
       const response = await authApi.forgotPassword(email);
       Alert.alert(
-        'Success',
-        'If your email is registered, you will receive a password reset link shortly.',
+        t('common.messages.success'),
+        t('auth.forgotPassword.success'),
         [
           {
-            text: 'OK',
+            text: t('common.buttons.ok'),
             onPress: () => navigation.navigate('Login'),
           },
         ]
       );
     } catch (error: any) {
       Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Failed to send reset email'
+        t('common.errors.required'),
+        error.response?.data?.message || t('auth.forgotPassword.error')
       );
     } finally {
       setLoading(false);
@@ -62,14 +64,14 @@ export default function ForgotPasswordScreen({ navigation }: any) {
         style={styles.keyboardView}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>Forgot Password</Text>
+          <Text style={styles.title}>{t('auth.forgotPassword.title')}</Text>
           <Text style={styles.subtitle}>
-            Enter your email address and we'll send you a link to reset your password.
+            {t('auth.forgotPassword.subtitle')}
           </Text>
 
           <TextInput
             style={styles.input}
-            placeholder="Email"
+            placeholder={t('auth.forgotPassword.emailPlaceholder')}
             placeholderTextColor={colors.cosmic.textSecondary}
             value={email}
             onChangeText={setEmail}
@@ -84,7 +86,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Sending...' : 'Send Reset Link'}
+              {loading ? t('auth.forgotPassword.sending') : t('auth.forgotPassword.sendButton')}
             </Text>
           </TouchableOpacity>
 
@@ -92,7 +94,7 @@ export default function ForgotPasswordScreen({ navigation }: any) {
             onPress={() => navigation.navigate('Login')}
             style={styles.backButton}
           >
-            <Text style={styles.link}>Back to Login</Text>
+            <Text style={styles.link}>{t('auth.forgotPassword.backToLogin')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
