@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { chakrasApi, ChakraProfile, ChakraStatus } from '@/api/chakras';
 import { useProfile } from '@/contexts/ProfileContext';
 import { ProfileSelector } from '@/components/ProfileSelector';
@@ -9,6 +10,7 @@ import { Badge } from '@/components/ui/Badge';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 
 export default function ChakrasScreen({ navigation }: any) {
+  const { t } = useTranslation();
   const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [chakraProfile, setChakraProfile] = useState<ChakraProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ export default function ChakrasScreen({ navigation }: any) {
 
   const handleGenerate = async () => {
     if (!selectedProfile?.id) {
-      Alert.alert('No Profile', 'Please select a profile first');
+      Alert.alert(t('screens.chakras.errors.noProfile'), t('screens.chakras.errors.selectProfile'));
       return;
     }
 
@@ -57,9 +59,9 @@ export default function ChakrasScreen({ navigation }: any) {
     } catch (error: any) {
       console.error('Failed to generate chakra profile:', error);
       if (error.response?.data?.message) {
-        Alert.alert('Error', error.response.data.message);
+        Alert.alert(t('screens.chakras.errors.error'), error.response.data.message);
       } else {
-        Alert.alert('Error', 'Failed to generate chakra profile');
+        Alert.alert(t('screens.chakras.errors.error'), t('screens.chakras.errors.generateFailed'));
       }
     } finally {
       setGenerating(false);
@@ -82,13 +84,13 @@ export default function ChakrasScreen({ navigation }: any) {
   const getStatusLabel = (status: ChakraStatus) => {
     switch (status) {
       case ChakraStatus.BALANCED:
-        return 'Balanced';
+        return t('screens.chakras.status.balanced');
       case ChakraStatus.UNDERACTIVE:
-        return 'Underactive';
+        return t('screens.chakras.status.underactive');
       case ChakraStatus.OVERACTIVE:
-        return 'Overactive';
+        return t('screens.chakras.status.overactive');
       default:
-        return 'Unknown';
+        return t('screens.chakras.status.unknown');
     }
   };
 
@@ -102,16 +104,16 @@ export default function ChakrasScreen({ navigation }: any) {
           >
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
-          <Text className="text-2xl font-bold text-white">Chakras</Text>
+          <Text className="text-2xl font-bold text-white">{t('screens.chakras.title')}</Text>
         </View>
         <View className="items-center px-5 py-16">
           <Ionicons name="radio-button-on-outline" size={64} color="#6b7280" />
-          <Text className="mt-4 text-lg text-white">Please select a profile to view chakras</Text>
+          <Text className="mt-4 text-lg text-white">{t('screens.chakras.noProfile.title')}</Text>
           <TouchableOpacity
             className="mt-4 rounded-xl bg-[#6366f1] px-5 py-3"
             onPress={() => navigation.navigate('Profiles')}
           >
-            <Text className="font-semibold text-white">Select Profile</Text>
+            <Text className="font-semibold text-white">{t('screens.chakras.noProfile.button')}</Text>
           </TouchableOpacity>
         </View>
       </View>

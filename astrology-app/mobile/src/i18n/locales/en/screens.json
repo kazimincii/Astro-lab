@@ -159,5 +159,76 @@
       "noForecast": "No forecast available",
       "failedToLoad": "Failed to load forecast"
     }
+  },
+  "profiles": {
+    "title": "Birth Profiles",
+    "subtitle": "View, edit and prioritize the people you read for.",
+    "addProfile": "Add Profile",
+    "main": "Main",
+    "loading": "Loading profiles...",
+    "retry": "Retry",
+    "empty": {
+      "title": "No profiles yet",
+      "message": "Create your first birth profile to unlock daily charts and forecasts."
+    },
+    "comingSoon": {
+      "title": "Coming soon",
+      "message": "Profile creation is on the roadmap. For now you can manage profiles from the backend panel."
+    },
+    "metadata": {
+      "unknownDate": "Unknown date",
+      "signUnknown": "SIGN UNKNOWN",
+      "relationshipSelf": "relationship: self"
+    },
+    "errors": {
+      "unableToLoad": "Unable to load profiles"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "account": {
+      "title": "Account"
+    },
+    "logout": "Logout"
+  },
+  "chakras": {
+    "title": "Chakras",
+    "subtitle": "Energy centers & balance guide",
+    "noProfile": {
+      "title": "Please select a profile to view chakras",
+      "button": "Select Profile"
+    },
+    "empty": {
+      "title": "No chakra profile yet",
+      "message": "Generate a chakra analysis for this profile to see balance, tips, and meditation guidance.",
+      "button": "Generate Chakra Profile",
+      "generating": "Generating..."
+    },
+    "summary": {
+      "title": "Chakra Summary",
+      "defaultTitle": "Energy Overview",
+      "regenerate": "Regenerate",
+      "updating": "Updating..."
+    },
+    "balance": {
+      "title": "Chakra Balance"
+    },
+    "status": {
+      "balanced": "Balanced",
+      "underactive": "Underactive",
+      "overactive": "Overactive",
+      "unknown": "Unknown"
+    },
+    "sections": {
+      "tips": "Tips",
+      "meditation": "Meditation"
+    },
+    "errors": {
+      "noProfile": "No Profile",
+      "selectProfile": "Please select a profile first",
+      "generateFailed": "Failed to generate chakra profile",
+      "error": "Error"
+    },
+    "badge": "Profile"
   }
 }

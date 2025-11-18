@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 import { profilesApi } from '@/api/profiles';
 
@@ -25,6 +26,7 @@ type Profile = {
 };
 
 export default function ProfilesScreen() {
+  const { t } = useTranslation();
   const {
     data,
     isLoading,
@@ -39,23 +41,23 @@ export default function ProfilesScreen() {
 
   const profiles = data ?? [];
   const errorMessage =
-    error instanceof Error ? error.message : 'Unable to load profiles';
+    error instanceof Error ? error.message : t('screens.profiles.errors.unableToLoad');
 
   const handleAddProfile = useCallback(() => {
     Alert.alert(
-      'Coming soon',
-      'Profile creation is on the roadmap. For now you can manage profiles from the backend panel.',
+      t('screens.profiles.comingSoon.title'),
+      t('screens.profiles.comingSoon.message'),
     );
-  }, []);
+  }, [t]);
 
   const renderProfile = useCallback(({ item }: { item: Profile }) => {
     const birthDate = item.birthDate
       ? new Date(item.birthDate).toLocaleDateString()
-      : 'Unknown date';
+      : t('screens.profiles.metadata.unknownDate');
     const birthTime = item.birthTime?.slice(0, 5) ?? '--:--';
     const sunSignLabel = item.sunSign
       ? item.sunSign.toUpperCase()
-      : 'SIGN UNKNOWN';
+      : t('screens.profiles.metadata.signUnknown');
 
     return (
       <TouchableOpacity style={styles.profileCard}>
@@ -64,7 +66,7 @@ export default function ProfilesScreen() {
           {item.isMainProfile && (
             <View style={styles.mainBadge}>
               <Ionicons name="star" size={14} color={colors.cosmic.gold} />
-              <Text style={styles.mainBadgeText}>Main</Text>
+              <Text style={styles.mainBadgeText}>{t('screens.profiles.main')}</Text>
             </View>
           )}
         </View>
@@ -96,12 +98,12 @@ export default function ProfilesScreen() {
             color={colors.cosmic.textSecondary}
           />
           <Text style={styles.metaText}>
-            {item.relationship ? item.relationship : 'relationship: self'}
+            {item.relationship ? item.relationship : t('screens.profiles.metadata.relationshipSelf')}
           </Text>
         </View>
       </TouchableOpacity>
     );
-  }, []);
+  }, [t]);
 
   const emptyComponent = (
     <View style={styles.emptyState}>
@@ -110,13 +112,13 @@ export default function ProfilesScreen() {
         size={64}
         color={colors.cosmic.textSecondary}
       />
-      <Text style={styles.emptyText}>No profiles yet</Text>
+      <Text style={styles.emptyText}>{t('screens.profiles.empty.title')}</Text>
       <Text style={styles.emptySubtext}>
-        Create your first birth profile to unlock daily charts and forecasts.
+        {t('screens.profiles.empty.message')}
       </Text>
       <TouchableOpacity style={styles.primaryButton} onPress={handleAddProfile}>
         <Ionicons name="add" size={18} color={colors.cosmic.text} />
-        <Text style={styles.primaryButtonText}>Add Profile</Text>
+        <Text style={styles.primaryButtonText}>{t('screens.profiles.addProfile')}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -126,7 +128,7 @@ export default function ProfilesScreen() {
       return (
         <View style={styles.centerContent}>
           <ActivityIndicator color={colors.cosmic.purple} />
-          <Text style={styles.loadingText}>Loading profiles...</Text>
+          <Text style={styles.loadingText}>{t('screens.profiles.loading')}</Text>
         </View>
       );
     }
@@ -137,7 +139,7 @@ export default function ProfilesScreen() {
           <Text style={styles.errorText}>{errorMessage}</Text>
           <TouchableOpacity style={styles.primaryButton} onPress={() => refetch()}>
             <Text style={[styles.primaryButtonText, styles.primaryButtonTextSolo]}>
-              Retry
+              {t('screens.profiles.retry')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -168,9 +170,9 @@ export default function ProfilesScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <View>
-          <Text style={styles.title}>Birth Profiles</Text>
+          <Text style={styles.title}>{t('screens.profiles.title')}</Text>
           <Text style={styles.subtitle}>
-            View, edit and prioritize the people you read for.
+            {t('screens.profiles.subtitle')}
           </Text>
         </View>
         <TouchableOpacity style={styles.addButton} onPress={handleAddProfile}>

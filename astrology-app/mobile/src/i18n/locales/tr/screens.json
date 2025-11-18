@@ -159,5 +159,76 @@
       "noForecast": "Tahmin bulunmuyor",
       "failedToLoad": "Tahmin yüklenemedi"
     }
+  },
+  "profiles": {
+    "title": "Doğum Profilleri",
+    "subtitle": "Okuma yaptığınız kişileri görüntüleyin, düzenleyin ve önceliklendirin.",
+    "addProfile": "Profil Ekle",
+    "main": "Ana",
+    "loading": "Profiller yükleniyor...",
+    "retry": "Yeniden Dene",
+    "empty": {
+      "title": "Henüz profil yok",
+      "message": "Günlük haritaların ve tahminlerin kilidini açmak için ilk doğum profilini oluşturun."
+    },
+    "comingSoon": {
+      "title": "Yakında gelecek",
+      "message": "Profil oluşturma yol haritasında. Şimdilik profilleri backend panelinden yönetebilirsiniz."
+    },
+    "metadata": {
+      "unknownDate": "Bilinmeyen tarih",
+      "signUnknown": "BURÇ BİLİNMİYOR",
+      "relationshipSelf": "ilişki: kendim"
+    },
+    "errors": {
+      "unableToLoad": "Profiller yüklenemedi"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "account": {
+      "title": "Hesap"
+    },
+    "logout": "Çıkış Yap"
+  },
+  "chakras": {
+    "title": "Çakralar",
+    "subtitle": "Enerji merkezleri ve denge rehberi",
+    "noProfile": {
+      "title": "Çakraları görüntülemek için lütfen bir profil seçin",
+      "button": "Profil Seç"
+    },
+    "empty": {
+      "title": "Henüz çakra profili yok",
+      "message": "Bu profil için denge, ipuçları ve meditasyon rehberliği görmek üzere bir çakra analizi oluşturun.",
+      "button": "Çakra Profili Oluştur",
+      "generating": "Oluşturuluyor..."
+    },
+    "summary": {
+      "title": "Çakra Özeti",
+      "defaultTitle": "Enerji Genel Bakış",
+      "regenerate": "Yeniden Oluştur",
+      "updating": "Güncelleniyor..."
+    },
+    "balance": {
+      "title": "Çakra Dengesi"
+    },
+    "status": {
+      "balanced": "Dengeli",
+      "underactive": "Az Aktif",
+      "overactive": "Aşırı Aktif",
+      "unknown": "Bilinmiyor"
+    },
+    "sections": {
+      "tips": "İpuçları",
+      "meditation": "Meditasyon"
+    },
+    "errors": {
+      "noProfile": "Profil Yok",
+      "selectProfile": "Lütfen önce bir profil seçin",
+      "generateFailed": "Çakra profili oluşturulamadı",
+      "error": "Hata"
+    },
+    "badge": "Profil"
   }
 }
