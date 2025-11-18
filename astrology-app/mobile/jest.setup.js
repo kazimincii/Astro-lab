@@ -3,6 +3,19 @@ jest.mock('expo-font');
 jest.mock('expo-asset');
 jest.mock('expo-linear-gradient');
 jest.mock('expo-image-picker');
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react');
+  const { Text } = require('react-native');
+  return new Proxy(
+    {},
+    {
+      get: () =>
+        function IconMock(props) {
+          return React.createElement(Text, props, props.name || 'Icon');
+        },
+    }
+  );
+});
 
 // Mock React Native Gesture Handler
 jest.mock('react-native-gesture-handler', () => {

@@ -64,23 +64,22 @@ describe('ProfileSelector', () => {
     it('should open modal when selector is pressed', () => {
       const { getByText, queryByText } = render(<ProfileSelector />);
 
-      // Modal should not be visible initially
       expect(queryByText('Select Profile')).toBeNull();
 
-      // Press the selector
-      fireEvent.press(getByText('John Doe'));
+      act(() => {
+        fireEvent.press(getByText('John Doe'));
+      });
 
-      // Modal should be visible
       expect(getByText('Select Profile')).toBeTruthy();
     });
 
     it('should display all profiles in modal', async () => {
       const { getByText } = render(<ProfileSelector />);
 
-      // Open modal
-      fireEvent.press(getByText('John Doe'));
+      act(() => {
+        fireEvent.press(getByText('John Doe'));
+      });
 
-      // Wait for profiles to load
       await waitFor(() => {
         expect(getByText('John Doe')).toBeTruthy();
         expect(getByText('Jane Smith')).toBeTruthy();
@@ -99,13 +98,15 @@ describe('ProfileSelector', () => {
 
       const { getByText, getAllByText } = render(<ProfileSelector />);
 
-      // Open modal
-      fireEvent.press(getByText('John Doe'));
+      act(() => {
+        fireEvent.press(getByText('John Doe'));
+      });
 
-      // Select Jane Smith
       await waitFor(() => {
         const janeButton = getAllByText('Jane Smith')[0];
-        fireEvent.press(janeButton);
+        act(() => {
+          fireEvent.press(janeButton);
+        });
       });
 
       expect(setSelectedProfile).toHaveBeenCalledWith(mockProfiles[1]);
