@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -8,10 +8,17 @@ import {
   ActivityIndicator,
   RefreshControl,
   Alert,
+  Modal,
+  TextInput,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Switch,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { colors } from '@/theme/colors';
 import { profilesApi } from '@/api/profiles';
 
@@ -27,6 +34,20 @@ type Profile = {
 
 export default function ProfilesScreen() {
   const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    birthDate: new Date(),
+    birthTime: '',
+    birthPlace: '',
+    relationship: '',
+    isMainProfile: false,
+  });
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
   const {
     data,
     isLoading,
@@ -39,16 +60,83 @@ export default function ProfilesScreen() {
     queryFn: profilesApi.getAll,
   });
 
+  const createMutation = useMutation({
+    mutationFn: profilesApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['profiles'] });
+      setModalVisible(false);
+      resetForm();
+      Alert.alert(
+        t('screens.profiles.success.title'),
+        t('screens.profiles.success.message'),
+      );
+    },
+    onError: (err: any) => {
+      Alert.alert(
+        t('screens.profiles.errors.createFailed'),
+        err.message || t('screens.profiles.errors.tryAgain'),
+      );
+    },
+  });
+
   const profiles = data ?? [];
   const errorMessage =
     error instanceof Error ? error.message : t('screens.profiles.errors.unableToLoad');
 
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      birthDate: new Date(),
+      birthTime: '',
+      birthPlace: '',
+      relationship: '',
+      isMainProfile: false,
+    });
+  };
+
   const handleAddProfile = useCallback(() => {
-    Alert.alert(
-      t('screens.profiles.comingSoon.title'),
-      t('screens.profiles.comingSoon.message'),
-    );
-  }, [t]);
+    setModalVisible(true);
+  }, []);
+
+  const handleSubmit = () => {
+    if (!formData.name.trim()) {
+      Alert.alert(t('screens.profiles.errors.validation'), t('screens.profiles.errors.nameRequired'));
+      return;
+    }
+    if (!formData.birthPlace.trim()) {
+      Alert.alert(t('screens.profiles.errors.validation'), t('screens.profiles.errors.placeRequired'));
+      return;
+    }
+    if (!formData.birthTime.trim()) {
+      Alert.alert(t('screens.profiles.errors.validation'), t('screens.profiles.errors.timeRequired'));
+      return;
+    }
+
+    createMutation.mutate({
+      name: formData.name.trim(),
+      birthDate: formData.birthDate.toISOString(),
+      birthTime: formData.birthTime,
+      birthPlace: formData.birthPlace.trim(),
+      relationship: formData.relationship.trim() || undefined,
+      isMainProfile: formData.isMainProfile,
+    });
+  };
+
+  const handleDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (selectedDate) {
+      setFormData({ ...formData, birthDate: selectedDate });
+    }
+  };
+
+  const handleTimeChange = (event: any, selectedTime?: Date) => {
+    setShowTimePicker(Platform.OS === 'ios');
+    if (selectedTime) {
+      const hours = selectedTime.getHours().toString().padStart(2, '0');
+      const minutes = selectedTime.getMinutes().toString().padStart(2, '0');
+      setFormData({ ...formData, birthTime: `${hours}:${minutes}` });
+    }
+  };
 
   const renderProfile = useCallback(({ item }: { item: Profile }) => {
     const birthDate = item.birthDate
@@ -180,6 +268,140 @@ export default function ProfilesScreen() {
         </TouchableOpacity>
       </View>
       {renderContent()}
+
+      {/* Add Profile Modal */}
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.modalContainer}
+        >
+          <View style={styles.modalHeader}>
+            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <Ionicons name="close" size={28} color={colors.cosmic.text} />
+            </TouchableOpacity>
+            <Text style={styles.modalTitle}>{t('screens.profiles.addProfile')}</Text>
+            <View style={{ width: 28 }} />
+          </View>
+
+          <ScrollView style={styles.formContainer} contentContainerStyle={styles.formContent}>
+            {/* Name */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('screens.profiles.form.name')} *</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t('screens.profiles.form.namePlaceholder')}
+                placeholderTextColor={colors.cosmic.textSecondary}
+                value={formData.name}
+                onChangeText={(text) => setFormData({ ...formData, name: text })}
+              />
+            </View>
+
+            {/* Birth Date */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('screens.profiles.form.birthDate')} *</Text>
+              <TouchableOpacity
+                style={styles.dateButton}
+                onPress={() => setShowDatePicker(true)}
+              >
+                <Ionicons name="calendar-outline" size={20} color={colors.cosmic.text} />
+                <Text style={styles.dateButtonText}>
+                  {formData.birthDate.toLocaleDateString()}
+                </Text>
+              </TouchableOpacity>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={formData.birthDate}
+                  mode="date"
+                  display="default"
+                  onChange={handleDateChange}
+                  maximumDate={new Date()}
+                />
+              )}
+            </View>
+
+            {/* Birth Time */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('screens.profiles.form.birthTime')} *</Text>
+              <TouchableOpacity
+                style={styles.dateButton}
+                onPress={() => setShowTimePicker(true)}
+              >
+                <Ionicons name="time-outline" size={20} color={colors.cosmic.text} />
+                <Text style={styles.dateButtonText}>
+                  {formData.birthTime || t('screens.profiles.form.selectTime')}
+                </Text>
+              </TouchableOpacity>
+              {showTimePicker && (
+                <DateTimePicker
+                  value={new Date()}
+                  mode="time"
+                  display="default"
+                  onChange={handleTimeChange}
+                />
+              )}
+            </View>
+
+            {/* Birth Place */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('screens.profiles.form.birthPlace')} *</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t('screens.profiles.form.placePlaceholder')}
+                placeholderTextColor={colors.cosmic.textSecondary}
+                value={formData.birthPlace}
+                onChangeText={(text) => setFormData({ ...formData, birthPlace: text })}
+              />
+            </View>
+
+            {/* Relationship */}
+            <View style={styles.formGroup}>
+              <Text style={styles.label}>{t('screens.profiles.form.relationship')}</Text>
+              <TextInput
+                style={styles.input}
+                placeholder={t('screens.profiles.form.relationshipPlaceholder')}
+                placeholderTextColor={colors.cosmic.textSecondary}
+                value={formData.relationship}
+                onChangeText={(text) => setFormData({ ...formData, relationship: text })}
+              />
+            </View>
+
+            {/* Main Profile Toggle */}
+            <View style={styles.switchRow}>
+              <View style={styles.switchLabel}>
+                <Ionicons name="star" size={20} color={colors.cosmic.gold} />
+                <Text style={styles.label}>{t('screens.profiles.form.mainProfile')}</Text>
+              </View>
+              <Switch
+                value={formData.isMainProfile}
+                onValueChange={(value) => setFormData({ ...formData, isMainProfile: value })}
+                trackColor={{ false: colors.cosmic.border, true: colors.cosmic.purple }}
+                thumbColor={formData.isMainProfile ? colors.cosmic.gold : colors.cosmic.textSecondary}
+              />
+            </View>
+
+            {/* Submit Button */}
+            <TouchableOpacity
+              style={[styles.submitButton, createMutation.isPending && styles.submitButtonDisabled]}
+              onPress={handleSubmit}
+              disabled={createMutation.isPending}
+            >
+              {createMutation.isPending ? (
+                <ActivityIndicator color={colors.cosmic.text} />
+              ) : (
+                <>
+                  <Ionicons name="checkmark" size={20} color={colors.cosmic.text} />
+                  <Text style={styles.submitButtonText}>{t('screens.profiles.form.submit')}</Text>
+                </>
+              )}
+            </TouchableOpacity>
+          </ScrollView>
+        </KeyboardAvoidingView>
+      </Modal>
     </View>
   );
 }
@@ -311,5 +533,94 @@ const styles = StyleSheet.create({
     color: colors.cosmic.textSecondary,
     fontSize: 14,
     marginLeft: 8,
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: colors.cosmic.bg,
+  },
+  modalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    paddingTop: 60,
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.cosmic.border,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: colors.cosmic.text,
+  },
+  formContainer: {
+    flex: 1,
+  },
+  formContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  formGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: colors.cosmic.text,
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: colors.cosmic.card,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    color: colors.cosmic.text,
+    fontSize: 15,
+    borderWidth: 1,
+    borderColor: colors.cosmic.border,
+  },
+  dateButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: colors.cosmic.card,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderWidth: 1,
+    borderColor: colors.cosmic.border,
+  },
+  dateButtonText: {
+    color: colors.cosmic.text,
+    fontSize: 15,
+    marginLeft: 12,
+  },
+  switchRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 32,
+    paddingVertical: 8,
+  },
+  switchLabel: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  submitButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.cosmic.purple,
+    borderRadius: 12,
+    paddingVertical: 16,
+    gap: 8,
+  },
+  submitButtonText: {
+    color: colors.cosmic.text,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  submitButtonDisabled: {
+    opacity: 0.6,
   },
 });
