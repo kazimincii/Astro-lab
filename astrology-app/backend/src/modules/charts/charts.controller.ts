@@ -83,6 +83,26 @@ export class ChartsController {
     return this.chartsService.generate(profileId);
   }
 
+  @Get(':profileId')
+  @ApiOperation({
+    summary: 'Get birth chart by profile ID',
+    description: 'Retrieve the generated birth chart for a specific profile (alias for /charts/profile/:profileId).',
+  })
+  @ApiParam({
+    name: 'profileId',
+    description: 'Profile ID (UUID)',
+    example: '123e4567-e89b-12d3-a456-426614174000',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Birth chart retrieved successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Chart not found for this profile' })
+  async getByProfileId(@Param('profileId') profileId: string) {
+    return this.chartsService.findByProfile(profileId);
+  }
+
   @Get('profile/:profileId')
   @ApiOperation({
     summary: 'Get birth chart by profile',
