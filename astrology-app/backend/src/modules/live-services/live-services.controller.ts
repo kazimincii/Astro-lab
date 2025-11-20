@@ -1,10 +1,11 @@
-import { Controller, Post, Get, Put, Param, Body, UseGuards, Req, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Post, Get, Put, Param, Body, UseGuards, Req, HttpCode, HttpStatus, Query } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
   ApiParam,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { LiveServicesService } from './live-services.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -16,6 +17,53 @@ import { RequestSessionDto } from './dto/request-session.dto';
 @UseGuards(JwtAuthGuard)
 export class LiveServicesController {
   constructor(private readonly liveServicesService: LiveServicesService) {}
+
+  @Get('experts')
+  @ApiOperation({
+    summary: 'Get available experts',
+    description: 'Retrieve list of available experts, optionally filtered by type',
+  })
+  @ApiQuery({
+    name: 'type',
+    required: false,
+    description: 'Filter experts by type (astrology, tarot, spiritual, numerology)',
+    example: 'astrology',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Experts retrieved successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async getExperts(@Query('type') type?: string) {
+    return await this.liveServicesService.getExperts(type);
+  }
+
+  @Post('book-session')
+  @ApiOperation({
+    summary: 'Book a session with an expert',
+    description: 'Book a session with a specific expert at a preferred date and time',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Session booked successfully',
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Expert not found' })
+  async bookSession(
+    @Req() req,
+    @Body('expertId') expertId: string,
+    @Body('date') date: string,
+    @Body('duration') duration: number,
+    @Body('notes') notes: string,
+  ) {
+    return await this.liveServicesService.bookSession(
+      req.user.id,
+      expertId,
+      new Date(date),
+      duration,
+      notes,
+    );
+  }
 
   @Post('request')
   @ApiOperation({

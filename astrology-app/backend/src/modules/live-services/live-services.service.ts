@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LiveSession, SessionType, SessionStatus } from '../../entities/live-session.entity';
+import { Expert } from '../../entities/expert.entity';
 
 @Injectable()
 export class LiveServicesService {
   constructor(
     @InjectRepository(LiveSession)
     private sessionRepository: Repository<LiveSession>,
+    @InjectRepository(Expert)
+    private expertRepository: Repository<Expert>,
   ) {}
 
   async requestSession(
@@ -117,5 +120,46 @@ export class LiveServicesService {
 
   async getSession(sessionId: string): Promise<LiveSession | null> {
     return await this.sessionRepository.findOne({ where: { id: sessionId } });
+  }
+
+  async getExperts(type?: string): Promise<Expert[]> {
+    const queryBuilder = this.expertRepository.createQueryBuilder('expert');
+
+    queryBuilder.where('expert.isAvailable = :isAvailable', { isAvailable: true });
+
+    if (type && type !== 'all') {
+      queryBuilder.andWhere('expert.type = :type', { type });
+    }
+
+    queryBuilder.orderBy('expert.rating', 'DESC');
+
+    return await queryBuilder.getMany();
+  }
+
+  async bookSession(
+    userId: string,
+    expertId: string,
+    date: Date,
+    duration: number,
+    notes: string,
+  ): Promise<LiveSession> {
+    const expert = await this.expertRepository.findOne({ where: { id: expertId } });
+
+    if (!expert) {
+      throw new Error('Expert not found');
+    }
+
+    const session = this.sessionRepository.create({
+      userId,
+      expertId,
+      type: expert.type as SessionType,
+      topic: notes,
+      scheduledDateTime: date,
+      durationMinutes: duration,
+      price: expert.pricePerSession,
+      status: SessionStatus.REQUESTED,
+    });
+
+    return await this.sessionRepository.save(session);
   }
 }
