@@ -243,22 +243,22 @@ Ortalama:            ~$3,650
 #### Senaryo 1: Solo Developer
 ```
 1 Senior Developer × 3 hafta
-장점: Consistent codebase
-단점: Uzun süre
+Avantaj: Consistent codebase
+Dezavantaj: Uzun süre
 ```
 
 #### Senaryo 2: Small Team (ÖNERİLEN)
 ```
 1 Frontend + 1 Backend × 2 hafta
-장점: Balanced, faster
-단점: Coordination overhead
+Avantaj: Balanced, faster
+Dezavantaj: Coordination overhead
 ```
 
 #### Senaryo 3: Rush Team
 ```
 2 Frontend + 2 Backend × 1 hafta
-장점: Very fast
-단점: More expensive, merge conflicts
+Avantaj: Very fast
+Dezavantaj: More expensive, merge conflicts
 ```
 
 ---
@@ -329,7 +329,7 @@ PAYBACK PERIOD: 1-2 months
 - Technical debt giderek artıyor
 
 #### 2. "Ne zaman başlamalıyız?"
-**Cevap:** 🚨 HEMENv
+**Cevap:** 🚨 HEMEN
 - Her gün gecikme = daha fazla technical debt
 - User complaints artabilir
 - Fix cost artıyor
