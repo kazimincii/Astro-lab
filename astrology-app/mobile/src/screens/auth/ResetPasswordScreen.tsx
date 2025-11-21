@@ -10,10 +10,12 @@ import {
   Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { colors } from '@/theme/colors';
 import { authApi } from '@/api/auth';
 
 export default function ResetPasswordScreen({ route, navigation }: any) {
+  const { t } = useTranslation();
   const { token } = route.params || {};
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -21,22 +23,22 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
 
   const handleResetPassword = async () => {
     if (!newPassword || !confirmPassword) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert(t('common.errors.required'), t('auth.resetPassword.errors.allFields'));
       return;
     }
 
     if (newPassword.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
+      Alert.alert(t('common.errors.required'), t('auth.resetPassword.errors.minLength'));
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Alert.alert(t('common.errors.required'), t('auth.resetPassword.errors.mismatch'));
       return;
     }
 
     if (!token) {
-      Alert.alert('Error', 'Invalid reset token. Please request a new reset link.');
+      Alert.alert(t('common.errors.required'), t('auth.resetPassword.errors.invalidToken'));
       return;
     }
 
@@ -44,19 +46,19 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
     try {
       await authApi.resetPassword(token, newPassword);
       Alert.alert(
-        'Success',
-        'Your password has been reset successfully. You can now log in with your new password.',
+        t('common.messages.success'),
+        t('auth.resetPassword.success'),
         [
           {
-            text: 'OK',
+            text: t('common.buttons.ok'),
             onPress: () => navigation.navigate('Login'),
           },
         ]
       );
     } catch (error: any) {
       Alert.alert(
-        'Error',
-        error.response?.data?.message || 'Failed to reset password. The link may have expired.'
+        t('common.errors.required'),
+        error.response?.data?.message || t('auth.resetPassword.errors.resetFailed')
       );
     } finally {
       setLoading(false);
@@ -73,14 +75,14 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
         style={styles.keyboardView}
       >
         <View style={styles.content}>
-          <Text style={styles.title}>Reset Password</Text>
+          <Text style={styles.title}>{t('auth.resetPassword.title')}</Text>
           <Text style={styles.subtitle}>
-            Enter your new password below.
+            {t('auth.resetPassword.subtitle')}
           </Text>
 
           <TextInput
             style={styles.input}
-            placeholder="New Password"
+            placeholder={t('auth.resetPassword.newPassword')}
             placeholderTextColor={colors.cosmic.textSecondary}
             value={newPassword}
             onChangeText={setNewPassword}
@@ -91,7 +93,7 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
 
           <TextInput
             style={styles.input}
-            placeholder="Confirm New Password"
+            placeholder={t('auth.resetPassword.confirmPassword')}
             placeholderTextColor={colors.cosmic.textSecondary}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -102,13 +104,13 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
 
           <View style={styles.passwordRequirements}>
             <Text style={styles.requirementText}>
-              • Password must be at least 8 characters long
+              {t('auth.resetPassword.requirements.minLength')}
             </Text>
             <Text style={styles.requirementText}>
-              • Include uppercase and lowercase letters
+              {t('auth.resetPassword.requirements.uppercase')}
             </Text>
             <Text style={styles.requirementText}>
-              • Include at least one number
+              {t('auth.resetPassword.requirements.number')}
             </Text>
           </View>
 
@@ -118,7 +120,7 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
             disabled={loading}
           >
             <Text style={styles.buttonText}>
-              {loading ? 'Resetting...' : 'Reset Password'}
+              {loading ? t('auth.resetPassword.resetting') : t('auth.resetPassword.resetButton')}
             </Text>
           </TouchableOpacity>
 
@@ -126,7 +128,7 @@ export default function ResetPasswordScreen({ route, navigation }: any) {
             onPress={() => navigation.navigate('Login')}
             style={styles.backButton}
           >
-            <Text style={styles.link}>Back to Login</Text>
+            <Text style={styles.link}>{t('auth.resetPassword.backToLogin')}</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

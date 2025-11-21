@@ -8,13 +8,16 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import ActionLimitModal from '../../components/ActionLimitModal';
 
 export default function CoffeeReadingScreen() {
+  const { t } = useTranslation();
   const [cupImages, setCupImages] = useState<string[]>([]);
   const [saucerImage, setSaucerImage] = useState<string>('');
   const [loading, setLoading] = useState(false);
@@ -40,7 +43,7 @@ export default function CoffeeReadingScreen() {
 
   const handleGenerateReading = async () => {
     if (cupImages.length === 0) {
-      alert('Please add at least one cup image');
+      Alert.alert('', t('screens.coffeeReading.errors.noCupImage'));
       return;
     }
 
@@ -70,7 +73,7 @@ export default function CoffeeReadingScreen() {
       if (error.response?.status === 429) {
         setShowLimitModal(true);
       } else {
-        alert('Failed to generate reading');
+        Alert.alert('', t('screens.coffeeReading.errors.generateFailed'));
       }
     } finally {
       setLoading(false);
@@ -86,9 +89,9 @@ export default function CoffeeReadingScreen() {
   return (
     <ScrollView style={styles.container}>
       <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
-        <Text style={styles.title}>☕ Coffee Reading</Text>
+        <Text style={styles.title}>{t('screens.coffeeReading.title')}</Text>
         <Text style={styles.subtitle}>
-          Upload your coffee cup photos for mystical insights
+          {t('screens.coffeeReading.subtitle')}
         </Text>
       </LinearGradient>
 
@@ -96,21 +99,25 @@ export default function CoffeeReadingScreen() {
         <>
           {/* Instructions */}
           <View style={styles.instructionsContainer}>
-            <Text style={styles.instructionsTitle}>How it works:</Text>
-            <Text style={styles.instructionText}>
-              1. Take 1-3 photos of your coffee cup from different angles
+            <Text style={styles.instructionsTitle}>
+              {t('screens.coffeeReading.instructions.title')}
             </Text>
             <Text style={styles.instructionText}>
-              2. (Optional) Add a photo of the saucer
+              {t('screens.coffeeReading.instructions.step1')}
             </Text>
             <Text style={styles.instructionText}>
-              3. Get your personalized coffee reading
+              {t('screens.coffeeReading.instructions.step2')}
+            </Text>
+            <Text style={styles.instructionText}>
+              {t('screens.coffeeReading.instructions.step3')}
             </Text>
           </View>
 
           {/* Cup Images */}
           <View style={styles.uploadSection}>
-            <Text style={styles.sectionTitle}>Cup Photos ({cupImages.length}/3)</Text>
+            <Text style={styles.sectionTitle}>
+              {t('screens.coffeeReading.upload.cupPhotos', { count: cupImages.length })}
+            </Text>
             <View style={styles.imageGrid}>
               {cupImages.map((uri, index) => (
                 <View key={index} style={styles.imageContainer}>
@@ -131,7 +138,9 @@ export default function CoffeeReadingScreen() {
                   onPress={() => pickImage('cup')}
                 >
                   <Text style={styles.addImageText}>+</Text>
-                  <Text style={styles.addImageLabel}>Add Cup</Text>
+                  <Text style={styles.addImageLabel}>
+                    {t('screens.coffeeReading.upload.addCup')}
+                  </Text>
                 </TouchableOpacity>
               )}
             </View>
@@ -139,7 +148,9 @@ export default function CoffeeReadingScreen() {
 
           {/* Saucer Image */}
           <View style={styles.uploadSection}>
-            <Text style={styles.sectionTitle}>Saucer Photo (Optional)</Text>
+            <Text style={styles.sectionTitle}>
+              {t('screens.coffeeReading.upload.saucerPhoto')}
+            </Text>
             {saucerImage ? (
               <View style={styles.imageContainer}>
                 <Image source={{ uri: saucerImage }} style={styles.imageLarge} />
@@ -156,7 +167,9 @@ export default function CoffeeReadingScreen() {
                 onPress={() => pickImage('saucer')}
               >
                 <Text style={styles.addImageText}>+</Text>
-                <Text style={styles.addImageLabel}>Add Saucer</Text>
+                <Text style={styles.addImageLabel}>
+                  {t('screens.coffeeReading.upload.addSaucer')}
+                </Text>
               </TouchableOpacity>
             )}
           </View>
@@ -177,7 +190,9 @@ export default function CoffeeReadingScreen() {
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.buttonText}>Generate Reading</Text>
+                <Text style={styles.buttonText}>
+                  {t('screens.coffeeReading.generateButton')}
+                </Text>
               )}
             </LinearGradient>
           </TouchableOpacity>
@@ -186,11 +201,15 @@ export default function CoffeeReadingScreen() {
         <>
           {/* Reading Result */}
           <View style={styles.readingContainer}>
-            <Text style={styles.readingTitle}>Your Coffee Reading</Text>
+            <Text style={styles.readingTitle}>
+              {t('screens.coffeeReading.readingTitle')}
+            </Text>
 
             {reading.overallVibe && (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionCardTitle}>Overall Vibe</Text>
+                <Text style={styles.sectionCardTitle}>
+                  {t('screens.coffeeReading.sections.overallVibe')}
+                </Text>
                 <Text style={styles.sectionCardText}>
                   {reading.overallVibe}
                 </Text>
@@ -199,14 +218,18 @@ export default function CoffeeReadingScreen() {
 
             {reading.love && (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionCardTitle}>💕 Love</Text>
+                <Text style={styles.sectionCardTitle}>
+                  {t('screens.coffeeReading.sections.love')}
+                </Text>
                 <Text style={styles.sectionCardText}>{reading.love}</Text>
               </View>
             )}
 
             {reading.workAndMoney && (
               <View style={styles.sectionCard}>
-                <Text style={styles.sectionCardTitle}>💰 Work & Money</Text>
+                <Text style={styles.sectionCardTitle}>
+                  {t('screens.coffeeReading.sections.workAndMoney')}
+                </Text>
                 <Text style={styles.sectionCardText}>
                   {reading.workAndMoney}
                 </Text>
@@ -216,7 +239,7 @@ export default function CoffeeReadingScreen() {
             {reading.predictions && (
               <View style={styles.sectionCard}>
                 <Text style={styles.sectionCardTitle}>
-                  🔮 Short-term Predictions
+                  {t('screens.coffeeReading.sections.predictions')}
                 </Text>
                 <Text style={styles.sectionCardText}>
                   {reading.predictions}
@@ -228,7 +251,9 @@ export default function CoffeeReadingScreen() {
               style={styles.newReadingButton}
               onPress={resetReading}
             >
-              <Text style={styles.newReadingText}>New Reading</Text>
+              <Text style={styles.newReadingText}>
+                {t('screens.coffeeReading.newReading')}
+              </Text>
             </TouchableOpacity>
           </View>
         </>

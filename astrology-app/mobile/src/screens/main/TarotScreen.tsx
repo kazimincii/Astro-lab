@@ -6,8 +6,10 @@ import {
   TouchableOpacity,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import axios from 'axios';
 import ActionLimitModal from '../../components/ActionLimitModal';
 
@@ -20,45 +22,46 @@ interface SpreadOption {
   cardCount: number;
 }
 
-const spreadOptions: SpreadOption[] = [
-  {
-    type: 'daily',
-    name: 'Daily 3-Card',
-    description: 'Past, Present, Future',
-    cardCount: 3,
-  },
-  {
-    type: 'love',
-    name: 'Love Tarot',
-    description: 'Relationship insights',
-    cardCount: 5,
-  },
-  {
-    type: 'work',
-    name: 'Work & Career',
-    description: 'Professional guidance',
-    cardCount: 5,
-  },
-  {
-    type: 'personal',
-    name: 'Personal Growth',
-    description: 'Self-discovery',
-    cardCount: 4,
-  },
-  {
-    type: 'celtic_cross',
-    name: 'Celtic Cross',
-    description: 'Comprehensive reading',
-    cardCount: 10,
-  },
-];
-
 export default function TarotScreen() {
+  const { t } = useTranslation();
   const [selectedSpread, setSelectedSpread] = useState<SpreadType>('daily');
   const [loading, setLoading] = useState(false);
   const [reading, setReading] = useState<any>(null);
   const [showLimitModal, setShowLimitModal] = useState(false);
   const [question, setQuestion] = useState('');
+
+  const spreadOptions: SpreadOption[] = [
+    {
+      type: 'daily',
+      name: t('screens.tarot.spreads.daily.name'),
+      description: t('screens.tarot.spreads.daily.description'),
+      cardCount: 3,
+    },
+    {
+      type: 'love',
+      name: t('screens.tarot.spreads.love.name'),
+      description: t('screens.tarot.spreads.love.description'),
+      cardCount: 5,
+    },
+    {
+      type: 'work',
+      name: t('screens.tarot.spreads.work.name'),
+      description: t('screens.tarot.spreads.work.description'),
+      cardCount: 5,
+    },
+    {
+      type: 'personal',
+      name: t('screens.tarot.spreads.personal.name'),
+      description: t('screens.tarot.spreads.personal.description'),
+      cardCount: 4,
+    },
+    {
+      type: 'celtic_cross',
+      name: t('screens.tarot.spreads.celticCross.name'),
+      description: t('screens.tarot.spreads.celticCross.description'),
+      cardCount: 10,
+    },
+  ];
 
   const handleGenerateReading = async () => {
     setLoading(true);
@@ -72,7 +75,7 @@ export default function TarotScreen() {
       if (error.response?.status === 429) {
         setShowLimitModal(true);
       } else {
-        alert('Failed to generate reading');
+        Alert.alert('', t('screens.tarot.errors.generateFailed'));
       }
     } finally {
       setLoading(false);
@@ -82,9 +85,9 @@ export default function TarotScreen() {
   return (
     <ScrollView style={styles.container}>
       <LinearGradient colors={['#1a1a2e', '#0f0f1e']} style={styles.header}>
-        <Text style={styles.title}>🔮 Tarot Reading</Text>
+        <Text style={styles.title}>{t('screens.tarot.title')}</Text>
         <Text style={styles.subtitle}>
-          Discover insights through the ancient wisdom of tarot
+          {t('screens.tarot.subtitle')}
         </Text>
       </LinearGradient>
 
@@ -105,7 +108,9 @@ export default function TarotScreen() {
                 <Text style={styles.spreadDescription}>
                   {spread.description}
                 </Text>
-                <Text style={styles.cardCount}>{spread.cardCount} cards</Text>
+                <Text style={styles.cardCount}>
+                  {t('screens.tarot.cardCount', { count: spread.cardCount })}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -123,7 +128,7 @@ export default function TarotScreen() {
               {loading ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text style={styles.buttonText}>Draw Cards</Text>
+                <Text style={styles.buttonText}>{t('screens.tarot.drawButton')}</Text>
               )}
             </LinearGradient>
           </TouchableOpacity>
@@ -136,7 +141,7 @@ export default function TarotScreen() {
             {reading.cards?.map((card: any, index: number) => (
               <View key={index} style={styles.cardContainer}>
                 <Text style={styles.cardName}>
-                  {card.name} {card.reversed && '(Reversed)'}
+                  {card.name} {card.reversed && t('screens.tarot.reversed')}
                 </Text>
                 <Text style={styles.cardPosition}>{card.position}</Text>
                 <Text style={styles.cardMeaning}>{card.meaning}</Text>
@@ -146,7 +151,7 @@ export default function TarotScreen() {
             {reading.interpretation && (
               <View style={styles.interpretationContainer}>
                 <Text style={styles.interpretationTitle}>
-                  Overall Interpretation
+                  {t('screens.tarot.overallInterpretation')}
                 </Text>
                 <Text style={styles.interpretationText}>
                   {reading.interpretation}
@@ -158,7 +163,7 @@ export default function TarotScreen() {
               style={styles.newReadingButton}
               onPress={() => setReading(null)}
             >
-              <Text style={styles.newReadingText}>New Reading</Text>
+              <Text style={styles.newReadingText}>{t('screens.tarot.newReading')}</Text>
             </TouchableOpacity>
           </View>
         </>

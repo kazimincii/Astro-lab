@@ -236,6 +236,7 @@
     "subtitle": "Your Life Path Numbers",
     "noProfile": "Select a profile to view numerology",
     "noData": "No numerology data available",
+    "selectProfile": "Select Profile",
     "numbers": {
       "lifePath": "Life Path",
       "destiny": "Destiny",
@@ -253,6 +254,296 @@
     },
     "errors": {
       "loadFailed": "Failed to load numerology profile"
+    }
+  },
+  "tarot": {
+    "title": "🔮 Tarot Reading",
+    "subtitle": "Discover insights through the ancient wisdom of tarot",
+    "spreads": {
+      "daily": {
+        "name": "Daily 3-Card",
+        "description": "Past, Present, Future"
+      },
+      "love": {
+        "name": "Love Tarot",
+        "description": "Relationship insights"
+      },
+      "work": {
+        "name": "Work & Career",
+        "description": "Professional guidance"
+      },
+      "personal": {
+        "name": "Personal Growth",
+        "description": "Self-discovery"
+      },
+      "celticCross": {
+        "name": "Celtic Cross",
+        "description": "Comprehensive reading"
+      }
+    },
+    "cardCount": "{{count}} cards",
+    "drawButton": "Draw Cards",
+    "newReading": "New Reading",
+    "reversed": "(Reversed)",
+    "overallInterpretation": "Overall Interpretation",
+    "errors": {
+      "generateFailed": "Failed to generate reading"
+    }
+  },
+  "coffeeReading": {
+    "title": "☕ Coffee Reading",
+    "subtitle": "Upload your coffee cup photos for mystical insights",
+    "instructions": {
+      "title": "How it works:",
+      "step1": "1. Take 1-3 photos of your coffee cup from different angles",
+      "step2": "2. (Optional) Add a photo of the saucer",
+      "step3": "3. Get your personalized coffee reading"
+    },
+    "upload": {
+      "cupPhotos": "Cup Photos ({{count}}/3)",
+      "saucerPhoto": "Saucer Photo (Optional)",
+      "addCup": "Add Cup",
+      "addSaucer": "Add Saucer"
+    },
+    "generateButton": "Generate Reading",
+    "readingTitle": "Your Coffee Reading",
+    "sections": {
+      "overallVibe": "Overall Vibe",
+      "love": "💕 Love",
+      "workAndMoney": "💰 Work & Money",
+      "predictions": "🔮 Short-term Predictions"
+    },
+    "newReading": "New Reading",
+    "errors": {
+      "noCupImage": "Please add at least one cup image",
+      "generateFailed": "Failed to generate reading"
+    }
+  },
+  "biorhythm": {
+    "title": "Biorhythm",
+    "noProfile": "Select a profile to view biorhythm",
+    "calculatedFor": "Calculated for {{date}}",
+    "cycles": {
+      "physical": {
+        "name": "Physical",
+        "subtitle": "23-day cycle"
+      },
+      "emotional": {
+        "name": "Emotional",
+        "subtitle": "28-day cycle"
+      },
+      "intellectual": {
+        "name": "Intellectual",
+        "subtitle": "33-day cycle"
+      }
+    },
+    "status": {
+      "highPeak": "High Peak",
+      "rising": "Rising",
+      "neutral": "Neutral",
+      "declining": "Declining",
+      "low": "Low"
+    },
+    "nextPeak": "Next peak: {{date}}",
+    "criticalDays": {
+      "title": "Critical Days",
+      "description": "Days when cycles cross zero - be extra mindful"
+    },
+    "guidance": "Guidance",
+    "about": {
+      "title": "About Biorhythms",
+      "description": "Biorhythms are cyclical patterns that influence your physical, emotional, and intellectual states. Understanding these cycles can help you optimize your daily activities and well-being."
+    },
+    "empty": {
+      "noData": "No biorhythm data available",
+      "calculateButton": "Calculate Now"
+    },
+    "errors": {
+      "noProfile": "No Profile",
+      "selectProfile": "Please select a profile first",
+      "calculateFailed": "Failed to calculate biorhythm"
+    }
+  },
+  "relationship": {
+    "title": "Relationships",
+    "subtitle": "Soulmate & compatibility insights",
+    "tabs": {
+      "compatibility": "Compatibility",
+      "soulmate": "Soulmate Chat"
+    },
+    "badges": {
+      "insights": "Insights",
+      "liveChat": "Live Chat"
+    },
+    "overview": {
+      "title": "Overview",
+      "description": "Your charts show high Venus-Moon harmony. Nurture emotional safety and keep plans flexible on heavy transit days."
+    },
+    "highlights": {
+      "title": "Highlights",
+      "soulmateArchetype": {
+        "title": "Soulmate Archetype",
+        "description": "Mystic Dreamer — intuitive, empathetic, poetic."
+      },
+      "emotionalSync": {
+        "title": "Emotional Sync",
+        "description": "High alignment on water energy days; plan deep talks on Sundays."
+      },
+      "communication": {
+        "title": "Communication",
+        "description": "Gentle, reflective tone works best. Avoid late-night overthinking loops."
+      }
+    },
+    "features": {
+      "title": "Features",
+      "birthChart": {
+        "title": "Birth Chart Match",
+        "description": "Sun trine Venus gives natural warmth and affection."
+      },
+      "conflictStyle": {
+        "title": "Conflict Style",
+        "description": "Both withdraw under stress; schedule check-ins weekly."
+      },
+      "bestDays": {
+        "title": "Best Days",
+        "description": "Mon/Wed are high-vibe; Fri for dates, Sun for grounding."
+      }
+    },
+    "generateButton": "Generate Soulmate Profile",
+    "premiumAction": "Premium • Uses 1 action",
+    "chat": {
+      "title": "Chat",
+      "placeholder": "Send a supportive note...",
+      "sampleMessages": {
+        "message1": "Hey, feeling super reflective today. Want to share our highlights?",
+        "message2": "Absolutely! Let's plan something for the weekend.",
+        "message3": "Friday night looks good — maybe a cozy dinner?"
+      }
+    }
+  },
+  "journal": {
+    "title": "My Journal",
+    "stats": {
+      "title": "30-Day Mood Overview",
+      "avgMood": "Avg Mood",
+      "entries": "Entries",
+      "overall": "Overall"
+    },
+    "moods": {
+      "veryBad": "Very Bad",
+      "bad": "Bad",
+      "neutral": "Neutral",
+      "good": "Good",
+      "veryGood": "Very Good"
+    },
+    "sections": {
+      "recentEntries": "Recent Entries"
+    },
+    "empty": {
+      "noEntries": "No journal entries yet",
+      "createFirst": "Create Your First Entry"
+    },
+    "modal": {
+      "newEntry": "New Entry",
+      "editEntry": "Edit Entry",
+      "save": "Save",
+      "feeling": "How are you feeling?",
+      "onYourMind": "What's on your mind?",
+      "placeholder": "Write your thoughts...",
+      "tags": "Tags (comma separated)",
+      "tagsPlaceholder": "gratitude, reflection, goals..."
+    },
+    "delete": {
+      "title": "Delete Entry",
+      "message": "Are you sure you want to delete this entry?",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "errors": {
+      "missingInfo": "Missing Information",
+      "moodAndContent": "Please select a mood and write some content",
+      "saveFailed": "Failed to save journal entry",
+      "deleteFailed": "Failed to delete entry",
+      "error": "Error"
+    }
+  },
+  "widgets": {
+    "title": "iOS Widgets",
+    "subtitle": "Configure widgets for your iPhone home screen",
+    "info": {
+      "title": "How to add widgets",
+      "text": "Long press on your home screen, tap the + button, search for \"Astrology App\", and select your desired widget."
+    },
+    "sections": {
+      "available": "Available Widgets"
+    },
+    "types": {
+      "moonPhase": {
+        "title": "Moon Phase",
+        "description": "Current moon phase and zodiac sign"
+      },
+      "starMessage": {
+        "title": "Star Message",
+        "description": "Daily personalized message from the stars"
+      },
+      "todaySummary": {
+        "title": "Today Summary",
+        "description": "Quick overview of your day"
+      },
+      "dailyForecast": {
+        "title": "Daily Forecast",
+        "description": "Your daily horoscope at a glance"
+      }
+    },
+    "details": {
+      "status": "Status",
+      "active": "Active",
+      "refreshInterval": "Refresh Interval",
+      "minutes": "minutes",
+      "theme": "Theme",
+      "deleteConfig": "Delete Configuration"
+    },
+    "stats": {
+      "title": "Widget Statistics",
+      "configured": "Configured",
+      "active": "Active",
+      "available": "Available"
+    },
+    "delete": {
+      "title": "Delete Widget",
+      "message": "Are you sure you want to delete this widget configuration?",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    },
+    "errors": {
+      "updateFailed": "Failed to update widget",
+      "deleteFailed": "Failed to delete widget",
+      "error": "Error"
+    }
+  },
+  "education": {
+    "title": "Astro Academy",
+    "categories": {
+      "all": "All Topics",
+      "basics": "Basics",
+      "planets": "Planets",
+      "houses": "Houses",
+      "signs": "Signs",
+      "aspects": "Aspects",
+      "transits": "Transits",
+      "retrogrades": "Retrogrades",
+      "advanced": "Advanced"
+    },
+    "sections": {
+      "allArticles": "All Articles",
+      "categoryArticles": "{{category}} Articles"
+    },
+    "empty": {
+      "noArticles": "No articles available yet"
+    },
+    "meta": {
+      "min": "min",
+      "views": "views"
     }
   }
 }

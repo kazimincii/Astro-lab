@@ -1,6 +1,6 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -16,15 +16,7 @@ export default function NumerologyScreen({ navigation }: any) {
   const [profile, setProfile] = useState<NumerologyProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (selectedProfile?.id) {
-      fetchNumerology();
-    } else {
-      setLoading(false);
-    }
-  }, [selectedProfile?.id]);
-
-  const fetchNumerology = async () => {
+  const fetchNumerology = useCallback(async () => {
     if (!selectedProfile?.id) return;
 
     try {
@@ -33,11 +25,19 @@ export default function NumerologyScreen({ navigation }: any) {
       setProfile(data);
     } catch (error) {
       console.error('Error fetching numerology:', error);
-      alert(t('screens.numerology.errors.loadFailed'));
+      Alert.alert('', t('screens.numerology.errors.loadFailed'));
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedProfile?.id, t]);
+
+  useEffect(() => {
+    if (selectedProfile?.id) {
+      fetchNumerology();
+    } else {
+      setLoading(false);
+    }
+  }, [selectedProfile?.id, fetchNumerology]);
 
   if (loading || profileLoading) {
     return (

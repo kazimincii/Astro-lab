@@ -21,13 +21,13 @@ export default function ForgotPasswordScreen({ navigation }: any) {
 
   const handleForgotPassword = async () => {
     if (!email) {
-      Alert.alert(t('common.errors.required'), t('common.errors.invalidEmail'));
+      Alert.alert(t('common.errors.required'), t('auth.login.errors.invalidEmail'));
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert(t('common.errors.required'), t('common.errors.invalidEmail'));
+      Alert.alert(t('common.errors.required'), t('auth.login.errors.invalidEmail'));
       return;
     }
 

@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTranslation } from 'react-i18next';
 import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { SectionTitle } from '@/components/ui/SectionTitle';
@@ -16,40 +17,42 @@ type Message = {
   timestamp: string;
 };
 
-const compatibilityHighlights = [
-  { title: 'Soulmate Archetype', desc: 'Mystic Dreamer — intuitive, empathetic, poetic.', color: '#8b5cf6' },
-  { title: 'Emotional Sync', desc: 'High alignment on water energy days; plan deep talks on Sundays.', color: '#22c55e' },
-  { title: 'Communication', desc: 'Gentle, reflective tone works best. Avoid late-night overthinking loops.', color: '#eab308' },
-];
-
-const featureItems = [
-  { icon: 'sparkles-outline', title: 'Birth Chart Match', desc: 'Sun trine Venus gives natural warmth and affection.' },
-  { icon: 'chatbubbles-outline', title: 'Conflict Style', desc: 'Both withdraw under stress; schedule check-ins weekly.' },
-  { icon: 'calendar-outline', title: 'Best Days', desc: 'Mon/Wed are high-vibe; Fri for dates, Sun for grounding.' },
-];
-
 export default function RelationshipSoulmateScreen({ navigation }: any) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<TabKey>('compatibility');
   const [input, setInput] = useState('');
+
+  const compatibilityHighlights = [
+    { title: t('screens.relationship.highlights.soulmateArchetype.title'), desc: t('screens.relationship.highlights.soulmateArchetype.description'), color: '#8b5cf6' },
+    { title: t('screens.relationship.highlights.emotionalSync.title'), desc: t('screens.relationship.highlights.emotionalSync.description'), color: '#22c55e' },
+    { title: t('screens.relationship.highlights.communication.title'), desc: t('screens.relationship.highlights.communication.description'), color: '#eab308' },
+  ];
+
+  const featureItems = [
+    { icon: 'sparkles-outline', title: t('screens.relationship.features.birthChart.title'), desc: t('screens.relationship.features.birthChart.description') },
+    { icon: 'chatbubbles-outline', title: t('screens.relationship.features.conflictStyle.title'), desc: t('screens.relationship.features.conflictStyle.description') },
+    { icon: 'calendar-outline', title: t('screens.relationship.features.bestDays.title'), desc: t('screens.relationship.features.bestDays.description') },
+  ];
+
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       from: 'soulmate',
-      text: "Hey, feeling super reflective today. Want to share our highlights?",
+      text: t('screens.relationship.chat.sampleMessages.message1'),
       timestamp: '10:02',
     },
-    { id: '2', from: 'you', text: 'Absolutely! Let’s plan something for the weekend.', timestamp: '10:04' },
+    { id: '2', from: 'you', text: t('screens.relationship.chat.sampleMessages.message2'), timestamp: '10:04' },
     {
       id: '3',
       from: 'soulmate',
-      text: 'Friday night looks good — maybe a cozy dinner?',
+      text: t('screens.relationship.chat.sampleMessages.message3'),
       timestamp: '10:06',
     },
   ]);
 
   const statusBadge = useMemo(() => {
-    return activeTab === 'compatibility' ? 'Insights' : 'Live Chat';
-  }, [activeTab]);
+    return activeTab === 'compatibility' ? t('screens.relationship.badges.insights') : t('screens.relationship.badges.liveChat');
+  }, [activeTab, t]);
 
   const sendMessage = () => {
     if (!input.trim()) return;
@@ -73,8 +76,8 @@ export default function RelationshipSoulmateScreen({ navigation }: any) {
 
       <View className="px-5 pb-3 pt-4">
         <View className="flex-row gap-3">
-          <TabButton label="Compatibility" icon="heart-circle" active={activeTab === 'compatibility'} onPress={() => setActiveTab('compatibility')} />
-          <TabButton label="Soulmate Chat" icon="chatbubbles" active={activeTab === 'soulmate'} onPress={() => setActiveTab('soulmate')} />
+          <TabButton label={t('screens.relationship.tabs.compatibility')} icon="heart-circle" active={activeTab === 'compatibility'} onPress={() => setActiveTab('compatibility')} />
+          <TabButton label={t('screens.relationship.tabs.soulmate')} icon="chatbubbles" active={activeTab === 'soulmate'} onPress={() => setActiveTab('soulmate')} />
         </View>
       </View>
 
@@ -82,14 +85,14 @@ export default function RelationshipSoulmateScreen({ navigation }: any) {
         <ScrollView className="flex-1" contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: 28 }}>
           <View className="mt-2 space-y-4">
             <Card>
-              <SectionTitle>Overview</SectionTitle>
+              <SectionTitle>{t('screens.relationship.overview.title')}</SectionTitle>
               <Text className="mt-2 text-base leading-6 text-slate-200">
-                Your charts show high Venus-Moon harmony. Nurture emotional safety and keep plans flexible on heavy transit days.
+                {t('screens.relationship.overview.description')}
               </Text>
             </Card>
 
             <Card>
-              <SectionTitle>Highlights</SectionTitle>
+              <SectionTitle>{t('screens.relationship.highlights.title')}</SectionTitle>
               <View className="mt-3 space-y-3">
                 {compatibilityHighlights.map((item, idx) => (
                   <View key={idx} className="flex-row gap-3 rounded-xl border border-[#24243a] bg-[#181a2f] p-3">
@@ -109,7 +112,7 @@ export default function RelationshipSoulmateScreen({ navigation }: any) {
             </Card>
 
             <Card>
-              <SectionTitle>Features</SectionTitle>
+              <SectionTitle>{t('screens.relationship.features.title')}</SectionTitle>
               <View className="mt-3 space-y-3">
                 {featureItems.map((item, idx) => (
                   <View key={idx} className="flex-row gap-3 rounded-xl border border-[#24243a] bg-[#181a2f] p-3">
@@ -127,15 +130,19 @@ export default function RelationshipSoulmateScreen({ navigation }: any) {
 
             <TouchableOpacity className="mt-2 flex-row items-center justify-center rounded-xl bg-[#ec4899] px-4 py-4">
               <Ionicons name="sparkles" size={18} color="#fff" />
-              <Text className="ml-2 text-base font-semibold text-white">Generate Soulmate Profile</Text>
+              <Text className="ml-2 text-base font-semibold text-white">
+                {t('screens.relationship.generateButton')}
+              </Text>
             </TouchableOpacity>
-            <Text className="text-center text-xs text-slate-500">Premium • Uses 1 action</Text>
+            <Text className="text-center text-xs text-slate-500">
+              {t('screens.relationship.premiumAction')}
+            </Text>
           </View>
         </ScrollView>
       ) : (
         <View className="flex-1 px-5 pb-5">
           <Card className="flex-1">
-            <SectionTitle>Chat</SectionTitle>
+            <SectionTitle>{t('screens.relationship.chat.title')}</SectionTitle>
             <ScrollView className="mt-3 flex-1" contentContainerStyle={{ paddingBottom: 12 }}>
               {messages.map(msg => (
                 <View
@@ -156,7 +163,7 @@ export default function RelationshipSoulmateScreen({ navigation }: any) {
               </TouchableOpacity>
               <TextInput
                 className="flex-1 rounded-xl bg-[#14142a] px-4 py-3 text-white"
-                placeholder="Send a supportive note..."
+                placeholder={t('screens.relationship.chat.placeholder')}
                 placeholderTextColor="#6b7280"
                 value={input}
                 onChangeText={setInput}
@@ -205,6 +212,7 @@ function TabButton({
 }
 
 function LinearGradientHeader({ navigation, badge }: { navigation: any; badge: string }) {
+  const { t } = useTranslation();
   return (
     <LinearGradient
       colors={['#181a2f', '#0f0f1e']}
@@ -219,8 +227,8 @@ function LinearGradientHeader({ navigation, badge }: { navigation: any; badge: s
             <Ionicons name="arrow-back" size={22} color="#fff" />
           </TouchableOpacity>
           <View>
-            <Text className="text-3xl font-bold text-white">Relationships</Text>
-            <Text className="text-sm text-slate-400">Soulmate & compatibility insights</Text>
+            <Text className="text-3xl font-bold text-white">{t('screens.relationship.title')}</Text>
+            <Text className="text-sm text-slate-400">{t('screens.relationship.subtitle')}</Text>
           </View>
         </View>
         <Badge>{badge}</Badge>

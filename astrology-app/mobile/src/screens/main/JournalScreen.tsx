@@ -11,9 +11,11 @@ import {
   Modal,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { journalApi, JournalEntry, MoodLevel, MoodStats } from '@/api/journal';
 
 export default function JournalScreen() {
+  const { t } = useTranslation();
   const [entries, setEntries] = useState<JournalEntry[]>([]);
   const [stats, setStats] = useState<MoodStats | null>(null);
   const [loading, setLoading] = useState(true);
@@ -23,11 +25,11 @@ export default function JournalScreen() {
   const [editMode, setEditMode] = useState(false);
 
   const moodEmojis = {
-    [MoodLevel.VERY_BAD]: { emoji: '😢', color: '#ef4444', label: 'Very Bad' },
-    [MoodLevel.BAD]: { emoji: '😕', color: '#f59e0b', label: 'Bad' },
-    [MoodLevel.NEUTRAL]: { emoji: '😐', color: '#6b7280', label: 'Neutral' },
-    [MoodLevel.GOOD]: { emoji: '🙂', color: '#10b981', label: 'Good' },
-    [MoodLevel.VERY_GOOD]: { emoji: '😄', color: '#10b981', label: 'Very Good' },
+    [MoodLevel.VERY_BAD]: { emoji: '😢', color: '#ef4444', label: t('screens.journal.moods.veryBad') },
+    [MoodLevel.BAD]: { emoji: '😕', color: '#f59e0b', label: t('screens.journal.moods.bad') },
+    [MoodLevel.NEUTRAL]: { emoji: '😐', color: '#6b7280', label: t('screens.journal.moods.neutral') },
+    [MoodLevel.GOOD]: { emoji: '🙂', color: '#10b981', label: t('screens.journal.moods.good') },
+    [MoodLevel.VERY_GOOD]: { emoji: '😄', color: '#10b981', label: t('screens.journal.moods.veryGood') },
   };
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function JournalScreen() {
   const handleSaveEntry = async () => {
     try {
       if (!currentEntry.mood || !currentEntry.content) {
-        Alert.alert('Missing Information', 'Please select a mood and write some content');
+        Alert.alert(t('screens.journal.errors.missingInfo'), t('screens.journal.errors.moodAndContent'));
         return;
       }
 
@@ -89,15 +91,15 @@ export default function JournalScreen() {
       loadData();
     } catch (error) {
       console.error('Failed to save entry:', error);
-      Alert.alert('Error', 'Failed to save journal entry');
+      Alert.alert(t('screens.journal.errors.error'), t('screens.journal.errors.saveFailed'));
     }
   };
 
   const handleDeleteEntry = (entryId: string) => {
-    Alert.alert('Delete Entry', 'Are you sure you want to delete this entry?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert(t('screens.journal.delete.title'), t('screens.journal.delete.message'), [
+      { text: t('screens.journal.delete.cancel'), style: 'cancel' },
       {
-        text: 'Delete',
+        text: t('screens.journal.delete.confirm'),
         style: 'destructive',
         onPress: async () => {
           try {
@@ -105,7 +107,7 @@ export default function JournalScreen() {
             loadData();
           } catch (error) {
             console.error('Failed to delete entry:', error);
-            Alert.alert('Error', 'Failed to delete entry');
+            Alert.alert(t('screens.journal.errors.error'), t('screens.journal.errors.deleteFailed'));
           }
         },
       },
@@ -125,7 +127,7 @@ export default function JournalScreen() {
       <ScrollView>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>My Journal</Text>
+          <Text style={styles.title}>{t('screens.journal.title')}</Text>
           <TouchableOpacity style={styles.addButton} onPress={handleCreateEntry}>
             <Ionicons name="add" size={24} color="#fff" />
           </TouchableOpacity>
@@ -134,21 +136,21 @@ export default function JournalScreen() {
         {/* Mood Stats */}
         {stats && (
           <View style={styles.statsCard}>
-            <Text style={styles.statsTitle}>30-Day Mood Overview</Text>
+            <Text style={styles.statsTitle}>{t('screens.journal.stats.title')}</Text>
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
                 <Text style={styles.statValue}>{stats.averageMood.toFixed(1)}</Text>
-                <Text style={styles.statLabel}>Avg Mood</Text>
+                <Text style={styles.statLabel}>{t('screens.journal.stats.avgMood')}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statValue}>{stats.totalEntries}</Text>
-                <Text style={styles.statLabel}>Entries</Text>
+                <Text style={styles.statLabel}>{t('screens.journal.stats.entries')}</Text>
               </View>
               <View style={styles.statItem}>
                 <Text style={styles.statEmoji}>
                   {moodEmojis[Math.round(stats.averageMood) as MoodLevel]?.emoji || '😐'}
                 </Text>
-                <Text style={styles.statLabel}>Overall</Text>
+                <Text style={styles.statLabel}>{t('screens.journal.stats.overall')}</Text>
               </View>
             </View>
           </View>
@@ -156,13 +158,13 @@ export default function JournalScreen() {
 
         {/* Entries List */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recent Entries</Text>
+          <Text style={styles.sectionTitle}>{t('screens.journal.sections.recentEntries')}</Text>
           {entries.length === 0 ? (
             <View style={styles.emptyState}>
               <Ionicons name="book-outline" size={48} color="#6b7280" />
-              <Text style={styles.emptyText}>No journal entries yet</Text>
+              <Text style={styles.emptyText}>{t('screens.journal.empty.noEntries')}</Text>
               <TouchableOpacity style={styles.emptyButton} onPress={handleCreateEntry}>
-                <Text style={styles.emptyButtonText}>Create Your First Entry</Text>
+                <Text style={styles.emptyButtonText}>{t('screens.journal.empty.createFirst')}</Text>
               </TouchableOpacity>
             </View>
           ) : (
@@ -231,16 +233,18 @@ export default function JournalScreen() {
             <TouchableOpacity onPress={() => setShowEntryModal(false)}>
               <Ionicons name="close" size={28} color="#fff" />
             </TouchableOpacity>
-            <Text style={styles.modalTitle}>{editMode ? 'Edit Entry' : 'New Entry'}</Text>
+            <Text style={styles.modalTitle}>
+              {editMode ? t('screens.journal.modal.editEntry') : t('screens.journal.modal.newEntry')}
+            </Text>
             <TouchableOpacity onPress={handleSaveEntry}>
-              <Text style={styles.saveButton}>Save</Text>
+              <Text style={styles.saveButton}>{t('screens.journal.modal.save')}</Text>
             </TouchableOpacity>
           </View>
 
           <ScrollView style={styles.modalContent}>
             {/* Mood Selector */}
             <View style={styles.moodSelector}>
-              <Text style={styles.label}>How are you feeling?</Text>
+              <Text style={styles.label}>{t('screens.journal.modal.feeling')}</Text>
               <View style={styles.moodOptions}>
                 {Object.entries(moodEmojis).map(([level, info]) => (
                   <TouchableOpacity
@@ -263,10 +267,10 @@ export default function JournalScreen() {
 
             {/* Content Input */}
             <View style={styles.inputSection}>
-              <Text style={styles.label}>What's on your mind?</Text>
+              <Text style={styles.label}>{t('screens.journal.modal.onYourMind')}</Text>
               <TextInput
                 style={styles.textArea}
-                placeholder="Write your thoughts..."
+                placeholder={t('screens.journal.modal.placeholder')}
                 placeholderTextColor="#6b7280"
                 multiline
                 numberOfLines={8}
@@ -277,10 +281,10 @@ export default function JournalScreen() {
 
             {/* Tags Input */}
             <View style={styles.inputSection}>
-              <Text style={styles.label}>Tags (comma separated)</Text>
+              <Text style={styles.label}>{t('screens.journal.modal.tags')}</Text>
               <TextInput
                 style={styles.input}
-                placeholder="gratitude, reflection, goals..."
+                placeholder={t('screens.journal.modal.tagsPlaceholder')}
                 placeholderTextColor="#6b7280"
                 value={currentEntry.tags?.join(', ') || ''}
                 onChangeText={(text) =>

@@ -10,9 +10,11 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { widgetsApi, WidgetConfig, WidgetType } from '@/api/widgets';
 
 export default function WidgetsScreen() {
+  const { t } = useTranslation();
   const [widgets, setWidgets] = useState<WidgetConfig[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -20,29 +22,29 @@ export default function WidgetsScreen() {
   const widgetTypes = [
     {
       type: WidgetType.MOON_PHASE,
-      title: 'Moon Phase',
-      description: 'Current moon phase and zodiac sign',
+      title: t('screens.widgets.types.moonPhase.title'),
+      description: t('screens.widgets.types.moonPhase.description'),
       icon: 'moon',
       color: '#a78bfa',
     },
     {
       type: WidgetType.STAR_MESSAGE,
-      title: 'Star Message',
-      description: 'Daily personalized message from the stars',
+      title: t('screens.widgets.types.starMessage.title'),
+      description: t('screens.widgets.types.starMessage.description'),
       icon: 'star',
       color: '#fbbf24',
     },
     {
       type: WidgetType.TODAY_SUMMARY,
-      title: 'Today Summary',
-      description: 'Quick overview of your day',
+      title: t('screens.widgets.types.todaySummary.title'),
+      description: t('screens.widgets.types.todaySummary.description'),
       icon: 'today',
       color: '#6366f1',
     },
     {
       type: WidgetType.DAILY_FORECAST,
-      title: 'Daily Forecast',
-      description: 'Your daily horoscope at a glance',
+      title: t('screens.widgets.types.dailyForecast.title'),
+      description: t('screens.widgets.types.dailyForecast.description'),
       icon: 'sunny',
       color: '#f59e0b',
     },
@@ -85,18 +87,18 @@ export default function WidgetsScreen() {
       await loadWidgets();
     } catch (error) {
       console.error('Failed to toggle widget:', error);
-      Alert.alert('Error', 'Failed to update widget');
+      Alert.alert(t('screens.widgets.errors.error'), t('screens.widgets.errors.updateFailed'));
     }
   };
 
   const handleDeleteWidget = async (widgetType: WidgetType) => {
     Alert.alert(
-      'Delete Widget',
-      'Are you sure you want to delete this widget configuration?',
+      t('screens.widgets.delete.title'),
+      t('screens.widgets.delete.message'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('screens.widgets.delete.cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('screens.widgets.delete.confirm'),
           style: 'destructive',
           onPress: async () => {
             try {
@@ -104,7 +106,7 @@ export default function WidgetsScreen() {
               await loadWidgets();
             } catch (error) {
               console.error('Failed to delete widget:', error);
-              Alert.alert('Error', 'Failed to delete widget');
+              Alert.alert(t('screens.widgets.errors.error'), t('screens.widgets.errors.deleteFailed'));
             }
           },
         },
@@ -133,9 +135,9 @@ export default function WidgetsScreen() {
     <ScrollView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <Text style={styles.title}>iOS Widgets</Text>
+        <Text style={styles.title}>{t('screens.widgets.title')}</Text>
         <Text style={styles.subtitle}>
-          Configure widgets for your iPhone home screen
+          {t('screens.widgets.subtitle')}
         </Text>
       </View>
 
@@ -143,17 +145,16 @@ export default function WidgetsScreen() {
       <View style={styles.infoCard}>
         <Ionicons name="information-circle" size={24} color="#6366f1" />
         <View style={styles.infoContent}>
-          <Text style={styles.infoTitle}>How to add widgets</Text>
+          <Text style={styles.infoTitle}>{t('screens.widgets.info.title')}</Text>
           <Text style={styles.infoText}>
-            Long press on your home screen, tap the + button, search for "Astrology
-            App", and select your desired widget.
+            {t('screens.widgets.info.text')}
           </Text>
         </View>
       </View>
 
       {/* Widget List */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Available Widgets</Text>
+        <Text style={styles.sectionTitle}>{t('screens.widgets.sections.available')}</Text>
         {widgetTypes.map((widgetInfo) => {
           const config = getWidgetConfig(widgetInfo.type);
           const enabled = isWidgetEnabled(widgetInfo.type);
@@ -180,25 +181,25 @@ export default function WidgetsScreen() {
               {config && enabled && (
                 <View style={styles.widgetDetails}>
                   <View style={styles.detailRow}>
-                    <Text style={styles.detailLabel}>Status</Text>
+                    <Text style={styles.detailLabel}>{t('screens.widgets.details.status')}</Text>
                     <View style={styles.statusBadge}>
                       <View style={[styles.statusDot, { backgroundColor: '#10b981' }]} />
-                      <Text style={styles.statusText}>Active</Text>
+                      <Text style={styles.statusText}>{t('screens.widgets.details.active')}</Text>
                     </View>
                   </View>
 
                   {config.data.refreshInterval && (
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Refresh Interval</Text>
+                      <Text style={styles.detailLabel}>{t('screens.widgets.details.refreshInterval')}</Text>
                       <Text style={styles.detailValue}>
-                        {Math.floor(config.data.refreshInterval / 60)} minutes
+                        {Math.floor(config.data.refreshInterval / 60)} {t('screens.widgets.details.minutes')}
                       </Text>
                     </View>
                   )}
 
                   {config.data.theme && (
                     <View style={styles.detailRow}>
-                      <Text style={styles.detailLabel}>Theme</Text>
+                      <Text style={styles.detailLabel}>{t('screens.widgets.details.theme')}</Text>
                       <Text style={styles.detailValue}>{config.data.theme}</Text>
                     </View>
                   )}
@@ -209,7 +210,7 @@ export default function WidgetsScreen() {
                       onPress={() => handleDeleteWidget(widgetInfo.type)}
                     >
                       <Ionicons name="trash-outline" size={18} color="#ef4444" />
-                      <Text style={styles.deleteButtonText}>Delete Configuration</Text>
+                      <Text style={styles.deleteButtonText}>{t('screens.widgets.details.deleteConfig')}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -221,21 +222,21 @@ export default function WidgetsScreen() {
 
       {/* Widget Stats */}
       <View style={styles.statsCard}>
-        <Text style={styles.statsTitle}>Widget Statistics</Text>
+        <Text style={styles.statsTitle}>{t('screens.widgets.stats.title')}</Text>
         <View style={styles.statsGrid}>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{widgets.length}</Text>
-            <Text style={styles.statLabel}>Configured</Text>
+            <Text style={styles.statLabel}>{t('screens.widgets.stats.configured')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>
               {widgets.filter(w => w.isEnabled).length}
             </Text>
-            <Text style={styles.statLabel}>Active</Text>
+            <Text style={styles.statLabel}>{t('screens.widgets.stats.active')}</Text>
           </View>
           <View style={styles.statItem}>
             <Text style={styles.statValue}>{widgetTypes.length}</Text>
-            <Text style={styles.statLabel}>Available</Text>
+            <Text style={styles.statLabel}>{t('screens.widgets.stats.available')}</Text>
           </View>
         </View>
       </View>

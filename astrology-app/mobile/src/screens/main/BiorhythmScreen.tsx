@@ -9,11 +9,13 @@ import {
   Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import { biorhythmApi, BiorhythmProfile } from '@/api/biorhythm';
 import { useProfile } from '@/contexts/ProfileContext';
 import { ProfileSelector } from '@/components/ProfileSelector';
 
 export default function BiorhythmScreen({ navigation }: any) {
+  const { t } = useTranslation();
   const { selectedProfile, isLoading: profileLoading } = useProfile();
   const [biorhythm, setBiorhythm] = useState<BiorhythmProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,7 +45,10 @@ export default function BiorhythmScreen({ navigation }: any) {
 
   const handleCalculate = async () => {
     if (!selectedProfile?.id) {
-      Alert.alert('No Profile', 'Please select a profile first');
+      Alert.alert(
+        t('screens.biorhythm.errors.noProfile'),
+        t('screens.biorhythm.errors.selectProfile')
+      );
       return;
     }
 
@@ -54,9 +59,9 @@ export default function BiorhythmScreen({ navigation }: any) {
     } catch (error: any) {
       console.error('Failed to calculate biorhythm:', error);
       if (error.response?.data?.message) {
-        Alert.alert('Error', error.response.data.message);
+        Alert.alert(t('common.errors.required'), error.response.data.message);
       } else {
-        Alert.alert('Error', 'Failed to calculate biorhythm');
+        Alert.alert(t('common.errors.required'), t('screens.biorhythm.errors.calculateFailed'));
       }
     } finally {
       setCalculating(false);
@@ -72,11 +77,11 @@ export default function BiorhythmScreen({ navigation }: any) {
   };
 
   const getCycleStatus = (value: number) => {
-    if (value > 0.7) return 'High Peak';
-    if (value > 0.3) return 'Rising';
-    if (value > -0.3) return 'Neutral';
-    if (value > -0.7) return 'Declining';
-    return 'Low';
+    if (value > 0.7) return t('screens.biorhythm.status.highPeak');
+    if (value > 0.3) return t('screens.biorhythm.status.rising');
+    if (value > -0.3) return t('screens.biorhythm.status.neutral');
+    if (value > -0.7) return t('screens.biorhythm.status.declining');
+    return t('screens.biorhythm.status.low');
   };
 
   if (!selectedProfile || profileLoading) {
@@ -86,7 +91,7 @@ export default function BiorhythmScreen({ navigation }: any) {
           <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
             <Ionicons name="arrow-back" size={24} color="#fff" />
           </TouchableOpacity>
-          <Text style={styles.title}>Biorhythm</Text>
+          <Text style={styles.title}>{t('screens.biorhythm.title')}</Text>
         </View>
         <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
           <ProfileSelector />
@@ -98,7 +103,7 @@ export default function BiorhythmScreen({ navigation }: any) {
         ) : (
           <View style={styles.emptyState}>
             <Ionicons name="pulse-outline" size={64} color="#6b7280" />
-            <Text style={styles.emptyText}>Select a profile to view biorhythm</Text>
+            <Text style={styles.emptyText}>{t('screens.biorhythm.noProfile')}</Text>
           </View>
         )}
       </View>
@@ -120,7 +125,7 @@ export default function BiorhythmScreen({ navigation }: any) {
         <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
-        <Text style={styles.title}>Biorhythm</Text>
+        <Text style={styles.title}>{t('screens.biorhythm.title')}</Text>
         <TouchableOpacity
           style={[styles.calculateButton, calculating && styles.calculateButtonDisabled]}
           onPress={handleCalculate}
@@ -140,7 +145,9 @@ export default function BiorhythmScreen({ navigation }: any) {
           <View style={styles.dateCard}>
             <Ionicons name="calendar-outline" size={20} color="#6366f1" />
             <Text style={styles.dateText}>
-              Calculated for {new Date(biorhythm.calculatedDate).toLocaleDateString()}
+              {t('screens.biorhythm.calculatedFor', {
+                date: new Date(biorhythm.calculatedDate).toLocaleDateString()
+              })}
             </Text>
           </View>
 
@@ -153,8 +160,8 @@ export default function BiorhythmScreen({ navigation }: any) {
                   <Ionicons name="fitness" size={28} color="#ef4444" />
                 </View>
                 <View style={styles.cycleInfo}>
-                  <Text style={styles.cycleName}>Physical</Text>
-                  <Text style={styles.cycleSubtitle}>23-day cycle</Text>
+                  <Text style={styles.cycleName}>{t('screens.biorhythm.cycles.physical.name')}</Text>
+                  <Text style={styles.cycleSubtitle}>{t('screens.biorhythm.cycles.physical.subtitle')}</Text>
                 </View>
                 <Text style={[styles.cycleValue, { color: getCycleColor(biorhythm.data.physical) }]}>
                   {(biorhythm.data.physical * 100).toFixed(0)}%
@@ -174,7 +181,9 @@ export default function BiorhythmScreen({ navigation }: any) {
               <Text style={styles.cycleStatus}>{getCycleStatus(biorhythm.data.physical)}</Text>
               {biorhythm.data.nextPeaks?.physical && (
                 <Text style={styles.nextPeak}>
-                  Next peak: {new Date(biorhythm.data.nextPeaks.physical).toLocaleDateString()}
+                  {t('screens.biorhythm.nextPeak', {
+                    date: new Date(biorhythm.data.nextPeaks.physical).toLocaleDateString()
+                  })}
                 </Text>
               )}
             </View>
@@ -186,8 +195,8 @@ export default function BiorhythmScreen({ navigation }: any) {
                   <Ionicons name="heart" size={28} color="#ec4899" />
                 </View>
                 <View style={styles.cycleInfo}>
-                  <Text style={styles.cycleName}>Emotional</Text>
-                  <Text style={styles.cycleSubtitle}>28-day cycle</Text>
+                  <Text style={styles.cycleName}>{t('screens.biorhythm.cycles.emotional.name')}</Text>
+                  <Text style={styles.cycleSubtitle}>{t('screens.biorhythm.cycles.emotional.subtitle')}</Text>
                 </View>
                 <Text style={[styles.cycleValue, { color: getCycleColor(biorhythm.data.emotional) }]}>
                   {(biorhythm.data.emotional * 100).toFixed(0)}%
@@ -207,7 +216,9 @@ export default function BiorhythmScreen({ navigation }: any) {
               <Text style={styles.cycleStatus}>{getCycleStatus(biorhythm.data.emotional)}</Text>
               {biorhythm.data.nextPeaks?.emotional && (
                 <Text style={styles.nextPeak}>
-                  Next peak: {new Date(biorhythm.data.nextPeaks.emotional).toLocaleDateString()}
+                  {t('screens.biorhythm.nextPeak', {
+                    date: new Date(biorhythm.data.nextPeaks.emotional).toLocaleDateString()
+                  })}
                 </Text>
               )}
             </View>
@@ -219,8 +230,8 @@ export default function BiorhythmScreen({ navigation }: any) {
                   <Ionicons name="bulb" size={28} color="#6366f1" />
                 </View>
                 <View style={styles.cycleInfo}>
-                  <Text style={styles.cycleName}>Intellectual</Text>
-                  <Text style={styles.cycleSubtitle}>33-day cycle</Text>
+                  <Text style={styles.cycleName}>{t('screens.biorhythm.cycles.intellectual.name')}</Text>
+                  <Text style={styles.cycleSubtitle}>{t('screens.biorhythm.cycles.intellectual.subtitle')}</Text>
                 </View>
                 <Text style={[styles.cycleValue, { color: getCycleColor(biorhythm.data.intellectual) }]}>
                   {(biorhythm.data.intellectual * 100).toFixed(0)}%
@@ -240,7 +251,9 @@ export default function BiorhythmScreen({ navigation }: any) {
               <Text style={styles.cycleStatus}>{getCycleStatus(biorhythm.data.intellectual)}</Text>
               {biorhythm.data.nextPeaks?.intellectual && (
                 <Text style={styles.nextPeak}>
-                  Next peak: {new Date(biorhythm.data.nextPeaks.intellectual).toLocaleDateString()}
+                  {t('screens.biorhythm.nextPeak', {
+                    date: new Date(biorhythm.data.nextPeaks.intellectual).toLocaleDateString()
+                  })}
                 </Text>
               )}
             </View>
@@ -251,10 +264,10 @@ export default function BiorhythmScreen({ navigation }: any) {
             <View style={styles.criticalCard}>
               <View style={styles.criticalHeader}>
                 <Ionicons name="warning" size={24} color="#f59e0b" />
-                <Text style={styles.criticalTitle}>Critical Days</Text>
+                <Text style={styles.criticalTitle}>{t('screens.biorhythm.criticalDays.title')}</Text>
               </View>
               <Text style={styles.criticalText}>
-                Days when cycles cross zero - be extra mindful
+                {t('screens.biorhythm.criticalDays.description')}
               </Text>
               <View style={styles.criticalDays}>
                 {biorhythm.data.criticalDays.map((day, index) => (
@@ -271,7 +284,7 @@ export default function BiorhythmScreen({ navigation }: any) {
           {/* Commentary */}
           {biorhythm.commentary && (
             <View style={styles.commentaryCard}>
-              <Text style={styles.commentaryTitle}>Guidance</Text>
+              <Text style={styles.commentaryTitle}>{t('screens.biorhythm.guidance')}</Text>
               <Text style={styles.commentaryText}>{biorhythm.commentary}</Text>
             </View>
           )}
@@ -280,11 +293,9 @@ export default function BiorhythmScreen({ navigation }: any) {
           <View style={styles.infoCard}>
             <Ionicons name="information-circle" size={20} color="#6366f1" />
             <View style={styles.infoContent}>
-              <Text style={styles.infoTitle}>About Biorhythms</Text>
+              <Text style={styles.infoTitle}>{t('screens.biorhythm.about.title')}</Text>
               <Text style={styles.infoText}>
-                Biorhythms are cyclical patterns that influence your physical, emotional, and
-                intellectual states. Understanding these cycles can help you optimize your daily
-                activities and well-being.
+                {t('screens.biorhythm.about.description')}
               </Text>
             </View>
           </View>
@@ -292,9 +303,9 @@ export default function BiorhythmScreen({ navigation }: any) {
       ) : (
         <View style={styles.emptyState}>
           <Ionicons name="pulse-outline" size={64} color="#6b7280" />
-          <Text style={styles.emptyText}>No biorhythm data available</Text>
+          <Text style={styles.emptyText}>{t('screens.biorhythm.empty.noData')}</Text>
           <TouchableOpacity style={styles.emptyButton} onPress={handleCalculate}>
-            <Text style={styles.emptyButtonText}>Calculate Now</Text>
+            <Text style={styles.emptyButtonText}>{t('screens.biorhythm.empty.calculateButton')}</Text>
           </TouchableOpacity>
         </View>
       )}

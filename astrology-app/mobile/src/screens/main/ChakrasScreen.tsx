@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -27,15 +27,9 @@ export default function ChakrasScreen({ navigation }: any) {
     crown: '#a855f7',
   };
 
-  useEffect(() => {
-    if (selectedProfile?.id) {
-      loadChakraProfile();
-    } else {
-      setLoading(false);
-    }
-  }, [selectedProfile?.id]);
+  const loadChakraProfile = useCallback(async () => {
+    if (!selectedProfile?.id) return;
 
-  const loadChakraProfile = async () => {
     try {
       setLoading(true);
       const data = await chakrasApi.getChakraProfile(selectedProfile.id);
@@ -45,7 +39,15 @@ export default function ChakrasScreen({ navigation }: any) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedProfile?.id]);
+
+  useEffect(() => {
+    if (selectedProfile?.id) {
+      loadChakraProfile();
+    } else {
+      setLoading(false);
+    }
+  }, [selectedProfile?.id, loadChakraProfile]);
 
   const handleGenerate = async () => {
     if (!selectedProfile?.id) {
