@@ -281,7 +281,7 @@ const user: User = await authApi.login();
 1. **BUGÜN:** Kritik type safety sorunlarını çöz (6 saat)
 2. **BU HAFTA:** Error handling + API tutarsızlıklarını düzelt (2-3 gün)
 3. **BU SPRINT:** UI/UX polish + accessibility (1 hafta)
-4. **GELECEKAksiyon:** Performance + test coverage artışı (1 hafta)
+4. **GELECEK SPRINT:** Performance + test coverage artışı (1 hafta)
 
 **Tahmini Toplam Süre:** 4 hafta (1 Sprint)
 
