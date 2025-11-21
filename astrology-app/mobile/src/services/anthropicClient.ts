@@ -239,8 +239,10 @@ export function initializeAnthropicClient(config: AnthropicConfig): AnthropicCli
 export function getAnthropicClient(): AnthropicClient {
   if (!anthropicInstance) {
     // Auto-initialize with default config if not already initialized
+    // Note: apiKey is not the Anthropic API key - it's used for storing user auth token
+    // Actual auth token is injected by request interceptor from authStore
     const defaultConfig: AnthropicConfig = {
-      apiKey: '', // Will be set by auth interceptor
+      apiKey: '', // Placeholder - actual auth token injected by interceptor
       baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api/v1',
       model: 'claude-haiku-4.5',
       maxTokens: 1024,
