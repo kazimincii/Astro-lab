@@ -1422,7 +1422,7 @@ describe('Auth Flow', () => {
 - %40 7-gün retention
 - 4.5+ App Store rating
 
-**Teknik metrikler:**
+**SLA Hedefleri (Service Level Agreement):**
 - 99.9% uptime
 - <200ms API response
 - <0.1% error rate
@@ -1472,10 +1472,13 @@ eas submit --platform ios
 
 ### 11.2 Önemli URL'ler
 
+**Gerçek URL'ler:**
 - **Repository**: https://github.com/kazimincii/Astro-lab
-- **API Docs**: https://api.astrology.app/docs
-- **Admin Panel**: https://admin.astrology.app
-- **App Store**: https://apps.apple.com/app/astrology-super-app
+
+**Örnek URL Formatları (environment'a göre değişir):**
+- **API Docs**: https://api.{environment}.astrology.app/docs
+- **Admin Panel**: https://admin.{environment}.astrology.app
+- **App Store**: https://apps.apple.com/app/{app-id}
 
 ### 11.3 İletişim
 
