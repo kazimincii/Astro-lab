@@ -1,0 +1,549 @@
+{
+  "explore": {
+    "title": "Keşfet",
+    "features": {
+      "myPlan": "Planım",
+      "astroAcademy": "Astro Akademi",
+      "iosWidgets": "iOS Widget'lar",
+      "myJournal": "Günlüğüm",
+      "biorhythm": "Biyoritim",
+      "chakras": "Çakralar",
+      "numerology": "Numeroloji",
+      "tarotReading": "Tarot Falı",
+      "coffeeReading": "Kahve Falı",
+      "auraScan": "Aura Tarama",
+      "relationship": "İlişkiler",
+      "famousPeople": "Ünlü Kişiler",
+      "advancedCharts": "Gelişmiş Haritalar",
+      "astroMap": "Astro Harita",
+      "calendars": "Takvimler",
+      "forecasts": "Tahminler",
+      "cosmicClimate": "Kozmik İklim",
+      "liveServices": "Canlı Hizmetler"
+    }
+  },
+  "today": {
+    "title": "Bugün",
+    "header": {
+      "dailySky": "Günlük gökyüzü",
+      "personalFocus": "Kişisel odak"
+    },
+    "loading": {
+      "preparingSpace": "Alanınız hazırlanıyor...",
+      "castingChart": "Bugünün haritası çiziliyor..."
+    },
+    "errors": {
+      "unableToLoadProfiles": "Profiller yüklenemedi.",
+      "unableToGenerateForecast": "Tahmin oluşturulamadı.",
+      "unableToLoadMembership": "Üyelik detayları yüklenemedi."
+    },
+    "empty": {
+      "profilesNeeded": "Profil gerekli",
+      "addProfileMessage": "Kişiselleştirilmiş günlük içgörüler almak için en az bir profil ekleyin.",
+      "createProfile": "Profil oluştur"
+    },
+    "forecast": {
+      "title": "Bugünün Tahmini",
+      "switch": "Değiştir"
+    },
+    "energyScores": {
+      "title": "Enerji Skorları",
+      "love": "Aşk",
+      "career": "Kariyer",
+      "health": "Sağlık"
+    },
+    "focusAreas": {
+      "title": "Odak Alanları",
+      "love": "Aşk",
+      "career": "Kariyer",
+      "health": "Sağlık",
+      "awaitingDownload": "İndirme bekleniyor..."
+    },
+    "starMessage": {
+      "title": "Yıldız Mesajı",
+      "defaultTitle": "Hizalanmış ve nazik kalın",
+      "defaultMessage": "Rutinlerinize bağlı kalın ve cesaretlendirme paylaşın. Haritalarınız bugün sakin, istikrarlı bir ivmeyi destekliyor."
+    },
+    "moonPhase": {
+      "title": "Ay Evresi",
+      "subtitle": "Yansıt + yeniden kalibre et",
+      "phases": {
+        "newMoon": "Yeni Ay",
+        "waxingCrescent": "Hilal",
+        "firstQuarter": "İlk Dördün",
+        "waxingGibbous": "Şişkin Ay",
+        "fullMoon": "Dolunay",
+        "waningGibbous": "Azalan Şişkin",
+        "lastQuarter": "Son Dördün",
+        "waningCrescent": "Azalan Hilal",
+        "loading": "Yükleniyor"
+      }
+    },
+    "luckySignals": {
+      "title": "Şanslı Sinyaller",
+      "numbers": "Sayılar",
+      "color": "Renk",
+      "gem": "Taş"
+    },
+    "planetaryTransits": {
+      "title": "Gezegen Geçişleri"
+    },
+    "membership": {
+      "title": "Üyelik",
+      "manage": "Yönet",
+      "dailyActions": "Günlük eylemler",
+      "unlimited": "Sınırsız",
+      "leftToday": "bugün kaldı",
+      "profiles": "Profiller",
+      "includedInPlan": "Planınıza dahil"
+    }
+  },
+  "auraScan": {
+    "title": "Aura Tarama",
+    "subtitle": "Bir portre yükleyin, enerjiniz çözülsün.",
+    "stepBadge": {
+      "step1": "Adım 1/2",
+      "step2": "Adım 2/2",
+      "results": "Sonuçlar"
+    },
+    "instructions": {
+      "title": "Nasıl çalışır",
+      "step1": "• Net bir portre fotoğrafı yükleyin",
+      "step2": "• AI aura renklerini + enerjiyi analiz eder",
+      "step3": "• Kişilik ve varlık içgörüleri edinin",
+      "disclaimer": "Sadece eğlence amaçlıdır. Tıbbi veya psikolojik tavsiye değildir."
+    },
+    "upload": {
+      "selectPhoto": "Fotoğraf Seç",
+      "changePhoto": "Fotoğrafı Değiştir",
+      "hint": "İyi aydınlatma • Yüz merkezli • Filtre yok"
+    },
+    "buttons": {
+      "scanAura": "Aura Tara",
+      "startNewScan": "Yeni Tarama Başlat"
+    },
+    "results": {
+      "archetype": "Arketip",
+      "vibe": "Enerji",
+      "communication": "İletişim",
+      "relationships": "İlişkiler",
+      "strengths": "Güçlü Yönler",
+      "watchOuts": "Dikkat Edilmesi Gerekenler"
+    },
+    "errors": {
+      "selectPhotoFirst": "Lütfen önce bir fotoğraf seçin",
+      "failedToGenerate": "Aura okuması oluşturulamadı"
+    }
+  },
+  "forecasts": {
+    "title": "Tahminler",
+    "subtitle": "Bir zaman dilimi seçin ve gökyüzünüzü keşfedin",
+    "types": {
+      "daily": "Günlük",
+      "weekly": "Haftalık",
+      "monthly": "Aylık",
+      "yearly": "Yıllık"
+    },
+    "hero": {
+      "selectedPeriod": "Seçilen Dönem"
+    },
+    "sections": {
+      "overall": "Genel",
+      "love": "Aşk",
+      "money": "Para",
+      "career": "Kariyer",
+      "health": "Sağlık",
+      "spiritual": "Ruhsal"
+    },
+    "errors": {
+      "noForecast": "Tahmin bulunmuyor",
+      "failedToLoad": "Tahmin yüklenemedi"
+    }
+  },
+  "profiles": {
+    "title": "Doğum Profilleri",
+    "subtitle": "Okuma yaptığınız kişileri görüntüleyin, düzenleyin ve önceliklendirin.",
+    "addProfile": "Profil Ekle",
+    "main": "Ana",
+    "loading": "Profiller yükleniyor...",
+    "retry": "Yeniden Dene",
+    "empty": {
+      "title": "Henüz profil yok",
+      "message": "Günlük haritaların ve tahminlerin kilidini açmak için ilk doğum profilini oluşturun."
+    },
+    "comingSoon": {
+      "title": "Yakında gelecek",
+      "message": "Profil oluşturma yol haritasında. Şimdilik profilleri backend panelinden yönetebilirsiniz."
+    },
+    "metadata": {
+      "unknownDate": "Bilinmeyen tarih",
+      "signUnknown": "BURÇ BİLİNMİYOR",
+      "relationshipSelf": "ilişki: kendim"
+    },
+    "errors": {
+      "unableToLoad": "Profiller yüklenemedi"
+    }
+  },
+  "settings": {
+    "title": "Ayarlar",
+    "account": {
+      "title": "Hesap"
+    },
+    "logout": "Çıkış Yap"
+  },
+  "chakras": {
+    "title": "Çakralar",
+    "subtitle": "Enerji merkezleri ve denge rehberi",
+    "noProfile": {
+      "title": "Çakraları görüntülemek için lütfen bir profil seçin",
+      "button": "Profil Seç"
+    },
+    "empty": {
+      "title": "Henüz çakra profili yok",
+      "message": "Bu profil için denge, ipuçları ve meditasyon rehberliği görmek üzere bir çakra analizi oluşturun.",
+      "button": "Çakra Profili Oluştur",
+      "generating": "Oluşturuluyor..."
+    },
+    "summary": {
+      "title": "Çakra Özeti",
+      "defaultTitle": "Enerji Genel Bakış",
+      "regenerate": "Yeniden Oluştur",
+      "updating": "Güncelleniyor..."
+    },
+    "balance": {
+      "title": "Çakra Dengesi"
+    },
+    "status": {
+      "balanced": "Dengeli",
+      "underactive": "Az Aktif",
+      "overactive": "Aşırı Aktif",
+      "unknown": "Bilinmiyor"
+    },
+    "sections": {
+      "tips": "İpuçları",
+      "meditation": "Meditasyon"
+    },
+    "errors": {
+      "noProfile": "Profil Yok",
+      "selectProfile": "Lütfen önce bir profil seçin",
+      "generateFailed": "Çakra profili oluşturulamadı",
+      "error": "Hata"
+    },
+    "badge": "Profil"
+  },
+  "numerology": {
+    "title": "🔢 Numeroloji",
+    "subtitle": "Yaşam Yolu Sayılarınız",
+    "noProfile": "Numeroloji görüntülemek için bir profil seçin",
+    "noData": "Numeroloji verisi bulunmuyor",
+    "selectProfile": "Profil Seç",
+    "numbers": {
+      "lifePath": "Yaşam Yolu",
+      "destiny": "Kader",
+      "soulUrge": "Ruh Dürtüsü",
+      "personality": "Kişilik"
+    },
+    "personalYear": {
+      "label": "Kişisel Yıl",
+      "theme": "Bu yılın temanız"
+    },
+    "sections": {
+      "overview": "Genel Bakış",
+      "strengths": "✨ Güçlü Yönler",
+      "challenges": "⚡ Üstesinden Gelinecek Zorluklar"
+    },
+    "errors": {
+      "loadFailed": "Numeroloji profili yüklenemedi"
+    }
+  },
+  "tarot": {
+    "title": "🔮 Tarot Falı",
+    "subtitle": "Tarotun eski bilgeliği ile içgörüler keşfedin",
+    "spreads": {
+      "daily": {
+        "name": "Günlük 3 Kart",
+        "description": "Geçmiş, Şimdi, Gelecek"
+      },
+      "love": {
+        "name": "Aşk Tarot",
+        "description": "İlişki içgörüleri"
+      },
+      "work": {
+        "name": "İş ve Kariyer",
+        "description": "Profesyonel rehberlik"
+      },
+      "personal": {
+        "name": "Kişisel Gelişim",
+        "description": "Kendini keşfetme"
+      },
+      "celticCross": {
+        "name": "Kelt Haçı",
+        "description": "Kapsamlı okuma"
+      }
+    },
+    "cardCount": "{{count}} kart",
+    "drawButton": "Kart Çek",
+    "newReading": "Yeni Okuma",
+    "reversed": "(Ters)",
+    "overallInterpretation": "Genel Yorum",
+    "errors": {
+      "generateFailed": "Okuma oluşturulamadı"
+    }
+  },
+  "coffeeReading": {
+    "title": "☕ Kahve Falı",
+    "subtitle": "Mistik içgörüler için kahve fincanı fotoğraflarınızı yükleyin",
+    "instructions": {
+      "title": "Nasıl çalışır:",
+      "step1": "1. Kahve fincanınızın farklı açılardan 1-3 fotoğrafını çekin",
+      "step2": "2. (İsteğe bağlı) Tabağın fotoğrafını ekleyin",
+      "step3": "3. Kişiselleştirilmiş kahve falınızı alın"
+    },
+    "upload": {
+      "cupPhotos": "Fincan Fotoğrafları ({{count}}/3)",
+      "saucerPhoto": "Tabak Fotoğrafı (İsteğe Bağlı)",
+      "addCup": "Fincan Ekle",
+      "addSaucer": "Tabak Ekle"
+    },
+    "generateButton": "Fal Oluştur",
+    "readingTitle": "Kahve Falınız",
+    "sections": {
+      "overallVibe": "Genel Enerji",
+      "love": "💕 Aşk",
+      "workAndMoney": "💰 İş ve Para",
+      "predictions": "🔮 Kısa Vadeli Tahminler"
+    },
+    "newReading": "Yeni Fal",
+    "errors": {
+      "noCupImage": "Lütfen en az bir fincan fotoğrafı ekleyin",
+      "generateFailed": "Fal oluşturulamadı"
+    }
+  },
+  "biorhythm": {
+    "title": "Biyoritim",
+    "noProfile": "Biyoritim görüntülemek için bir profil seçin",
+    "calculatedFor": "{{date}} için hesaplandı",
+    "cycles": {
+      "physical": {
+        "name": "Fiziksel",
+        "subtitle": "23 günlük döngü"
+      },
+      "emotional": {
+        "name": "Duygusal",
+        "subtitle": "28 günlük döngü"
+      },
+      "intellectual": {
+        "name": "Entelektüel",
+        "subtitle": "33 günlük döngü"
+      }
+    },
+    "status": {
+      "highPeak": "Yüksek Zirve",
+      "rising": "Yükseliyor",
+      "neutral": "Nötr",
+      "declining": "Düşüyor",
+      "low": "Düşük"
+    },
+    "nextPeak": "Sonraki zirve: {{date}}",
+    "criticalDays": {
+      "title": "Kritik Günler",
+      "description": "Döngülerin sıfırı geçtiği günler - ekstra dikkatli olun"
+    },
+    "guidance": "Rehberlik",
+    "about": {
+      "title": "Biyoritimler Hakkında",
+      "description": "Biyoritimler, fiziksel, duygusal ve entelektüel durumlarınızı etkileyen döngüsel paternlerdir. Bu döngüleri anlamak, günlük aktivitelerinizi ve refahınızı optimize etmenize yardımcı olabilir."
+    },
+    "empty": {
+      "noData": "Biyoritim verisi bulunmuyor",
+      "calculateButton": "Şimdi Hesapla"
+    },
+    "errors": {
+      "noProfile": "Profil Yok",
+      "selectProfile": "Lütfen önce bir profil seçin",
+      "calculateFailed": "Biyoritim hesaplanamadı"
+    }
+  },
+  "relationship": {
+    "title": "İlişkiler",
+    "subtitle": "Ruh eşi ve uyumluluk içgörüleri",
+    "tabs": {
+      "compatibility": "Uyumluluk",
+      "soulmate": "Ruh Eşi Sohbeti"
+    },
+    "badges": {
+      "insights": "İçgörüler",
+      "liveChat": "Canlı Sohbet"
+    },
+    "overview": {
+      "title": "Genel Bakış",
+      "description": "Haritalarınız yüksek Venüs-Ay uyumu gösteriyor. Duygusal güvenliği besleyin ve yoğun geçiş günlerinde planları esnek tutun."
+    },
+    "highlights": {
+      "title": "Öne Çıkanlar",
+      "soulmateArchetype": {
+        "title": "Ruh Eşi Arketipi",
+        "description": "Mistik Hayalperest — sezgisel, empatik, şiirsel."
+      },
+      "emotionalSync": {
+        "title": "Duygusal Uyum",
+        "description": "Su enerjisi günlerinde yüksek uyum; Pazar günleri derin sohbetler planlayın."
+      },
+      "communication": {
+        "title": "İletişim",
+        "description": "Nazik, düşünceli ton en iyi sonucu verir. Gece geç saatlerde aşırı düşünme döngülerinden kaçının."
+      }
+    },
+    "features": {
+      "title": "Özellikler",
+      "birthChart": {
+        "title": "Doğum Haritası Eşleşmesi",
+        "description": "Güneş üçgeni Venüs doğal sıcaklık ve sevgi verir."
+      },
+      "conflictStyle": {
+        "title": "Çatışma Tarzı",
+        "description": "İkisi de stres altında çekilir; haftalık kontroller planlayın."
+      },
+      "bestDays": {
+        "title": "En İyi Günler",
+        "description": "Pzt/Çar yüksek enerji; Cum randevular için, Paz topraklamak için."
+      }
+    },
+    "generateButton": "Ruh Eşi Profili Oluştur",
+    "premiumAction": "Premium • 1 eylem kullanır",
+    "chat": {
+      "title": "Sohbet",
+      "placeholder": "Destekleyici bir not gönderin...",
+      "sampleMessages": {
+        "message1": "Hey, bugün çok düşünceli hissediyorum. Öne çıkanları paylaşmak ister misin?",
+        "message2": "Kesinlikle! Hafta sonu için bir şeyler planlayalım.",
+        "message3": "Cuma gecesi iyi görünüyor — belki rahat bir akşam yemeği?"
+      }
+    }
+  },
+  "journal": {
+    "title": "Günlüğüm",
+    "stats": {
+      "title": "30 Günlük Ruh Hali Özeti",
+      "avgMood": "Ort. Ruh Hali",
+      "entries": "Kayıtlar",
+      "overall": "Genel"
+    },
+    "moods": {
+      "veryBad": "Çok Kötü",
+      "bad": "Kötü",
+      "neutral": "Nötr",
+      "good": "İyi",
+      "veryGood": "Çok İyi"
+    },
+    "sections": {
+      "recentEntries": "Son Kayıtlar"
+    },
+    "empty": {
+      "noEntries": "Henüz günlük kaydı yok",
+      "createFirst": "İlk Kaydını Oluştur"
+    },
+    "modal": {
+      "newEntry": "Yeni Kayıt",
+      "editEntry": "Kaydı Düzenle",
+      "save": "Kaydet",
+      "feeling": "Nasıl hissediyorsun?",
+      "onYourMind": "Aklında ne var?",
+      "placeholder": "Düşüncelerini yaz...",
+      "tags": "Etiketler (virgülle ayrılmış)",
+      "tagsPlaceholder": "minnettarlık, düşünce, hedefler..."
+    },
+    "delete": {
+      "title": "Kaydı Sil",
+      "message": "Bu kaydı silmek istediğinizden emin misiniz?",
+      "cancel": "İptal",
+      "confirm": "Sil"
+    },
+    "errors": {
+      "missingInfo": "Eksik Bilgi",
+      "moodAndContent": "Lütfen bir ruh hali seçin ve içerik yazın",
+      "saveFailed": "Günlük kaydı kaydedilemedi",
+      "deleteFailed": "Kayıt silinemedi",
+      "error": "Hata"
+    }
+  },
+  "widgets": {
+    "title": "iOS Widget'ları",
+    "subtitle": "iPhone ana ekranınız için widget'ları yapılandırın",
+    "info": {
+      "title": "Widget nasıl eklenir",
+      "text": "Ana ekranınızda uzun basın, + düğmesine dokunun, \"Astrology App\" araması yapın ve istediğiniz widget'ı seçin."
+    },
+    "sections": {
+      "available": "Mevcut Widget'lar"
+    },
+    "types": {
+      "moonPhase": {
+        "title": "Ay Evresi",
+        "description": "Mevcut ay evresi ve burç"
+      },
+      "starMessage": {
+        "title": "Yıldız Mesajı",
+        "description": "Yıldızlardan günlük kişiselleştirilmiş mesaj"
+      },
+      "todaySummary": {
+        "title": "Bugün Özeti",
+        "description": "Gününüzün hızlı özeti"
+      },
+      "dailyForecast": {
+        "title": "Günlük Tahmin",
+        "description": "Günlük burç yorumunuz bir bakışta"
+      }
+    },
+    "details": {
+      "status": "Durum",
+      "active": "Aktif",
+      "refreshInterval": "Yenileme Aralığı",
+      "minutes": "dakika",
+      "theme": "Tema",
+      "deleteConfig": "Yapılandırmayı Sil"
+    },
+    "stats": {
+      "title": "Widget İstatistikleri",
+      "configured": "Yapılandırılmış",
+      "active": "Aktif",
+      "available": "Mevcut"
+    },
+    "delete": {
+      "title": "Widget'ı Sil",
+      "message": "Bu widget yapılandırmasını silmek istediğinizden emin misiniz?",
+      "cancel": "İptal",
+      "confirm": "Sil"
+    },
+    "errors": {
+      "updateFailed": "Widget güncellenemedi",
+      "deleteFailed": "Widget silinemedi",
+      "error": "Hata"
+    }
+  },
+  "education": {
+    "title": "Astro Akademi",
+    "categories": {
+      "all": "Tüm Konular",
+      "basics": "Temel Bilgiler",
+      "planets": "Gezegenler",
+      "houses": "Evler",
+      "signs": "Burçlar",
+      "aspects": "Açılar",
+      "transits": "Geçişler",
+      "retrogrades": "Retrolar",
+      "advanced": "İleri Düzey"
+    },
+    "sections": {
+      "allArticles": "Tüm Makaleler",
+      "categoryArticles": "{{category}} Makaleleri"
+    },
+    "empty": {
+      "noArticles": "Henüz makale bulunmuyor"
+    },
+    "meta": {
+      "min": "dk",
+      "views": "görüntülenme"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "done": "Done",
+    "skip": "Skip",
+    "close": "Close",
+    "retry": "Retry"
+  },
+  "navigation": {
+    "today": "Today",
+    "profile": "Profiles",
+    "explore": "Explore",
+    "settings": "Settings",
+    "back": "Back"
+  },
+  "messages": {
+    "success": "Success!",
+    "saved": "Saved successfully",
+    "deleted": "Deleted successfully",
+    "updated": "Updated successfully",
+    "loading": "Loading...",
+    "noData": "No data available",
+    "comingSoon": "Coming soon"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "network": "Network error. Please check your connection.",
+    "notFound": "Not found",
+    "unauthorized": "Unauthorized access",
+    "serverError": "Server error. Please try again later.",
+    "invalidInput": "Invalid input",
+    "required": "This field is required"
+  },
+  "loading": {
+    "default": "Loading...",
+    "pleaseWait": "Please wait...",
+    "processing": "Processing..."
+  },
+  "empty": {
+    "noResults": "No results found",
+    "noData": "No data available",
+    "tryAgain": "Try again"
+  }
+}
