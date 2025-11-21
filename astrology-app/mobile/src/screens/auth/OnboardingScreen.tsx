@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
-import axios from 'axios';
+import { trialsApi } from '@/api';
 
 type PlanType = 'basic' | 'standard' | 'premium';
 
@@ -62,9 +62,7 @@ export default function OnboardingScreen() {
     try {
       if (selectedPlan !== 'basic') {
         // Start trial for Standard or Premium
-        await axios.post('/trials/start', {
-          planType: selectedPlan,
-        });
+        await trialsApi.startTrial(selectedPlan);
       }
       // Navigate to main app
       navigation.navigate('Main' as never);
