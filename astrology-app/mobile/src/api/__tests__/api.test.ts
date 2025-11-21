@@ -1,6 +1,6 @@
 import { profilesApi } from '@/api/profiles';
 import { subscriptionsApi } from '@/api/subscriptions';
-import { paymentApi } from '@/api/payment';
+import { paymentsApi } from '@/api/payments';
 
 /**
  * API Tests for Astrology App
