@@ -4,6 +4,7 @@
  */
 
 import axios, { AxiosInstance } from 'axios';
+import { useAuthStore } from '@/store/authStore';
 
 interface AnthropicMessage {
   role: 'user' | 'assistant';
@@ -56,9 +57,33 @@ export class AnthropicClient {
       timeout: this.config.timeout,
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.config.apiKey}`,
       },
     });
+
+    // Add request interceptor to inject auth token from authStore
+    this.client.interceptors.request.use(
+      (requestConfig) => {
+        const token = useAuthStore.getState().token;
+        if (token) {
+          requestConfig.headers.Authorization = `Bearer ${token}`;
+        }
+        return requestConfig;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+
+    // Add response interceptor for error handling
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          useAuthStore.getState().logout();
+        }
+        return Promise.reject(error);
+      }
+    );
   }
 
   /**
@@ -213,7 +238,15 @@ export function initializeAnthropicClient(config: AnthropicConfig): AnthropicCli
 
 export function getAnthropicClient(): AnthropicClient {
   if (!anthropicInstance) {
-    throw new Error('Anthropic client not initialized. Call initializeAnthropicClient first.');
+    // Auto-initialize with default config if not already initialized
+    const defaultConfig: AnthropicConfig = {
+      apiKey: '', // Will be set by auth interceptor
+      baseURL: process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3000/api/v1',
+      model: 'claude-haiku-4.5',
+      maxTokens: 1024,
+      timeout: 30000,
+    };
+    anthropicInstance = new AnthropicClient(defaultConfig);
   }
   return anthropicInstance;
 }
