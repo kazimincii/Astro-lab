@@ -2,3 +2,5 @@ node_modules/
 astrology-app/**/node_modules/
 astrology-app/**/package-lock.json
 .tools/
+.github/workflows/create-release.yml
+
