@@ -1,0 +1,204 @@
+{
+  "actionLimit": {
+    "title": "Daily Action Limit Reached",
+    "subtitle": "You've used all your daily actions",
+    "description": "Upgrade to continue enjoying unlimited cosmic insights",
+    "remaining": "{{count}} actions remaining today",
+    "resetTime": "Your actions will reset tomorrow at midnight",
+    "tryTomorrow": "Try again tomorrow",
+    "upgradeNow": "Upgrade Now"
+  },
+  "plans": {
+    "current": "Current Plan",
+    "yourPlan": "Your Current Plan",
+    "freeTrial": "Free Trial",
+    "standard": "Standard",
+    "premium": "Premium",
+    "selectPlan": "Select Plan",
+    "upgradeTo": "Upgrade to {{plan}}",
+    "viewPlans": "View Plans",
+    "managePlan": "Manage Plan"
+  },
+  "free": {
+    "name": "Free Trial",
+    "price": "Free",
+    "description": "Start your cosmic journey",
+    "features": {
+      "actions": "4 actions per day",
+      "profiles": "Up to 2 birth profiles",
+      "basicCharts": "Basic birth chart",
+      "dailyForecasts": "Daily forecasts",
+      "limitedContent": "Limited educational content"
+    }
+  },
+  "standard": {
+    "name": "Standard",
+    "price": "$10/month",
+    "description": "Expand your astrological knowledge",
+    "popular": "Most Popular",
+    "features": {
+      "actions": "20 actions per day",
+      "profiles": "Up to 5 birth profiles",
+      "advancedCharts": "Advanced charts (Transit, Solar Return)",
+      "weeklyForecasts": "Weekly & monthly forecasts",
+      "fullContent": "Full educational content access",
+      "prioritySupport": "Priority customer support"
+    },
+    "trial": "7-day free trial",
+    "cta": "Start Free Trial"
+  },
+  "premiumPlan": {
+    "name": "Premium",
+    "price": "$30/month",
+    "description": "Unlock unlimited cosmic wisdom",
+    "badge": "Best Value",
+    "features": {
+      "actions": "UNLIMITED actions",
+      "profiles": "Unlimited birth profiles",
+      "allCharts": "All chart types & tools",
+      "allForecasts": "All forecast types",
+      "liveServices": "Access to live astrology sessions",
+      "aiAssistant": "AI astrology assistant",
+      "exclusiveContent": "Exclusive courses & content",
+      "prioritySupport": "VIP customer support",
+      "adFree": "Ad-free experience",
+      "offlineMode": "Offline mode"
+    },
+    "trial": "7-day free trial",
+    "cta": "Unlock Premium"
+  },
+  "upgradeModal": {
+    "title": "Upgrade to Premium",
+    "subtitle": "Unlock Your Full Cosmic Potential",
+    "benefits": {
+      "title": "What You'll Get:",
+      "unlimited": "Unlimited daily actions",
+      "profiles": "Unlimited birth profiles",
+      "tools": "Access to all astrology tools",
+      "content": "Exclusive content & courses",
+      "support": "VIP customer support"
+    },
+    "pricing": {
+      "monthly": "Monthly",
+      "yearly": "Yearly",
+      "save": "Save 20%",
+      "perMonth": "per month",
+      "billedAnnually": "Billed annually at ${{amount}}"
+    },
+    "trial": {
+      "title": "Start Your 7-Day Free Trial",
+      "description": "Cancel anytime. No commitment required.",
+      "today": "Today: Free",
+      "then": "Then {{price}}/month"
+    },
+    "cta": {
+      "startTrial": "Start 7-Day Free Trial",
+      "subscribe": "Subscribe Now",
+      "restore": "Restore Purchase"
+    },
+    "terms": {
+      "agreement": "By subscribing, you agree to our",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "autoRenew": "Subscription automatically renews unless auto-renew is turned off at least 24 hours before the end of the current period.",
+      "cancelAnytime": "You can cancel your subscription at any time from your account settings.",
+      "refundPolicy": "Refunds are available within 7 days of purchase for annual subscriptions."
+    }
+  },
+  "comparison": {
+    "title": "Choose Your Plan",
+    "planComparison": "Plan Comparison",
+    "headers": {
+      "feature": "Feature",
+      "basic": "Basic",
+      "standard": "Standard",
+      "premium": "Premium"
+    },
+    "rows": {
+      "premiumActions": "Premium actions/day",
+      "profiles": "Profiles",
+      "advancedTools": "Advanced tools",
+      "support": "Support"
+    },
+    "features": {
+      "dailyActions": "Daily Actions",
+      "profiles": "Birth Profiles",
+      "charts": "Chart Types",
+      "forecasts": "Forecasts",
+      "education": "Educational Content",
+      "liveServices": "Live Sessions",
+      "aiAssistant": "AI Assistant",
+      "support": "Customer Support",
+      "ads": "Advertisements"
+    },
+    "values": {
+      "limited": "Limited",
+      "basic": "Basic",
+      "advanced": "Advanced",
+      "full": "Full Access",
+      "yes": "Yes",
+      "no": "No",
+      "standard": "Standard",
+      "priority": "Priority",
+      "vip": "VIP",
+      "noAds": "Ad-Free",
+      "unlimited": "Unlimited",
+      "most": "Most",
+      "all": "All",
+      "community": "Community",
+      "priorityPlus": "Priority+"
+    }
+  },
+  "myPlan": {
+    "title": "My Plan",
+    "currentPlan": "Your Current Plan",
+    "whatsIncluded": "What's Included",
+    "actionsPerDay": "Actions/Day",
+    "maxProfiles": "Max Profiles",
+    "upgradePlan": "Upgrade Your Plan",
+    "loading": "Loading plan information...",
+    "error": "Failed to load plan information",
+    "trial": {
+      "freeTrial": "✨ Free Trial - {{count}} days remaining",
+      "daysRemaining": "{{count}} days remaining",
+      "endsOn": "Ends on {{date}}",
+      "cancelTrial": "Cancel Trial",
+      "cancelNote": "Cancel anytime. You will move to Basic after the trial ends.",
+      "sevenDayPremium": "7-day Premium trial",
+      "tryUnlimited": "Try unlimited premium actions and advanced tools. Cancel anytime.",
+      "startTrial": "Start trial",
+      "cancelSuccess": "Trial cancelled successfully",
+      "cancelError": "Failed to cancel trial"
+    },
+    "billing": {
+      "monthly": "Monthly",
+      "yearly": "Yearly (Save 17%)",
+      "monthShort": "mo",
+      "yearShort": "yr",
+      "chargedMonthly": "Charged monthly via PaymentSheet",
+      "chargedYearly": "Charged yearly via PaymentSheet",
+      "secureCheckout": "Secure checkout via PaymentSheet"
+    },
+    "badges": {
+      "bestValue": "BEST VALUE"
+    },
+    "upgradeButtons": {
+      "upgradeToStandard": "Upgrade to Standard",
+      "upgradeToPremium": "Upgrade to Premium"
+    },
+    "planFeatures": {
+      "standard": {
+        "actions": "4 premium actions/day",
+        "profiles": "Up to 10 profiles",
+        "charts": "Advanced charts & tools"
+      },
+      "premium": {
+        "actions": "Unlimited premium actions",
+        "profiles": "Up to 50 profiles",
+        "proMode": "Pro mode features",
+        "support": "Priority support"
+      }
+    }
+  }
+}
