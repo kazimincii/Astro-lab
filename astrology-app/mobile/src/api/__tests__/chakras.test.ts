@@ -1,14 +1,8 @@
 import { chakrasApi, ChakraProfile, ChakraStatus, ChakraState } from '../chakras';
 import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  __esModule: true,
-  default: {
-    get: jest.fn(),
-    post: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('chakrasApi', () => {
   beforeEach(() => {

@@ -5,6 +5,9 @@ import { useAuthStore } from '@/store/authStore';
 jest.mock('axios');
 jest.mock('@/store/authStore');
 
+// Don't use the automatic mock for client in this test file
+jest.unmock('../client');
+
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const mockAuthStore = useAuthStore as unknown as jest.Mock;
 
@@ -20,6 +23,13 @@ describe('apiClient', () => {
   beforeEach(() => {
     // Reset modules to ensure clean state
     jest.resetModules();
+    
+    // Re-mock axios after reset
+    jest.mock('axios');
+    jest.mock('@/store/authStore');
+    
+    // Don't use the automatic mock for client in this test
+    jest.unmock('../client');
 
     // Setup auth store mock
     mockAuthStore.mockReturnValue({
@@ -48,14 +58,11 @@ describe('apiClient', () => {
       defaults: {
         headers: {
           common: {},
-        },
+          },
       },
     };
 
     mockedAxios.create.mockReturnValue(mockAxiosInstance as any);
-
-    // Clear all mocks
-    jest.clearAllMocks();
 
     // Now import the client to trigger initialization
     apiClient = require('../client').apiClient;

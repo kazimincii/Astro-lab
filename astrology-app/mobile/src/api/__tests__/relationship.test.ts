@@ -1,13 +1,8 @@
 import { relationshipApi, RelationshipProfile } from '../relationship';
-import { apiClient } from '../client';
+import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  apiClient: {
-    post: jest.fn(),
-    get: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('relationshipApi', () => {
   const mockRelationshipProfile: RelationshipProfile = {

@@ -6,18 +6,22 @@ export const authApi = {
       const response = await apiClient.post('/auth/register', data);
       return response.data;
     } catch (error) {
-      console.warn('Register failed, returning mock session', error);
-      // Fallback mock session to allow UI flow when backend is unreachable
-      return {
-        accessToken: 'mock-token',
-        refreshToken: 'mock-refresh',
-        user: {
-          id: 'mock-user',
-          email: data.email,
-          firstName: data.firstName ?? 'Test',
-          lastName: data.lastName ?? 'User',
-        },
-      };
+      // Only use fallback in development mode, throw in production/test
+      if (__DEV__ && process.env.NODE_ENV !== 'test') {
+        console.warn('Register failed, returning mock session', error);
+        // Fallback mock session to allow UI flow when backend is unreachable
+        return {
+          accessToken: 'mock-token',
+          refreshToken: 'mock-refresh',
+          user: {
+            id: 'mock-user',
+            email: data.email,
+            firstName: data.firstName ?? 'Test',
+            lastName: data.lastName ?? 'User',
+          },
+        };
+      }
+      throw error;
     }
   },
 
@@ -26,15 +30,19 @@ export const authApi = {
       const response = await apiClient.post('/auth/login', { email, password });
       return response.data;
     } catch (error) {
-      console.warn('Login failed, returning mock session', error);
-      return {
-        accessToken: 'mock-token',
-        refreshToken: 'mock-refresh',
-        user: {
-          id: 'mock-user',
-          email,
-        },
-      };
+      // Only use fallback in development mode, throw in production/test
+      if (__DEV__ && process.env.NODE_ENV !== 'test') {
+        console.warn('Login failed, returning mock session', error);
+        return {
+          accessToken: 'mock-token',
+          refreshToken: 'mock-refresh',
+          user: {
+            id: 'mock-user',
+            email,
+          },
+        };
+      }
+      throw error;
     }
   },
 

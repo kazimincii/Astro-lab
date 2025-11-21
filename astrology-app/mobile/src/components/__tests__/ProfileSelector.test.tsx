@@ -111,7 +111,7 @@ describe('ProfileSelector', () => {
     });
 
     it('should close modal when close button is pressed', () => {
-      const { getByText, queryByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText, queryByText } = render(<ProfileSelector />);
 
       act(() => {
         fireEvent.press(getAllByText('John Doe')[0]);
@@ -130,7 +130,7 @@ describe('ProfileSelector', () => {
 
   describe('Compact mode', () => {
     it('should render compact selector', () => {
-      const { getByText, queryByText } = render(<ProfileSelector compact />);
+      const { getByText, getAllByText, queryByText } = render(<ProfileSelector compact />);
 
       expect(getAllByText('John Doe')[0]).toBeTruthy();
       expect(queryByText('Reading For:')).toBeNull();
@@ -160,8 +160,7 @@ describe('ProfileSelector', () => {
         error: null,
       });
 
-      const { getByTestId } = render(<ProfileSelector />);
-      const { findByTestId } = render(<ProfileSelector />);
+      const { getByTestId, getByText, findByTestId } = render(<ProfileSelector />);
 
       // Open modal
       const selector = getByText('Reading For:');
@@ -176,7 +175,7 @@ describe('ProfileSelector', () => {
 
   describe('Profile display', () => {
     it('should display profile with sun sign and relationship', async () => {
-      const { getByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText } = render(<ProfileSelector />);
 
       fireEvent.press(getAllByText('John Doe')[0]);
 
@@ -196,7 +195,7 @@ describe('ProfileSelector', () => {
 
       mockProfilesApi.getAll.mockResolvedValue(profilesWithoutSign);
 
-      const { getByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText } = render(<ProfileSelector />);
 
       fireEvent.press(getAllByText('John Doe')[0]);
 
@@ -208,7 +207,7 @@ describe('ProfileSelector', () => {
 
   describe('Profile selection', () => {
     it('should highlight selected profile in modal', async () => {
-      const { getByText } = render(<ProfileSelector />);
+      const { getByText, getAllByText } = render(<ProfileSelector />);
 
       fireEvent.press(getAllByText('John Doe')[0]);
 

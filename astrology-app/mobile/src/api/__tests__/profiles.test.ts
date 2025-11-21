@@ -1,15 +1,8 @@
 import { profilesApi } from '../profiles';
-import { apiClient } from '../client';
+import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  apiClient: {
-    get: jest.fn(),
-    post: jest.fn(),
-    patch: jest.fn(),
-    delete: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('profilesApi', () => {
   beforeEach(() => {

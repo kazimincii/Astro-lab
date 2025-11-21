@@ -57,10 +57,21 @@ jest.mock('react-native-reanimated', () => {
   return Reanimated;
 });
 
-// Silence the warning: Animated: `useNativeDriver` is not supported
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock')
 );
+
+// Mock NativeWind and react-native-css-interop
+jest.mock('nativewind', () => {
+  return {
+    styled: (component) => component,
+  };
+});
+
+jest.mock('react-native-css-interop', () => {
+  return {
+    createInteropElement: jest.fn(),
+    remapProps: jest.fn(),
+  };
+});

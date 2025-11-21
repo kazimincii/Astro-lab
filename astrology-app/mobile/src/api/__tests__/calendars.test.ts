@@ -1,12 +1,8 @@
 import { calendarsApi, CalendarType, CalendarEntry } from '../calendars';
-import { apiClient } from '../client';
+import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  apiClient: {
-    get: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('calendarsApi', () => {
   const mockBeautyEntry: CalendarEntry = {

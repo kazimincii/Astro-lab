@@ -1,15 +1,8 @@
 import { widgetsApi, WidgetType, WidgetConfig } from '../widgets';
-import { apiClient } from '../client';
+import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  apiClient: {
-    get: jest.fn(),
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('widgetsApi', () => {
   const mockWidgetConfig: WidgetConfig = {

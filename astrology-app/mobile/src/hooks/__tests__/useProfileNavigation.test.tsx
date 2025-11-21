@@ -1,4 +1,6 @@
+import React from 'react';
 import { renderHook, act, waitFor } from '@testing-library/react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { useProfileNavigation } from '@/hooks/useProfileNavigation';
 import { useWidgetUpdates, WidgetData } from '@/hooks/useWidgetUpdates';
 import { ProfileProvider } from '@/contexts/ProfileContext';
@@ -7,7 +9,11 @@ import { ProfileProvider } from '@/contexts/ProfileContext';
  * Profile Navigation Hook Tests
  */
 describe('useProfileNavigation', () => {
-  const wrapper = ({ children }: any) => <ProfileProvider>{children}</ProfileProvider>;
+  const wrapper = ({ children }: any) => (
+    <NavigationContainer>
+      <ProfileProvider>{children}</ProfileProvider>
+    </NavigationContainer>
+  );
 
   describe('initialization', () => {
     it('should initialize with no profile selected', () => {

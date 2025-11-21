@@ -1,15 +1,8 @@
 import { journalApi, JournalEntry, MoodLevel, MoodStats } from '../journal';
-import { apiClient } from '../client';
+import apiClient from '../client';
 
-// Mock apiClient
-jest.mock('../client', () => ({
-  apiClient: {
-    post: jest.fn(),
-    put: jest.fn(),
-    delete: jest.fn(),
-    get: jest.fn(),
-  },
-}));
+// Mock apiClient - uses centralized mock from __mocks__/client.ts
+jest.mock('../client');
 
 describe('journalApi', () => {
   const mockJournalEntry: JournalEntry = {
